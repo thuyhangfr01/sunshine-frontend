@@ -12,7 +12,26 @@ import { FormattedMessage } from 'react-intl';
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.btnLogin = React.createRef();
+        this.state = {
+            email: '',
+            password: ''
+        }
+    }
+
+    handleOnChangeEmail = (event) =>{
+        this.setState({
+            email: event.target.value
+        })
+    }
+
+    handleOnChangePassword = (event) => {
+        this.setState({
+            password: event.target.value
+        })
+    }
+
+    handleLogin = () => {
+        console.log('email: ', this.state.email, ' password: ', this.state.password)
     }
 
     render() {
@@ -61,22 +80,25 @@ class Login extends Component {
                                             <form>
                                                 <div className="form-group">
                                                     <div className="form-icon-wrapper">
-                                                        <input type="email" class="form-control" style={{fontSize: '16px'}} placeholder="Nhập email" autofocus
-                                                            required/>
+                                                        <input type="email" class="form-control" style={{fontSize: '16px'}} placeholder="Nhập email" autofocus 
+                                                        required value={this.state.email}
+                                                        onChange={(event) => this.handleOnChangeEmail(event)}/>
                                                         <i className="form-icon-left fas fa-envelope" style={{color: "#9e9e9e",}}></i>
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
                                                     <div className="form-icon-wrapper">
                                                         <input type="password" class="form-control" style={{fontSize: '16px'}} placeholder="Nhập mật khẩu"
-                                                            required/>
+                                                            required value={this.state.password}
+                                                            onChange={(event) => this.handleOnChangePassword(event)}/>
                                                         <i className="form-icon-left fas fa-lock" style={{color: "#9e9e9e",}}></i>
                                                     </div>
                                                 </div>
                                                 <p className="text-center mb-4" style={{fontSize: '14px'}}>
                                                     Bạn đã quên mật khẩu? <a href="password-reset.html" style={{textDecoration: 'none'}}>Đặt lại mật khẩu ngay!</a>
                                                 </p>
-                                                <button className="btn btn-primary btn-block mb-4" style={{padding: '22px', fontSize: '16px', fontWeight: '600'}}>Đăng nhập</button>
+                                                <button className="btn btn-primary btn-block mb-4" style={{padding: '22px', fontSize: '16px', fontWeight: '600'}}
+                                                onClick={() => {this.handleLogin()}}>Đăng nhập</button>
                                             </form>
                                             <div className="text-divider" style={{fontSize: '14px'}}>hoặc</div>
                                             <div className="social-links justify-content-center">
