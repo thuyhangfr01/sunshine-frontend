@@ -38,7 +38,8 @@
     "redux-state-sync": "^3.1.4",
     "redux-thunk": "^2.4.2",
     "typescript": "^5.0.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",
