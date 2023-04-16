@@ -11,7 +11,9 @@ import { userIsAuthenticated, userIsNotAuthenticated } from '../hoc/authenticati
 import { path } from '../utils'
 
 import Home from '../routes/Home';
-import Login from '../routes/Login';
+// import Login from '../routes/Login';
+import Login from './Auth/Login';
+import Signup from './Auth/Signup';
 import Header from './Header/Header';
 import System from '../routes/System';
 
@@ -41,9 +43,11 @@ class App extends Component {
     render() {
         return (
             <Fragment>
-                <Router history={history}>
+                {/* luu lich su, giu du lieu o phia front end */}
+                <Router history={history}> 
                     <div className="main-container">
                         <ConfirmModal />
+                        {/* kiem tra login hay chua, neu login thanh cong thi render header */}
                         {this.props.isLoggedIn && <Header />}
 
                         <span className="content-container">
