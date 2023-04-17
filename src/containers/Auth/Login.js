@@ -4,6 +4,7 @@ import { push } from "connected-react-router";
 
 import LogoTextMin from "../../assets/images/logo_text_min.png";
 import Cover from "../../assets/images/cover1.png";
+import { handleLoginApi } from '../../services/userService';
 
 import * as actions from "../../store/actions";
 import './Login.scss';
@@ -30,8 +31,12 @@ class Login extends Component {
         })
     }
 
-    handleLogin = () => {
-        console.log('email: ', this.state.email, ' password: ', this.state.password)
+    handleLogin = async () => {
+        try{
+            await handleLoginApi(this.state.email, this.state.password)
+        } catch(e) {
+            console.log(e)
+        }
     }
 
     render() {
