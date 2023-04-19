@@ -12,10 +12,11 @@ import AuthService from "../services/auth.service";
 import Login from "./login.component.js";
 import LogoTextMin from "../assets/images/logo_text_min.png";
 import Cover from "../assets/images/cover1.png";
+import { withRouter } from '../common/with-router';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const PHONE_REGEX = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
-const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
 const required = (value) => {
   if (isEmpty(value)) {
       return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Vui lòng không để trống</small>;
@@ -36,7 +37,7 @@ const vphone = (value) => {
 
 const vpassword = (value) => {
   if (!PASS_REGEX.test(value) ) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Mật khẩu phải từ 6 kí tự, có chứa ít nhất 1 chữ số và 1 chữ in hoa</small>;
+      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Mật khẩu tối thiếu 6 kí tự, có chứa ít nhất 1 chữ số và 1 chữ in hoa</small>;
   }
 }
 
@@ -57,7 +58,8 @@ export default class Register extends Component {
       password: "",
       role: "",
       successful: false,
-      message: ""
+      message: "",
+      loading: false,
     };
   }
 
@@ -89,7 +91,6 @@ export default class Register extends Component {
     this.setState({
       role: e.target.value,
     });
-    alert(e.target.value)
   }
 
   handleRegister(e) {
@@ -97,7 +98,8 @@ export default class Register extends Component {
 
     this.setState({
       message: "",
-      successful: false
+      successful: false,
+      loading: true
     });
 
     this.form.validateAll();
@@ -110,9 +112,13 @@ export default class Register extends Component {
         this.state.password,
         this.state.role
       ).then(
+        () => {
+          this.props.router.navigate("/login");
+          window.location.reload();
+        },
         response => {
           this.setState({
-            message: response.data.message,
+            // message: response.data.message,
             successful: true
           });
         },
@@ -126,10 +132,15 @@ export default class Register extends Component {
 
           this.setState({
             successful: false,
-            message: resMessage
+            message: resMessage,
+            loading: false,
           });
-        }
+        },
       );
+    } else{
+      this.setState({
+        loading: false
+      });
     }
   }
 
@@ -248,17 +259,17 @@ export default class Register extends Component {
             </svg>
         </div>
         </div>
-        <div className="form-wrapper">
+        <div className="form-wrapper" style={{ marginTop: "-20px"}}>
             <div className="container">
                 <div className="card">
                     <div className="row no-gutters">
                         <div className="col d-none d-lg-flex" style={{backgroundImage: `url(${Cover})`}}>
                             <div className="logo">
-                              <img src={LogoTextMin} alt="logo" style={{width: '220px', marginBottom: '-70px', marginTop: '50px'}} />
+                              <img src={LogoTextMin} alt="logo" style={{width: '220px', marginBottom: '-100px', marginTop: '70px'}} />
                             </div>
                             <div>
-                              <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
-                              <p className="lead my-5" style={{fontWeight: '400'}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
+                              <h3 style={{fontSize: '18px', fontWeight: '600', marginBottom: "10px"}}>Chào bạn,</h3>
+                              <p className="lead" style={{fontWeight: '400', marginBottom: "30px"}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
                               <a href={"/login"} class="btn btn-outline-primary 2btn-lg" 
                                 style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '18px', marginBottom: '-15px'}}>Đăng nhập</a>
                           </div>
@@ -277,9 +288,9 @@ export default class Register extends Component {
                                     <div className="logo d-block d-lg-none text-center text-lg-left">
                                         <img src={LogoTextMin} alt="logo"/>
                                     </div>
-                                    <div className="my-5 text-lg-left">
-                                        <h3 className="font-weight-bold">Đăng ký</h3>
-                                        <p className="text-muted">Vui lòng nhập đầy đủ thông tin để tạo tài khoản mới</p>
+                                    <div className="text-lg-left" style={{marginTop: "10px", marginBottom: "30px"}}>
+                                      <h3 className="font-weight-bold" style={{fontWeight: '600'}}>Đăng ký</h3>
+                                      <p className="text-muted" style={{fontSize: '16px'}}>Vui lòng nhập đầy đủ thông tin để tạo tài khoản mới</p>
                                     </div>
                                     <Form
                                       onSubmit={this.handleRegister}
@@ -347,48 +358,66 @@ export default class Register extends Component {
                                                     <FontAwesomeIcon className="form-icon-left" icon={faLock} />
                                                 </div>
                                             </div>
-                                        
-                                            <div className="radio" onChange={this.onChangeRole}>
-                                                <Input
-                                                  type="radio"
-                                                  value="benefactor"
-                                                />
-                                                Mạnh thường quân
-                                                <Input
-                                                  type="radio"
-                                                  value="recipient"
-                                                />
-                                                Đơn vị nhận hỗ trợ
+                                            
+                                            <div className="radio" style={{display: "flex", fontSize: "16px", marginBottom: "15px"}} onChange={this.onChangeRole}>
+                                                <p style={{
+                                                  fontSize: "16px",
+                                                  fontWeight: "600",
+                                                  marginRight: "15px",
+                                                  marginTop: "1px"
+                                                }}>Bạn là:</p>
+                                                <label style={{display: "flex", marginRight: "10px"}}>
+                                                  <Input
+                                                    style={{marginRight: "10px"}}
+                                                    type="radio"
+                                                    value="benefactor"
+                                                  />
+                                                  Mạnh thường quân
+                                                </label>
+                                                <label style={{display: "flex"}}>
+                                                  <Input
+                                                    style={{marginRight: "10px"}}
+                                                    type="radio"
+                                                    value="recipient"
+                                                  />
+                                                  Đơn vị nhận hỗ trợ
+                                                </label>
+                                              
                                             </div>
                                                 <button 
-                                              className="btn btn-primary btn-block mb-4"
-                                              style={{padding: '20px', fontSize: '16px', fontWeight: '600'}}>
-                                              Đăng ký</button>
+                                                  className="btn btn-primary btn-block"
+                                                  style={{padding: '20px', fontSize: '16px', fontWeight: '600'}}
+                                                  disabled={this.state.loading}>
+                                                  Đăng ký
+                                                  {this.state.loading && (
+                                                    <span className="spinner-border spinner-border-sm" style={{marginLeft: "10px"}}></span>
+                                                  )}
+                                              </button>
                                         </div>
                                          )}
-                                    {this.state.message && (
-                                      <div className="form-group">
-                                        <div
-                                          className={
-                                            this.state.successful
-                                              ? "alert alert-success"
-                                              : "alert alert-danger"
-                                          }
-                                          role="alert"
-                                        >
-                                          {this.state.message}
-                                        </div>
-                                      </div>
-                                    )}
-                                    <CheckButton
-                                      style={{ display: "none" }}
-                                      ref={c => {
-                                        this.checkBtn = c;
-                                      }}
-                                    />
+                                        {this.state.message && (
+                                          <div className="form-group">
+                                            <div
+                                              className={
+                                                this.state.successful
+                                                  ? "alert alert-success"
+                                                  : "alert alert-danger"
+                                              }
+                                              role="alert"
+                                            >
+                                              {this.state.message}
+                                            </div>
+                                          </div>
+                                        )}
+                                        <CheckButton
+                                          style={{ display: "none" }}
+                                          ref={c => {
+                                            this.checkBtn = c;
+                                          }}
+                                        />
                                     </Form>
                                     <div className="text-divider">hoặc</div>
-                                    <div className="social-links justify-content-center">
+                                    <div className="social-links justify-content-center" style={{marginTop: "-10px"}}>
                                         <a href="#">
                                             <i className="mdi mdi-google"></i> Google
                                         </a>
@@ -403,7 +432,7 @@ export default class Register extends Component {
                 </div>
             </div>
         </div>
-        <div className="container mt-3">
+        <div className="container">
           <Routes>
             <Route path="/login" element={<Login />} />
           </Routes>
