@@ -4,13 +4,14 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import { isEmail, isEmpty } from 'validator';
+import { isEmpty } from 'validator';
+import { Routes, Route, Link } from "react-router-dom";
 
 import AuthService from "../services/auth.service";
 import './Login.scss';
 import LogoTextMin from "../assets/images/logo_text_min.png";
 import Cover from "../assets/images/cover1.png";
-
+import Register from "./register.component.js";
 import { withRouter } from '../common/with-router';
 
 const required = (value) => {
@@ -184,8 +185,8 @@ class Login extends Component {
                           </div>
                           <div>
                               <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
-                              <p className="lead my-5" style={{fontWeight: '400'}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
-                              <a href="sign-up.html" class="btn btn-outline-primary 2btn-lg" 
+                              <p className="lead my-5" style={{fontWeight: '400'}}>tạo tài khoản mới để đồng hành cùng Sunshine ngay!</p>
+                              <a href={"/register"} class="btn btn-outline-primary 2btn-lg" 
                                 style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '18px', marginBottom: '-15px'}}>Đăng ký</a>
                           </div>
                           <ul className="list-inline">
@@ -281,6 +282,11 @@ class Login extends Component {
                     </div>
                 </div>
             </div>
+        </div>
+        <div className="container mt-3">
+          <Routes>
+            <Route path="/register" element={<Register />} />
+          </Routes>
         </div>
       </div>
     );

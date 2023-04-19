@@ -1,44 +1,73 @@
 import React, { Component } from "react";
-import { Routes, Route } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faLock, faUser, faPhone } from '@fortawesome/free-solid-svg-icons'
 import Form from "react-validation/build/form";
-import Input, { input } from "react-validation/build/input";
+import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import { isEmpty } from "validator";
-import './Login.scss';
+import { isEmail } from "validator";
 
-import AuthService from "../services/auth.service";
-import Login from "./login.component.js";
 import LogoTextMin from "../assets/images/logo_text_min.png";
 import Cover from "../assets/images/cover1.png";
 
-const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-const PHONE_REGEX = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
-const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-const required = (value) => {
-  if (isEmpty(value)) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Vui lòng không để trống</small>;
-  }
-}
+import AuthService from "../services/auth.service";
 
-const vemail = (value) => {
-  if (!EMAIL_REGEX.test(value)) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Email chưa đúng định dạng</small>;
-  }
-}
-
-const vphone = (value) => {
-  if (!PHONE_REGEX.test(value)) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Số điện thoại chưa đúng định dạng</small>;
+const required = value => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
   }
 };
 
-const vpassword = (value) => {
-  if (!PASS_REGEX.test(value) ) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Mật khẩu phải từ 6 kí tự, có chứa ít nhất 1 chữ số và 1 chữ in hoa</small>;
+const email = value => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
   }
-}
+};
+
+const vname = value => {
+  if (value.length < 1 || value.length > 50) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The name must be between 1 and 50 characters.
+      </div>
+    );
+  }
+};
+
+const vphone = value => {
+  if (value.length < 1 || value.length > 11) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The phone number must be between 1 and 11 number.
+      </div>
+    );
+  }
+};
+
+const vpassword = value => {
+  if (value.length < 6 || value.length > 40) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The password must be between 6 and 40 characters.
+      </div>
+    );
+  }
+};
+
+// const vrole = value => {
+//   if (value.length < 1 || value.length > 50) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         The role must be between 1 and 50 characters.
+//       </div>
+//     );
+//   }
+// };
 
 export default class Register extends Component {
   constructor(props) {
@@ -48,14 +77,14 @@ export default class Register extends Component {
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePhone = this.onChangePhone.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-    this.onChangeRole = this.onChangeRole.bind(this);
+    // this.onChangeRole = this.onChangeRole.bind(this);
 
     this.state = {
       name: "",
       email: "",
       phone: "",
       password: "",
-      role: "",
+      // role: "",
       successful: false,
       message: ""
     };
@@ -85,12 +114,11 @@ export default class Register extends Component {
     });
   }
 
-  onChangeRole(e) {
-    this.setState({
-      role: e.target.value,
-    });
-    alert(e.target.value)
-  }
+  // onChangeRole(e) {
+  //   this.setState({
+  //     role: e.target.value
+  //   });
+  // }
 
   handleRegister(e) {
     e.preventDefault();
@@ -108,7 +136,7 @@ export default class Register extends Component {
         this.state.email,
         this.state.phone,
         this.state.password,
-        this.state.role
+        // this.state.role
       ).then(
         response => {
           this.setState({
@@ -135,111 +163,6 @@ export default class Register extends Component {
 
   render() {
     return (
-      // <div className="col-md-12">
-      //   <div className="card card-container">
-      //     <img
-      //       src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-      //       alt="profile-img"
-      //       className="profile-img-card"
-      //     />
-
-      //     <Form
-      //       onSubmit={this.handleRegister}
-      //       ref={c => {
-      //         this.form = c;
-      //       }}
-      //     >
-      //       {!this.state.successful && (
-      //         <div>
-      //           <div className="form-group">
-      //             <label htmlFor="username">Full name</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="name"
-      //               value={this.state.name}
-      //               onChange={this.onChangeName}
-      //               validations={[required, vname]}
-      //             />
-      //           </div>
-
-      //           <div className="form-group">
-      //             <label htmlFor="email">Email</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="email"
-      //               value={this.state.email}
-      //               onChange={this.onChangeEmail}
-      //               validations={[required, email]}
-      //             />
-      //           </div>
-
-      //           <div className="form-group">
-      //             <label htmlFor="phone">Phone</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="phone"
-      //               value={this.state.phone}
-      //               onChange={this.onChangePhone}
-      //               validations={[required, vphone]}
-      //             />
-      //           </div>
-
-      //           <div className="form-group">
-      //             <label htmlFor="password">Password</label>
-      //             <Input
-      //               type="password"
-      //               className="form-control"
-      //               name="password"
-      //               value={this.state.password}
-      //               onChange={this.onChangePassword}
-      //               validations={[required, vpassword]}
-      //             />
-      //           </div>
-
-      //           {/* <div className="form-group">
-      //             <label htmlFor="role">Role</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="role"
-      //               value={this.state.role}
-      //               onChange={this.onChangeRole}
-      //               validations={[required, vrole]}
-      //             />
-      //           </div> */}
-
-      //           <div className="form-group">
-      //             <button className="btn btn-primary btn-block">Sign Up</button>
-      //           </div>
-      //         </div>
-      //       )}
-
-      //       {this.state.message && (
-      //         <div className="form-group">
-      //           <div
-      //             className={
-      //               this.state.successful
-      //                 ? "alert alert-success"
-      //                 : "alert alert-danger"
-      //             }
-      //             role="alert"
-      //           >
-      //             {this.state.message}
-      //           </div>
-      //         </div>
-      //       )}
-      //       <CheckButton
-      //         style={{ display: "none" }}
-      //         ref={c => {
-      //           this.checkBtn = c;
-      //         }}
-      //       />
-      //     </Form>
-      //   </div>
-      // </div>
       <div>
         <div className="form-shape-wrapper">
         <div className="form-shape">
@@ -248,19 +171,20 @@ export default class Register extends Component {
             </svg>
         </div>
         </div>
+
         <div className="form-wrapper">
             <div className="container">
                 <div className="card">
                     <div className="row no-gutters">
                         <div className="col d-none d-lg-flex" style={{backgroundImage: `url(${Cover})`}}>
                             <div className="logo">
-                              <img src={LogoTextMin} alt="logo" style={{width: '220px', marginBottom: '-70px', marginTop: '50px'}} />
+                                <img src={LogoTextMin} alt="logo"/>
                             </div>
                             <div>
                               <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
                               <p className="lead my-5" style={{fontWeight: '400'}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
                               <a href={"/login"} class="btn btn-outline-primary 2btn-lg" 
-                                style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '18px', marginBottom: '-15px'}}>Đăng nhập</a>
+                                style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '18px', marginBottom: '-15px'}}>Đăng ký</a>
                           </div>
                           <ul className="list-inline">
                               <li className="list-inline-item">
@@ -277,9 +201,9 @@ export default class Register extends Component {
                                     <div className="logo d-block d-lg-none text-center text-lg-left">
                                         <img src={LogoTextMin} alt="logo"/>
                                     </div>
-                                    <div className="my-5 text-lg-left">
+                                    <div className="my-5 text-center text-lg-left">
                                         <h3 className="font-weight-bold">Đăng ký</h3>
-                                        <p className="text-muted">Vui lòng nhập đầy đủ thông tin để tạo tài khoản mới</p>
+                                        <p className="text-muted">Tạo tài khoản mới</p>
                                     </div>
                                     <Form
                                       onSubmit={this.handleRegister}
@@ -296,11 +220,10 @@ export default class Register extends Component {
                                                       className="form-control" 
                                                       placeholder="Nhập họ và tên" 
                                                       autofocus
-                                                      style={{fontSize: '16px'}} 
                                                       value={this.state.name}
                                                       onChange={this.onChangeName}
-                                                      validations={[required]}/>
-                                                    <FontAwesomeIcon className="form-icon-left" icon={faUser} />
+                                                      validations={[required, vname]}/>
+                                                    <i className="form-icon-left mdi mdi-account"></i>
                                                 </div>
                                             </div>
                                             <div className="form-group">
@@ -311,25 +234,23 @@ export default class Register extends Component {
                                                       className="form-control" 
                                                       placeholder="Nhập email" 
                                                       required
-                                                      style={{fontSize: '16px'}} 
                                                       value={this.state.email}
                                                       onChange={this.onChangeEmail}
-                                                      validations={[required, vemail]}/>
+                                                      validations={[required, email]}/>
                                                     <i className="form-icon-left mdi mdi-email"></i>
-                                                    <FontAwesomeIcon className="form-icon-left" icon={faEnvelope} />
                                                 </div>
                                             </div>
                                             <div className="form-group">
                                                 <div className="form-icon-wrapper">
                                                     <Input 
+                                                      type="number"
                                                       name="phone"
                                                       className="form-control"
                                                       placeholder="Nhập số điện thoại"
-                                                      style={{fontSize: '16px'}} 
                                                       value={this.state.phone}
                                                       onChange={this.onChangePhone}
                                                       validations={[required, vphone]}/>
-                                                    <FontAwesomeIcon className="form-icon-left" icon={faPhone} />
+                                                    <i className="form-icon-left mdi mdi-lock"></i>
                                                 </div>
                                             </div>
                                             <div className="form-group">
@@ -338,34 +259,32 @@ export default class Register extends Component {
                                                     type="password" 
                                                     name="password"
                                                     className="form-control" 
-                                                    placeholder="Nhập mật khẩu"
-                                                    style={{fontSize: '16px'}} 
+                                                    placeholder="Nhập mật khẩu password"
                                                     value={this.state.password}
                                                     onChange={this.onChangePassword}
                                                     validations={[required, vpassword]}
                                                     />
-                                                    <FontAwesomeIcon className="form-icon-left" icon={faLock} />
+                                                    <i className="form-icon-left mdi mdi-lock"></i>
                                                 </div>
                                             </div>
                                         
-                                            <div className="radio" onChange={this.onChangeRole}>
-                                                <Input
-                                                  type="radio"
-                                                  value="benefactor"
-                                                />
-                                                Mạnh thường quân
-                                                <Input
-                                                  type="radio"
-                                                  value="recipient"
-                                                />
-                                                Đơn vị nhận hỗ trợ
+                                            <div className="form-group">
+                                                <div className="form-icon-wrapper">
+                                                    <Input 
+                                                      type="password"
+                                                      name="repassword"
+                                                      className="form-control"
+                                                      placeholder="Nhập lại mật khẩu"
+                                                      value={this.state.password}
+                                                      onChange={this.onChangePassword}
+                                                      validations={[required, vpassword]}/>
+                                                    <i className="form-icon-left mdi mdi-lock"></i>
+                                                </div>
                                             </div>
-                                                <button 
-                                              className="btn btn-primary btn-block mb-4"
-                                              style={{padding: '20px', fontSize: '16px', fontWeight: '600'}}>
-                                              Đăng ký</button>
+                                            <button className="btn btn-primary btn-block mb-4">Đăng ký</button>
                                         </div>
                                          )}
+                                    </Form>
                                     {this.state.message && (
                                       <div className="form-group">
                                         <div
@@ -386,7 +305,6 @@ export default class Register extends Component {
                                         this.checkBtn = c;
                                       }}
                                     />
-                                    </Form>
                                     <div className="text-divider">hoặc</div>
                                     <div className="social-links justify-content-center">
                                         <a href="#">
@@ -402,11 +320,6 @@ export default class Register extends Component {
                     </div>
                 </div>
             </div>
-        </div>
-        <div className="container mt-3">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-          </Routes>
         </div>
       </div>
     );
