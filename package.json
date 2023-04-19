@@ -31,6 +31,8 @@
     "react-flatpickr": "^3.10.13",
     "react-form-input-validation": "^2.1.0",
     "react-intl": "^6.4.0",
+    "react-loading": "^2.0.3",
+    "react-lottie": "^1.2.3",
     "react-redux": "^8.0.5",
     "react-router": "^6.10.0",
     "react-router-dom": "^6.4.0",

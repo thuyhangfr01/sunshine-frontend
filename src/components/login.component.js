@@ -98,75 +98,6 @@ class Login extends Component {
 
   render() {
     return (
-      // <div>
-
-      //   <div className="col-md-12">
-      //     <div className="card card-container">
-      //     <img
-      //       src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-      //       alt="profile-img"
-      //       className="profile-img-card"
-      //     />
-
-      //     <Form
-      //       onSubmit={this.handleLogin}
-      //       ref={c => {
-      //         this.form = c;
-      //       }}
-      //     >
-      //       <div className="form-group">
-      //         <label htmlFor="email">Email</label>
-      //         <Input
-      //           type="text"
-      //           className="form-control"
-      //           name="email"
-      //           value={this.state.email}
-      //           onChange={this.onChangeEmail}
-      //           validations={[required]}
-      //         />
-      //       </div>
-
-      //       <div className="form-group">
-      //         <label htmlFor="password">Mat khau</label>
-      //         <Input
-      //           type="password"
-      //           className="form-control"
-      //           name="password"
-      //           value={this.state.password}
-      //           onChange={this.onChangePassword}
-      //           validations={[required]}
-      //         />
-      //       </div>
-
-      //       <div className="form-group">
-      //         <button
-      //           className="btn btn-primary btn-block"
-      //           disabled={this.state.loading}
-      //         >
-      //           {this.state.loading && (
-      //             <span className="spinner-border spinner-border-sm"></span>
-      //           )}
-      //           <span>Login</span>
-      //         </button>
-      //       </div>
-
-      //       {this.state.message && (
-      //         <div className="form-group">
-      //           <div className="alert alert-danger" role="alert">
-      //             {this.state.message}
-      //           </div>
-      //         </div>
-      //       )}
-      //       <CheckButton
-      //         style={{ display: "none" }}
-      //         ref={c => {
-      //           this.checkBtn = c;
-      //         }}
-      //       />
-      //     </Form>
-      //   </div>
-      //   </div>
-      // </div>
       <div>
         <div class="form-shape-wrapper">
             <div class="form-shape">
@@ -185,7 +116,7 @@ class Login extends Component {
                           </div>
                           <div>
                               <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
-                              <p className="lead my-5" style={{fontWeight: '400'}}>tạo tài khoản mới để đồng hành cùng Sunshine ngay!</p>
+                              <p className="lead my-5" style={{fontWeight: '400'}}>tạo tài khoản mới để đồng hành cùng Sunshine nào!</p>
                               <a href={"/register"} class="btn btn-outline-primary 2btn-lg" 
                                 style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '18px', marginBottom: '-15px'}}>Đăng ký</a>
                           </div>
@@ -251,7 +182,11 @@ class Login extends Component {
                                           type="submit"
                                           className="btn btn-primary btn-block mb-4" 
                                           style={{padding: '20px', fontSize: '16px', fontWeight: '600'}}
-                                          onClick={() => {this.handleLogin()}}>Đăng nhập
+                                          onClick={() => {this.handleLogin()}}
+                                          disabled={this.state.loading}>Đăng nhập
+                                           {this.state.loading && (
+                                            <span className="spinner-border spinner-border-sm" style={{marginLeft: "10px"}}></span>
+                                          )}
                                       </button>
                                       {this.state.message && (
                                           <div className="form-group">
@@ -260,6 +195,7 @@ class Login extends Component {
                                               </div>
                                           </div>
                                       )}
+                                      
                                       <CheckButton
                                       style={{ display: "none" }}
                                       ref={c => {
