@@ -1,5 +1,5 @@
-@import "../Auth/core/vars.scss";
-@import "../Auth/core/helper.scss";
+@import "./vars.scss";
+@import "./helper.scss";
 @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 a {
@@ -35,6 +35,10 @@ a {
 .card {
     border: none;
     margin: auto;
+    min-width: 0;
+    width:1200px; /* or whatever width you want. */
+    max-width:1200px; /* or whatever width you want. */
+    display: inline-block;
     border-radius: 50px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.16);
     overflow: hidden;
@@ -84,10 +88,25 @@ a {
     .form-icon-wrapper {
         position: relative;
 
+        .form-control {
+            height: auto;
+            padding: 13px 20px;
+            padding-left: 45px;
+            border: none;
+            background: darken(white, 5%);
+            border-radius: 10px !important;
+        
+            &:focus {
+                box-shadow: none;
+                color: black;
+                background: darken(white, 8%);
+            }
+        }
+
         .form-icon-left, .form-icon-right {
             padding: 0;
             transform: translateY(-50%);
-            top: 50%;
+            top: 25px;
             font-size: 16px;
             border: none;
             position: absolute;
@@ -95,6 +114,16 @@ a {
             background: none;
             transition: opacity .3s;
             color: darken(white, 30%);
+        }
+        .is-invalid-input {
+            padding-left: 45px;
+            height: 50px;
+            z-index: 4;
+            font-size: 16px;
+            position: relative;
+            border: none;
+            color: darken(white, 30%);
+            transition: opacity .3s;
         }
 
         .form-icon-left {
@@ -105,21 +134,6 @@ a {
             right: 15px;
             left: auto;
         }
-    }
-}
-
-.form-control {
-    height: auto;
-    padding: 13px 20px;
-    padding-left: 45px;
-    border: none;
-    background: darken(white, 5%);
-    border-radius: 10px !important;
-
-    &:focus {
-        box-shadow: none;
-        color: black;
-        background: darken(white, 8%);
     }
 }
 

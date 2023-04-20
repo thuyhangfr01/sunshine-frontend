@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
+
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmpty } from 'validator';
 import { Routes, Route, Link } from "react-router-dom";
 
-import AuthService from "../services/auth.service";
-import './Login.scss';
-import LogoTextMin from "../assets/images/logo_text_min.png";
-import Cover from "../assets/images/cover1.png";
-import Register from "./register.component.js";
-import { withRouter } from '../common/with-router';
+import './LoginStyle.scss';
+import AuthService from "../../services/auth.service"
+import LogoTextMin from "../../assets/images/logo_text_min.png";
+import Cover from "../../assets/images/cover1.png";
+import Register from "./Register";
+import { withRouter } from '../../common/with-router';
 
 const required = (value) => {
   if (isEmpty(value)) {

@@ -6,13 +6,12 @@ import Form from "react-validation/build/form";
 import Input, { input } from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmpty } from "validator";
-import './Login.scss';
+import './LoginStyle.scss';
 
-import AuthService from "../services/auth.service";
-import Login from "./login.component.js";
-import LogoTextMin from "../assets/images/logo_text_min.png";
-import Cover from "../assets/images/cover1.png";
-import { withRouter } from '../common/with-router';
+import AuthService from "../../services/auth.service";
+import Login from "./Login.js";
+import LogoTextMin from "../../assets/images/logo_text_min.png";
+import Cover from "../../assets/images/cover1.png";
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const PHONE_REGEX = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
