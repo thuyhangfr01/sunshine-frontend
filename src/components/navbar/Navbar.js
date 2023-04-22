@@ -1,15 +1,18 @@
 import { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faPhone, faAngleDown} from '@fortawesome/free-solid-svg-icons'
 
 import "./NavbarStyle.scss"
 import { MenuItems } from "./MenuItems";
-// import LogoTextMin from "./../../assets/images/logo_text_min45.png"
-import LogoCut from "./../../assets/images/logo_cut2.png"
+import Dropdown from './Dropdown';
+import LogoCut from "./../../assets/images/logo_cut3.png"
 
 export function Navbar() {
-    const[fix, setFix] = useState(false)
+    const[fix, setFix] = useState(false);
+    const [dropdown, setDropdown] = useState(false);
+    
+    const [show, setShow] = useState(false);
 
     function setFixed(){
         if(window.scrollY >= 200){
@@ -53,12 +56,20 @@ export function Navbar() {
                                         {MenuItems.map((item, index) => {
                                         return(
                                             <li key={index} className={item.cName} >
-                                                <Link to={item.url}>
+                                                <Link className="n-item" to={item.url}>
                                                     {item.title}
                                                 </Link>
                                             </li>
                                             )
                                         })}
+                                        <li
+                                            onMouseEnter={() => setDropdown(true)}
+                                            onMouseLeave={() => setDropdown(false)}>
+                                            <Link to="/infoUser">Chào, CAO THỊ THÚY HẰNG
+                                                <FontAwesomeIcon icon={faAngleDown} style={{marginLeft: "7px"}} />
+                                            </Link>
+                                            {dropdown && <Dropdown/>}
+                                        </li>
                                     </ul>  
                                 </nav>
                             </div>

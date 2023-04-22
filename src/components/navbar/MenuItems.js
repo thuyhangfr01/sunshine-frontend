@@ -23,5 +23,5 @@ export const MenuItems = [
         title : "LIÊN HỆ",
         url : "/contact",
         cName : "scroll-to-section"
-    },
+    }
 ]
