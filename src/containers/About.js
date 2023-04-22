@@ -13,8 +13,8 @@ function About(){
                 <img src={AboutRight} alt=""
                 style={{  width: "200px",
                     height: "200px",
-                    right: "5px",
-                    bottom: "365px",
+                    right: "3px",
+                    bottom: "2232px",
                     position: "absolute",
                     zIndex: "1"}}/>
             </div>
@@ -23,8 +23,8 @@ function About(){
                     <img src={AboutLeft} 
                         style={{  width: "240px",
                             height: "410px",
-                            left: "-115px",
-                            top: "750px",
+                            left: "-70px",
+                            top: "1125px",
                             position: "absolute",
                             zIndex: "1"}}
                         alt=""/>
