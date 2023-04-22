@@ -1,0 +1,43 @@
+.info-submenu {
+  width: 225px;
+  position: absolute;
+  list-style: none;
+  text-align: start;
+  font-size: 15px;
+  font-weight: 500;
+  top: 38px;
+}
+
+.info-submenu li {
+  display: flex;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.info-submenu li svg {
+  margin-top: 12px;
+  margin-right: 10px;
+  color: #52709b;
+}
+
+.info-submenu li:hover {
+  svg {
+    color: #ff685f !important;
+  }
+
+  a.submenu-item {
+    color: #ff685f !important;
+  }
+}
+
+.info-submenu.clicked {
+  display: none;
+}
+
+.submenu-item {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: white;
+}
