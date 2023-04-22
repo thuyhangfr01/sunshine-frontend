@@ -2,6 +2,8 @@
 import Banner from "../../containers/Banner";
 import About from "../../containers/About";
 import LatestProject from "../../containers/project/LatestProject";
+import Contact from "../../containers/Contact";
+import Footer from "../../components/footer/Footer";
 
 function Home(){
     return (
@@ -10,6 +12,8 @@ function Home(){
             <Banner/>
             <About />
             <LatestProject/>
+            <Contact/>
+            <Footer/>
         </div>
     )
 }
