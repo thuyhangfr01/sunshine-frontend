@@ -1,64 +1,63 @@
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeartbeat } from '@fortawesome/free-solid-svg-icons'
 
 import "./ProjectStyle.scss";
-import { responsive, LatestProjectItems } from './LatestProjectItems';
+import { responsive, MedicalProjectItems } from './MedicalProjectItems';
 import Covid3 from "../../assets/images/tn_covid3.jpeg";
 import ProjectRight from "../../assets/images/projects_right_dec.png";
 
-function LatestProject(){
+function MedicalProject(){
     return (
         <div style={{fontFamily: 'Montserrat, sans-serif'}}>
             <div class="projects section" id="projects">
-                <div class="videos-right-dec">
-                    <img src={ProjectRight} style={{  
-                        width: "730px",
-                        height: "523px",
-                        right: "40px",
-                        top: "1500px",
-                        position: "absolute"}} alt=""/>
-                </div>
-                <div class="container">
+                <div class="container" style={{marginTop: "-30px"}}>
                     <div class="container-title">
-                        <div class="section-heading">
-                            <h2>Những dự án <em>Mới</em><span> Nhất</span></h2>
+                        <div class="section-heading row">
+                            <div className='col-9'>
+                                <h2 >Những dự án trợ giúp <em>Y</em><span> TẾ</span></h2>
                                 <div class="line-dec"></div>
-                            <p>Đồng hành cùng Sunshine để mang những dự án thiện nguyện đến gần hơn với cộng đồng!</p>
+                                <p>Từ nhiều năm nay, Quỹ Từ thiện Sunshine đã và đang tiếp tục thực hiện dự án Trợ giúp y tế. Mong muốn giúp đỡ những bệnh nhân nghèo có thêm kinh phí điều trị, vượt qua phần nào khó khăn trong cuộc sống. </p>
+                                </div>
+                            <div className='col-3'>
+                                <button className='btn btn-outline-danger btn-madical col-5' style={{
+                                    marginLeft: "385px !important",
+                                    marginTop: "55px !important",
+                                    fontWeight: "600"
+                                }}>Đóng góp</button>
+                            </div>
+                            <div className='section-line col-12'></div>
                         </div>
                     </div>
                 </div>
                 <Carousel responsive={responsive} 
-                     additionalTransfrom={0}
-                     arrows={false}
-                    autoPlay
-                     autoPlaySpeed={2500}
-                     centerMode={false}
-                     className=""
-                     containerClass="container-padding-bottom"
-                     dotListClass=""
-                     draggable
-                     focusOnSelect
-                     infinite
-                     itemClass=""
-                     keyBoardControl
-                     minimumTouchDrag={80}
-                     pauseOnHover
-                     renderArrowsWhenDisabled={false}
-                     renderButtonGroupOutside={false}
-                     renderDotsOutside={false}
-                     rewind={false}
+                    additionalTransfrom={0}
+                    arrows
+                    autoPlaySpeed={3000}
+                    centerMode={false}
+                    className=""
+                    containerClass="container-with-dots"
+                    dotListClass=""
+                    draggable
+                    focusOnSelect={false}
+                    infinite
+                    itemClass=""
+                    keyBoardControl
+                    minimumTouchDrag={80}
+                    pauseOnHover
+                    renderArrowsWhenDisabled={false}
+                    renderButtonGroupOutside={false}
+                    renderDotsOutside={false}
+                    rewind={false}
                     rewindWithAnimation={false}
                     rtl={false}
                     shouldResetAutoplay
-                    showDots
+                    showDots={false}
                     sliderClass=""
                     slidesToSlide={1}
                     swipeable>
-                        {LatestProjectItems.map((project) =>{
+                        {MedicalProjectItems.map((project) =>{
                             return(
-                                <div className='card-project'>
+                            <div className='card-project'>
                                 <div className='card-img'>
                                     <img className='img-project' src={project.imageurl}></img>
                                     {(() => {
@@ -122,4 +121,4 @@ function LatestProject(){
     )
 }
 
-export default LatestProject;
+export default MedicalProject;

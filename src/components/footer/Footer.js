@@ -51,7 +51,7 @@ function Footer(){
                     </div>
                     <div class="col-lg-3">
                         <div class="subscribe-newsletters footer-item">
-                            <h4>Để lại lời nhắn</h4>
+                            <h4>LIÊN HỆ VỚI CHÚNG TÔI</h4>
                             <p>Nếu có bất cứ yêu cầu nào, hãy gửi cho chúng tôi!</p>
                             <form action="#" method="get">
                                 <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Email của bạn" required=""/>

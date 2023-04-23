@@ -3,14 +3,14 @@
   position: absolute;
   list-style: none;
   text-align: start;
-  font-size: 15px;
+  font-size: 15px !important;
   font-weight: 500;
-  top: 38px;
+  top: 38px; 
 }
 
 .info-submenu li {
   display: flex;
-  background: #fafafa;
+  background: #ffffff;
   cursor: pointer;
 }
 
