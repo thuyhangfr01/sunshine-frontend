@@ -14,7 +14,7 @@ function About(){
                 style={{  width: "200px",
                     height: "200px",
                     right: "3px",
-                    bottom: "2232px",
+                    bottom: "3055px",
                     position: "absolute",
                     zIndex: "1"}}/>
             </div>

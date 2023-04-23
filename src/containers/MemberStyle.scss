@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+
+p.fw {
+    font-size: 16px;
+    color: black;
+    font-weight: 500;
+    margin-top: 10px;
+    width: 530px;
+}
+
+.container h2 em {
+    font-weight: 700;
+    color: #03a4ed;
+    font-style: normal;
+}
+
+.container h2 span {
+    color: #ff695f;
+    font-weight: 700;
+    opacity: 1;
+    text-transform: capitalize;
+}
+
+.container-xxl{
+    position: relative;
+}
+
+.container-xxl .tables-left-dec img {
+    width: 150px;
+    height: 851px;
+    left: -133px;
+    top: 183px;
+    position: absolute;
+    z-index: 1;
+}
+
+.container-xxl .tables-right-dec img {
+    width: 208px;
+    height: 500px;
+    right: 0;
+    left: 1242px;
+    top: -72px;
+    position: absolute;
+    z-index: 1;
+}
+
+.team-item {
+    position: relative;
+    text-align: center;
+    box-shadow: 0 0 45px rgba(0, 0, 0, .07);
+    margin-top: 25px;
+
+    h5 {
+        margin-bottom: 7px;
+        font-size: 17px;
+    }
+
+    b {
+        font-weight: 600;
+        color: #45719b;
+    }
+
+    span {
+        font-size: 15px;
+        color: #5784c7;
+    }
+}
+
+.team-item .team-social {
+    position: absolute;
+    padding: 0;
+    top: 15px;
+    left: 0;
+    overflow: hidden;
+}
+
+.team-item .team-social li {
+    list-style-type: none;
+    margin-bottom: 10px;
+    margin-left: -50px;
+    opacity: 0;
+    transition: .5s;
+}
+
+.team-item:hover .team-social li {
+    margin-left: 15px;
+    opacity: 1;
+}
+
+.team-item .team-social li .btn {
+    background: #fffffff0;
+    color: #e38681;
+    border-radius: 70px;
+    transition: .5s;
+    width: 30px;
+    height: 45px;
+    font-size: 19px;
+    padding-right: 32px !important;
+    padding-left: 15px !important;
+}
+
+.team-item .team-social li .btn:hover {
+    color: #FFFFFF;
+    background: var(--primary);
+}
+
+.team-item .team-social li:nth-child(1) {
+    transition-delay: .1s;
+}
+
+.team-item .team-social li:nth-child(2) {
+    transition-delay: .2s;
+}
+
+.team-item .team-social li:nth-child(3) {
+    transition-delay: .3s;
+}
+
+.team-item .team-social li:nth-child(4) {
+    transition-delay: .4s;
+}
+
+.team-item .team-social li:nth-child(5) {
+    transition-delay: .5s;
+}
