@@ -11,6 +11,8 @@ import Report from "./routes/client/Report";
 import Contact from "./routes/client/Contact";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import DetailsBene from "./routes/client/DetailsBene";
+import DetailsReceipt from "./routes/client/DetailsReceipt";
 // import AuthService from "./services/auth.service";
 
 // import Login from "./components/auth/Login";
@@ -76,7 +78,7 @@ class App extends Component {
 
     return (
       <div>
-        <Navbar/>
+        {/* <Navbar/> */}
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           <Route path="/home" element={<Home/>}></Route>
@@ -84,6 +86,8 @@ class App extends Component {
           <Route path="/project" element={<Project/>}></Route>
           <Route path="/report" element={<Report/>}></Route>
           <Route path="/contact" element={<Contact/>}></Route>
+          <Route path="/details-bene" element={<DetailsBene/>}></Route>
+          <Route path="/details-receipt" element={<DetailsReceipt/>}></Route>
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/register" element={<Register/>}></Route>
         </Routes>

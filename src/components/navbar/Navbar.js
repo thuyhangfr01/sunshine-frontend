@@ -37,8 +37,8 @@ export function Navbar() {
                                     <span>Email:</span>
                                     <i className="fa fa-envelope me-2"></i>yoursunshine@gmail.com</small>
                             <div className="ms-auto d-flex align-items-center" style={{fontWeight: "500"}}>
-                                <a className="btnAuth" href="/" style={{marginRight: "7px"}}>Đăng nhập </a> / 
-                                <a className="btnAuth" href="/" style={{marginLeft: "7px"}}> Đăng ký</a>
+                                <a className="btnAuth" href="/login" style={{marginRight: "7px"}}>Đăng nhập </a> / 
+                                <a className="btnAuth" href="/register" style={{marginLeft: "7px"}}> Đăng ký</a>
                             </div>
                         </div>
                     </div>

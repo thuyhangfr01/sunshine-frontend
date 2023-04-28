@@ -1,4 +1,4 @@
-// import Navbar from "../../components/navbar/Navbar";
+import {Navbar} from "../../components/navbar/Navbar";
 import Banner from "../../containers/Banner";
 import About from "../../containers/About";
 import LatestProject from "../../containers/project/LatestProject";
@@ -11,7 +11,7 @@ import Footer from "../../components/footer/Footer";
 function Home(){
     return (
         <div>
-            {/* <Navbar/> */}
+            <Navbar/>
             <Banner/>
             <About />
             <LatestProject/>
