@@ -73,7 +73,7 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.email, this.state.password).then(
         () => {
-          this.props.router.navigate("/profile");
+          this.props.router.navigate("/home");
           window.location.reload();
         },
         error => {
@@ -220,11 +220,11 @@ class Login extends Component {
                 </div>
             </div>
         </div>
-        <div className="container mt-3">
+        {/* <div className="container mt-3">
           <Routes>
             <Route path="/register" element={<Register />} />
           </Routes>
-        </div>
+        </div> */}
       </div>
     );
   }
