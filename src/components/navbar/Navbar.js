@@ -1,14 +1,14 @@
 import { Component, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faPhone, faAngleDown} from '@fortawesome/free-solid-svg-icons'
-
+import AuthService from "../services/auth.service";
 import "./NavbarStyle.scss"
 import { MenuItems } from "./MenuItems";
 import Dropdown from './Dropdown';
 import LogoCut from "./../../assets/images/logo_cut3.png"
 
-export function Navbar() {
+export default function Navbar() {
     const[fix, setFix] = useState(false);
     const [dropdown, setDropdown] = useState(false);
     
@@ -53,21 +53,37 @@ export function Navbar() {
                                         <img src={LogoCut} style={{ heigh: "60px !important"}}/>
                                     </a>
                                     <ul class="nav">
-                                        {MenuItems.map((item, index) => {
+                                        {/* {MenuItems.map((item, index) => {
                                         return(
                                             <li key={index} className={item.cName} >
-                                                <Link className="n-item" to={item.url}>
+                                                <NavLink className="n-item" activeClassName="active" exact={item.exact} to={item.url}>
                                                     {item.title}
-                                                </Link>
+                                                </NavLink>
                                             </li>
                                             )
-                                        })}
+                                        })} */}
+                                        <li className="scroll-to-section">
+                                            <NavLink to="/home" className="n-item" activeClassName="active" exact={true}>TRANG CHỦ</NavLink>
+                                        </li>
+                                        <li className="scroll-to-section">
+                                            <NavLink to="/about" className="n-item" activeClassName="active">GIỚI THIỆU</NavLink>
+                                        </li>
+                                        <li className="scroll-to-section">
+                                            <NavLink to="/project" className="n-item" activeClassName="active">CHƯƠNG TRÌNH</NavLink>
+                                        </li>
+                                        <li className="scroll-to-section">
+                                            <NavLink to="/report" className="n-item" activeClassName="active">BÁO CÁO TÀI CHÍNH</NavLink>
+                                        </li>
+                                        <li className="scroll-to-section">
+                                            <NavLink to="/contact" className="n-item" activeClassName="active">LIÊN HỆ</NavLink>
+                                        </li>
                                         <li
                                             onMouseEnter={() => setDropdown(true)}
-                                            onMouseLeave={() => setDropdown(false)}>
-                                            <Link to="/infoUser">Chào, CAO THỊ THÚY HẰNG
+                                            onMouseLeave={() => setDropdown(false)}
+                                            className="scroll-to-section">
+                                            <NavLink to="/infoUser" className="n-item" activeClassName="active">Chào, CAO VĂN PHƯỚC
                                                 <FontAwesomeIcon icon={faAngleDown} style={{marginLeft: "7px"}} />
-                                            </Link>
+                                            </NavLink>
                                             {dropdown && <Dropdown/>}
                                         </li>
                                     </ul>  
