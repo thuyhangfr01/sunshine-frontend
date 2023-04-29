@@ -10,74 +10,78 @@ a {
     }
 }
 
-.btn-primary {
-    background: linear-gradient(90deg, #ff4955, #673ab7) !important;
-    border: none;
-    border-radius: 10px !important;
-}
-
-.btn-outline-primary {
-    border-color: #673ab7;
-    color: #673ab7;
-
-    &:hover, &:focus, &:active {
-        border-color: transparent !important;
-        color: white;
-        background: linear-gradient(90deg, #ff4955, #673ab7) !important;
-    }
-}
-
 .form-wrapper {
     display: flex;
     align-items: center;
-}
-
-.card {
-    border: none;
-    margin: auto;
-    min-width: 0;
-    width:1200px; /* or whatever width you want. */
-    max-width:1200px; /* or whatever width you want. */
-    display: inline-block;
-    border-radius: 50px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.16);
-    overflow: hidden;
-    font-family: 'Montserrat', sans-serif;
-    .row {
-        .col {
-            padding: 30px;
-            min-height: 500px;
-
-            &:first-child {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                flex-direction: column;
-                text-align: center;
-                background-size: cover !important;
-                background-position: center !important;
-                position: relative;
-
-                & > * {
+    .card {
+        margin-top: 50px !important;
+        border: none;
+        margin: auto;
+        min-width: 0;
+        width:1200px; /* or whatever width you want. */
+        max-width:1200px; /* or whatever width you want. */
+        border-radius: 70px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.16);
+        overflow: hidden;
+        font-family: 'Montserrat', sans-serif;
+        .row {
+            .col {
+                padding: 30px;
+                min-height: 500px;
+    
+                &:first-child {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    flex-direction: column;
+                    text-align: center;
+                    background-size: cover !important;
+                    background-position: center !important;
                     position: relative;
-                    z-index: 1;
+    
+                    & > * {
+                        position: relative;
+                        z-index: 1;
+                    }
+    
+                    &:before {
+                        content: '';
+                        display: block;
+                        background: hsla(0, 0%, 100%, 0.96);
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                    }
+    
+                    .logo{
+                        width: 220px;
+                        margin-bottom: -70px;
+                        margin-top: 50px;
+                    }
                 }
-
-                &:before {
-                    content: '';
-                    display: block;
-                    background: hsla(0, 0%, 100%, 0.96);
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    top: 0;
+    
+                &:last-child {
                 }
+                
             }
-
-            &:last-child {
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #ff4955, #673ab7) !important;
+            border: none;
+            border-radius: 10px !important;
+        }
+        
+        .btn-outline-primary {
+            border-color: #673ab7;
+            color: #673ab7;
+        
+            &:hover, &:focus, &:active {
+                border-color: none !important;
+                color: white;
+                background: linear-gradient(90deg, #ff4955, #673ab7) !important;
             }
-            
         }
     }
 }
@@ -148,16 +152,16 @@ a {
         transition: all .3s;
         color: black;
         text-decoration: none;
-        i {
-            width: 40px;
-            font-size: 20px;
-            display: flex;
+        svg {
+            padding: 10px;
+            font-size: -3px;
             align-items: center;
             justify-content: center;
             color: white;
-            height: 40px;
+            height: 20px;
+            width: 20px;
             background: linear-gradient(90deg, #ff4955, #673ab7);
-            border-radius: 20px;
+            border-radius: 30px;
             margin-right: 10px;
         }
 

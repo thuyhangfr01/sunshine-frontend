@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-
+import {fab, faFacebookF, faGoogle} from "@fortawesome/free-brands-svg-icons";
+import { Link, useNavigate } from 'react-router-dom';
+import { isEmpty } from 'validator';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import { isEmpty } from 'validator';
-import { Routes, Route, Link } from "react-router-dom";
-
 import './LoginStyle.scss';
 import AuthService from "../../services/auth.service"
 import LogoTextMin from "../../assets/images/logo_text_min.png";
 import Cover from "../../assets/images/cover1.png";
-import Register from "./Register";
+import { toast } from 'react-toastify';
 import { withRouter } from '../../common/with-router';
+
 
 const required = (value) => {
   if (isEmpty(value)) {
@@ -73,10 +73,12 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.email, this.state.password).then(
         () => {
+          toast.success("Đăng nhập thành công!");
           this.props.router.navigate("/home");
           window.location.reload();
         },
         error => {
+          toast.error("Đăng nhập thất bại!");
           const resMessage =
             (error.response &&
               error.response.data &&
@@ -96,8 +98,7 @@ class Login extends Component {
       });
     }
   }
-
-  render() {
+  render(){
     return (
       <div>
         <div class="form-shape-wrapper">
@@ -113,13 +114,13 @@ class Login extends Component {
                     <div className="row no-gutters">
                       <div className="col d-none d-lg-flex" style={{backgroundImage: `url(${Cover})` }}>
                           <div className="logo">
-                              <img src={LogoTextMin} alt="logo" style={{width: '220px', marginBottom: '-70px', marginTop: '50px'}} />
+                              <img src={LogoTextMin} alt="logo"/>
                           </div>
                           <div>
                               <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
                               <p className="lead my-5" style={{fontWeight: '400'}}>tạo tài khoản mới để đồng hành cùng Sunshine nào!</p>
-                              <a href={"/register"} class="btn btn-outline-primary 2btn-lg" 
-                                style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '18px', marginBottom: '-15px'}}>Đăng ký</a>
+                              <Link to={"/register"} class="btn btn-outline-primary 2btn-lg" 
+                                style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '10px 20px 10px 20px', marginBottom: '-15px'}}>Đăng ký</Link>
                           </div>
                           <ul className="list-inline">
                               <li className="list-inline-item">
@@ -141,9 +142,7 @@ class Login extends Component {
                                       <p className="text-muted" style={{fontSize: '16px'}}>Vui lòng đăng nhập để tiếp tục</p>
                                   </div>
                                   <Form onSubmit={this.handleLogin}
-                                      ref={c => {
-                                      this.form = c;
-                                      }}>
+                                    ref={c => {this.form = c;}}> 
                                       <div className="form-group">
                                           <div className="form-icon-wrapper">
                                               <Input 
@@ -182,7 +181,7 @@ class Login extends Component {
                                       <button 
                                           type="submit"
                                           className="btn btn-primary btn-block mb-4" 
-                                          style={{padding: '20px', fontSize: '16px', fontWeight: '600'}}
+                                          style={{padding: '16px', fontSize: '16px', fontWeight: '600', border: 'none'}}
                                           onClick={() => {this.handleLogin()}}
                                           disabled={this.state.loading}>Đăng nhập
                                            {this.state.loading && (
@@ -191,26 +190,23 @@ class Login extends Component {
                                       </button>
                                       {this.state.message && (
                                           <div className="form-group">
-                                              <div className="alert alert-danger" role="alert">
+                                            <div className="alert alert-danger" role="alert">
                                               {this.state.message}
-                                              </div>
+                                            </div>
                                           </div>
-                                      )}
-                                      
+                                        )}
                                       <CheckButton
-                                      style={{ display: "none" }}
-                                      ref={c => {
-                                          this.checkBtn = c;
-                                      }}
+                                        style={{ display: "none" }}
+                                        ref={c => {this.checkBtn = c;}}
                                       />
                                   </Form>
                                   <div className="text-divider" style={{fontSize: '14px'}}>hoặc</div>
                                   <div className="social-links justify-content-center">
-                                      <a href='#top' style={{fontSize: '16px'}}>
-                                          <i class="fa-brands" style={{ color: '#ffffff;'}}></i>Google
+                                      <a href='#top' style={{fontSize: '16px'}} >
+                                        <FontAwesomeIcon icon={faGoogle} />Google
                                       </a>
                                       <a href="sign-up.html" style={{fontSize: '14px'}}>
-                                          <i className="fab fa-facebook-f" style={{ color: '#ffffff;'}}></i> Facebook
+                                        <FontAwesomeIcon icon={faFacebookF} /> Facebook
                                       </a>
                                   </div>
                               </div>
@@ -220,14 +216,10 @@ class Login extends Component {
                 </div>
             </div>
         </div>
-        {/* <div className="container mt-3">
-          <Routes>
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </div> */}
       </div>
-    );
+      
+      );
+    }
   }
-}
 
 export default withRouter(Login);

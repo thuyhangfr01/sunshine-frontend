@@ -1,17 +1,19 @@
 import React, { Component } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock, faUser, faPhone } from '@fortawesome/free-solid-svg-icons'
-import Form from "react-validation/build/form";
-import Input, { input } from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
+import {fab, faFacebookF, faGoogle} from "@fortawesome/free-brands-svg-icons";
 import { isEmpty } from "validator";
 import './LoginStyle.scss';
-
 import AuthService from "../../services/auth.service";
 import Login from "./Login.js";
 import LogoTextMin from "../../assets/images/logo_text_min.png";
 import Cover from "../../assets/images/cover1.png";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import { withRouter } from "../../common/with-router";
+import { toast } from 'react-toastify';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const PHONE_REGEX = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
@@ -40,7 +42,7 @@ const vpassword = (value) => {
   }
 }
 
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
@@ -112,16 +114,18 @@ export default class Register extends Component {
         this.state.role
       ).then(
         () => {
+          toast.success("Đăng ký thành công!");
           this.props.router.navigate("/login");
           window.location.reload();
         },
         response => {
           this.setState({
-            // message: response.data.message,
+            message: response.data.message,
             successful: true
           });
         },
         error => {
+          toast.error("Đăng ký thất bại!");
           const resMessage =
             (error.response &&
               error.response.data &&
@@ -145,111 +149,6 @@ export default class Register extends Component {
 
   render() {
     return (
-      // <div className="col-md-12">
-      //   <div className="card card-container">
-      //     <img
-      //       src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-      //       alt="profile-img"
-      //       className="profile-img-card"
-      //     />
-
-      //     <Form
-      //       onSubmit={this.handleRegister}
-      //       ref={c => {
-      //         this.form = c;
-      //       }}
-      //     >
-      //       {!this.state.successful && (
-      //         <div>
-      //           <div className="form-group">
-      //             <label htmlFor="username">Full name</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="name"
-      //               value={this.state.name}
-      //               onChange={this.onChangeName}
-      //               validations={[required, vname]}
-      //             />
-      //           </div>
-
-      //           <div className="form-group">
-      //             <label htmlFor="email">Email</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="email"
-      //               value={this.state.email}
-      //               onChange={this.onChangeEmail}
-      //               validations={[required, email]}
-      //             />
-      //           </div>
-
-      //           <div className="form-group">
-      //             <label htmlFor="phone">Phone</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="phone"
-      //               value={this.state.phone}
-      //               onChange={this.onChangePhone}
-      //               validations={[required, vphone]}
-      //             />
-      //           </div>
-
-      //           <div className="form-group">
-      //             <label htmlFor="password">Password</label>
-      //             <Input
-      //               type="password"
-      //               className="form-control"
-      //               name="password"
-      //               value={this.state.password}
-      //               onChange={this.onChangePassword}
-      //               validations={[required, vpassword]}
-      //             />
-      //           </div>
-
-      //           {/* <div className="form-group">
-      //             <label htmlFor="role">Role</label>
-      //             <Input
-      //               type="text"
-      //               className="form-control"
-      //               name="role"
-      //               value={this.state.role}
-      //               onChange={this.onChangeRole}
-      //               validations={[required, vrole]}
-      //             />
-      //           </div> */}
-
-      //           <div className="form-group">
-      //             <button className="btn btn-primary btn-block">Sign Up</button>
-      //           </div>
-      //         </div>
-      //       )}
-
-      //       {this.state.message && (
-      //         <div className="form-group">
-      //           <div
-      //             className={
-      //               this.state.successful
-      //                 ? "alert alert-success"
-      //                 : "alert alert-danger"
-      //             }
-      //             role="alert"
-      //           >
-      //             {this.state.message}
-      //           </div>
-      //         </div>
-      //       )}
-      //       <CheckButton
-      //         style={{ display: "none" }}
-      //         ref={c => {
-      //           this.checkBtn = c;
-      //         }}
-      //       />
-      //     </Form>
-      //   </div>
-      // </div>
       <div>
         <div className="form-shape-wrapper">
         <div className="form-shape">
@@ -264,13 +163,13 @@ export default class Register extends Component {
                     <div className="row no-gutters">
                         <div className="col d-none d-lg-flex" style={{backgroundImage: `url(${Cover})`}}>
                             <div className="logo">
-                              <img src={LogoTextMin} alt="logo" style={{width: '220px', marginBottom: '-100px', marginTop: '70px'}} />
+                              <img src={LogoTextMin} alt="logo" style={{width: '220px', marginBottom: '-60px', marginTop: '50px'}} />
                             </div>
                             <div>
                               <h3 style={{fontSize: '18px', fontWeight: '600', marginBottom: "10px"}}>Chào bạn,</h3>
                               <p className="lead" style={{fontWeight: '400', marginBottom: "30px"}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
-                              <a href={"/login"} class="btn btn-outline-primary 2btn-lg" 
-                                style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '18px', marginBottom: '-15px'}}>Đăng nhập</a>
+                              <Link to={"/login"} class="btn btn-outline-primary 2btn-lg" 
+                                style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '10px 20px 10px 20px', marginBottom: '-15px'}}>Đăng ký</Link>
                           </div>
                           <ul className="list-inline">
                               <li className="list-inline-item">
@@ -365,7 +264,7 @@ export default class Register extends Component {
                                                   marginRight: "15px",
                                                   marginTop: "1px"
                                                 }}>Bạn là:</p>
-                                                <label style={{display: "flex", marginRight: "10px"}}>
+                                                <label style={{display: 'flex', marginTop: '5px', marginRight: "10px"}}>
                                                   <Input
                                                     style={{marginRight: "10px"}}
                                                     type="radio"
@@ -373,7 +272,7 @@ export default class Register extends Component {
                                                   />
                                                   Mạnh thường quân
                                                 </label>
-                                                <label style={{display: "flex"}}>
+                                                <label style={{display: 'flex', marginTop: '5px'}}>
                                                   <Input
                                                     style={{marginRight: "10px"}}
                                                     type="radio"
@@ -385,7 +284,7 @@ export default class Register extends Component {
                                             </div>
                                                 <button 
                                                   className="btn btn-primary btn-block"
-                                                  style={{padding: '20px', fontSize: '16px', fontWeight: '600'}}
+                                                  style={{padding: '16px', fontSize: '16px', fontWeight: '600', border: 'none'}}
                                                   disabled={this.state.loading}>
                                                   Đăng ký
                                                   {this.state.loading && (
@@ -417,12 +316,12 @@ export default class Register extends Component {
                                     </Form>
                                     <div className="text-divider">hoặc</div>
                                     <div className="social-links justify-content-center" style={{marginTop: "-10px"}}>
-                                        <a href="#">
-                                            <i className="mdi mdi-google"></i> Google
-                                        </a>
-                                        <a href="#">
-                                            <i className="mdi mdi-facebook"></i> Facebook
-                                        </a>
+                                        <a href='#top' style={{fontSize: '16px'}} >
+                                            <FontAwesomeIcon icon={faGoogle} />Google
+                                          </a>
+                                          <a href="sign-up.html" style={{fontSize: '14px'}}>
+                                            <FontAwesomeIcon icon={faFacebookF} /> Facebook
+                                          </a>
                                     </div>
                                 </div>
                             </div>
@@ -431,12 +330,9 @@ export default class Register extends Component {
                 </div>
             </div>
         </div>
-        <div className="container">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </div>
       </div>
     );
   }
 }
+
+export default withRouter(Register)
