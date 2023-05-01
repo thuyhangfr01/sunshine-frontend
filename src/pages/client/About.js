@@ -1,8 +1,12 @@
+import AboutBoard from "../../containers/About";
+import Member from "../../containers/Member";
+
 function About() {
     return (
-        <div>
-            <h1>about page</h1>
-        </div>
+        <>
+            <AboutBoard/>
+            <Member/>
+        </>
     )
 }
 

@@ -1,28 +1,29 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:8080/api/info/';
+const API_URL = 'http://localhost:8080/api/auth/';
 
-class UserService {
-  getPublicContent() {
-    return axios.get(API_URL + 'all');
-  }
-
-  getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
-  }
-
-  getCollaboratorBoard() {
-    return axios.get(API_URL + 'collaborator', { headers: authHeader() });
-  }
-
-  getRecipientBoard() {
-    return axios.get(API_URL + 'recipient', { headers: authHeader() });
-  }
-
-  getBenefactorBoard() {
-    return axios.get(API_URL + 'benefactor', { headers: authHeader() });
-  }
+const getAdminBoard = () => {
+  return axios.get(API_URL + 'admin', { headers: authHeader() });
 }
 
-export default new UserService();
+const getCollaboratorBoard = () => {
+  return axios.get(API_URL + 'collaborator', { headers: authHeader() });
+}
+
+const getRecipientBoard = () => {
+  return axios.get(API_URL + 'recipient', { headers: authHeader() });
+}
+
+const getBenefactorBoard = () => {
+  return axios.get(API_URL + 'benefactor', { headers: authHeader() });
+}
+
+const userService = {
+  getAdminBoard,
+  getCollaboratorBoard,
+  getRecipientBoard,
+  getBenefactorBoard
+}
+
+export default userService;

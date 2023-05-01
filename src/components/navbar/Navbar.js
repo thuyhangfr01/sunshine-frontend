@@ -1,14 +1,16 @@
-import { Component, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { Component, useState } from "react";
+import { Link, NavLink, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faPhone, faAngleDown} from '@fortawesome/free-solid-svg-icons'
-import AuthService from "../services/auth.service";
+// import AuthService from "../services/auth.service";
 import "./NavbarStyle.scss"
 import { MenuItems } from "./MenuItems";
 import Dropdown from './Dropdown';
 import LogoCut from "./../../assets/images/logo_cut3.png"
 
 export default function Navbar() {
+    const {user: currentUser} = useSelector((state) => (state.auth));
     const[fix, setFix] = useState(false);
     const [dropdown, setDropdown] = useState(false);
     
@@ -37,8 +39,14 @@ export default function Navbar() {
                                     <span>Email:</span>
                                     <i className="fa fa-envelope me-2"></i>yoursunshine@gmail.com</small>
                             <div className="ms-auto d-flex align-items-center" style={{fontWeight: "500"}}>
-                                <a className="btnAuth" href="/login" style={{marginRight: "7px"}}>Đăng nhập </a> / 
-                                <a className="btnAuth" href="/register" style={{marginLeft: "7px"}}> Đăng ký</a>
+                                {currentUser ? (
+                                    <span style={{fontStyle: "italic"}}>"Cảm ơn bạn đã đồng hành cùng Sunshine!"</span>
+                                ) : (
+                                    <>
+                                        <a className="btnAuth" href="/login" style={{marginRight: "7px"}}>Đăng nhập </a> / 
+                                        <a className="btnAuth" href="/register" style={{marginLeft: "7px"}}> Đăng ký</a>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -53,15 +61,6 @@ export default function Navbar() {
                                         <img src={LogoCut} style={{ heigh: "60px !important"}}/>
                                     </a>
                                     <ul class="nav">
-                                        {/* {MenuItems.map((item, index) => {
-                                        return(
-                                            <li key={index} className={item.cName} >
-                                                <NavLink className="n-item" activeClassName="active" exact={item.exact} to={item.url}>
-                                                    {item.title}
-                                                </NavLink>
-                                            </li>
-                                            )
-                                        })} */}
                                         <li className="scroll-to-section">
                                             <NavLink to="/home" className="n-item" activeClassName="active" exact={true}>TRANG CHỦ</NavLink>
                                         </li>
@@ -77,15 +76,17 @@ export default function Navbar() {
                                         <li className="scroll-to-section">
                                             <NavLink to="/contact" className="n-item" activeClassName="active">LIÊN HỆ</NavLink>
                                         </li>
-                                        <li
+                                        {currentUser ? (
+                                            <li
                                             onMouseEnter={() => setDropdown(true)}
                                             onMouseLeave={() => setDropdown(false)}
                                             className="scroll-to-section">
-                                            <NavLink to="/infoUser" className="n-item" activeClassName="active">Chào, CAO VĂN PHƯỚC
+                                            <NavLink to="/infoUser" className="n-item" activeClassName="active">Chào, <span style={{textTransform: "uppercase"}}>{currentUser.name}</span>
                                                 <FontAwesomeIcon icon={faAngleDown} style={{marginLeft: "7px"}} />
                                             </NavLink>
                                             {dropdown && <Dropdown/>}
-                                        </li>
+                                            </li>
+                                        ) : <></>}
                                     </ul>  
                                 </nav>
                             </div>

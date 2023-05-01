@@ -2,7 +2,6 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeartbeat } from '@fortawesome/free-solid-svg-icons'
-
 import "./ProjectStyle.scss";
 import { responsive, LatestProjectItems } from './LatestProjectItems';
 import Covid3 from "../../assets/images/tn_covid3.jpeg";
@@ -32,8 +31,8 @@ function LatestProject(){
                 <Carousel responsive={responsive} 
                      additionalTransfrom={0}
                      arrows={false}
-                    autoPlay
-                     autoPlaySpeed={2500}
+                    // autoPlay
+                    //  autoPlaySpeed={2500}
                      centerMode={false}
                      className=""
                      containerClass="container-padding-bottom"
