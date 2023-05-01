@@ -8,7 +8,7 @@ import TablesLRight from "../assets/images/tables_right_dec.png";
 
 function Member(){
     return (
-        <div class="container-xxl" style={{fontFamily: 'Montserrat, sans-serif'}}>
+        <div class="container-xxl" style={{fontFamily: 'Montserrat, sans-serif', paddingBottom: "20px"}}>
                 <div class="tables-left-dec">
                     <img src={TablesLeft} alt=""/>
                 </div>

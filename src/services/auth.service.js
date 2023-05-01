@@ -2,9 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";
 
-class AuthService {
-
-  login(userEmail,  userPassword) {
+  const login = (userEmail,  userPassword) => {
     return axios
       .post(API_URL + "signin", {
         email: userEmail,
@@ -19,11 +17,11 @@ class AuthService {
       });
   }
 
-  logout() {
+  const logout= () => {
     localStorage.removeItem("user");
   }
 
-  register(uname, uemail, uphone, upassword, r) {
+  const register = (uname, uemail, uphone, upassword, r) => {
     let payload = [r];
     return axios.post(API_URL + "signup", {
       name: uname,
@@ -34,9 +32,14 @@ class AuthService {
     });
   }
 
-  getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
-  }
-}
+  // const getCurrentUser = () => {
+  //   return JSON.parse(localStorage.getItem('user'));;
+  // }
 
-export default new AuthService();
+  const authService = {
+    register,
+    login,
+    logout
+  }
+
+export default authService;

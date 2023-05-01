@@ -1,8 +1,10 @@
+import ContactBoard from "../../containers/Contact";
+
 function Contact() {
     return (
-        <div>
-            <h1>contact page</h1>
-        </div>
+        <>
+            <ContactBoard />
+        </>
     )
 }
 

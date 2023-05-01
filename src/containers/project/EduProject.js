@@ -22,7 +22,8 @@ function EduProject(){
                                 <button className='btn btn-outline-danger btn-madical col-5' style={{
                                     marginLeft: "385px !important",
                                     marginTop: "55px !important",
-                                    fontWeight: "600"
+                                    fontWeight: "600",
+                                    padding: "10px"
                                 }}>Đóng góp</button>
                             </div>
                             <div className='section-line col-12'></div>

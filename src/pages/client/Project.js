@@ -1,7 +1,9 @@
+import ProjectList from "../../containers/ProjectList"
+
 function Project() {
     return (
         <div>
-            <h1>project page</h1>
+            <ProjectList/>
         </div>
     )
 }

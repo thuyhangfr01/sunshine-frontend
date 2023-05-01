@@ -7,6 +7,7 @@ import Home from './pages/client/Home';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import About from './pages/client/About';
+import ProjectDetail from './containers/ProjectDetail';
 import Project from './pages/client/Project';
 import Contact from './pages/client/Contact';
 import Report from './pages/client/Report';
@@ -16,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Register from "./components/auth/Register";
+import UserManagement from "./pages/admin/UserManagement";
 
 const Layout = () => {
   return(
@@ -37,12 +39,20 @@ export default function App() {
       children: [
         { path: "home", index: true, element: <Home /> },
         {
-          path: "contact",
-          element: <Contact/>,
+          path: "about",
+          element: <About/>,
         },
         {
           path: "project",
           element: <Project/>,
+        },
+        {
+          path: "project/:id",
+          element: <ProjectDetail/>,
+        },
+        {
+          path: "contact",
+          element: <Contact/>,
         },
       ],
     },
@@ -54,6 +64,10 @@ export default function App() {
       path: "/register",
       element: <Register/>
     },
+    {
+      path: "/admin",
+      element: <UserManagement/>
+    }
   ]);
 
   return (
@@ -70,7 +84,7 @@ export default function App() {
       draggable
       pauseOnHover
       theme="light"
-      fontSize="15px"
+      style={{fontSize: "16px"}}
       />
     </>
   )

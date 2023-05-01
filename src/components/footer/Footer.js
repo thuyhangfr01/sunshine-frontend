@@ -61,7 +61,7 @@ function Footer(){
                     </div>
                     <div class="col-lg-12">
                         <div class="copyright">
-                            <p>Copyright © 2021 QUỸ TỪ THIỆN SUNSHINE Co., Ltd. All Rights Reserved. 
+                            <p>Copyright © 2023 QUỸ TỪ THIỆN SUNSHINE Co., Ltd. All Rights Reserved. 
                             <br/>
                             Thực hiện bởi <a rel="nofollow" href="https://templatemo.com" title="free CSS templates">CAO THỊ THÚY HẰNG</a></p>
                         </div>

@@ -1,104 +1,72 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { login } from "../../slices/auth";
+import { clearMessage } from "../../slices/message";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import {fab, faFacebookF, faGoogle} from "@fortawesome/free-brands-svg-icons";
-import { Link, useNavigate } from 'react-router-dom';
 import { isEmpty } from 'validator';
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 import './LoginStyle.scss';
-import AuthService from "../../services/auth.service"
 import LogoTextMin from "../../assets/images/logo_text_min.png";
 import Cover from "../../assets/images/cover1.png";
 import { toast } from 'react-toastify';
 import { withRouter } from '../../common/with-router';
 
+const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
-const required = (value) => {
-  if (isEmpty(value)) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Vui lòng không để trống</small>;
-  }
-}
+const Login = () => {
+  let navigate = useNavigate();
 
-const vemail = (value) => {
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Email chưa đúng định dạng</small>;
-  }
-}
+  const [loading, setLoading] = useState(false);
 
-const vpassword = (value) => {
-  if (value.trim().length < 6 || value.trim().length >20 ) {
-      return <small className="form-text text-danger" style={{position: "relative", top: "7px"}}>Mật khẩu phải lớn hơn 6 và nhỏ hơn 20</small>;
-  }
-}
+  const {isLoggedIn} = useSelector((state) => state.auth);
+  const {user: currentUser} = useSelector((state) => (state.auth));
+  const {message} = useSelector((state) => state.message);
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-    
-    this.state = {
-      email: "",
-      password: "",
-      loading: false,
-      message: ""
-    };
-  }
+  const dispatch = useDispatch();
 
-  onChangeEmail(e) {
-    this.setState({
-      email: e.target.value
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
+
+  const initialValues = {
+    email: "",
+    password: ""
+  };
+
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().matches(EMAIL_REGEX, "Email chưa đúng định dạng!").required("Email không được để trống!"),
+    password: Yup.string().required("Mật khẩu không được để trống!"),
+  })
+
+  const handleLogin = (formValue) => {
+    const { email, password } = formValue;
+    setLoading(true);
+
+    dispatch(login({email, password}))
+      .unwrap()
+      .then(() => {
+        toast.success("Đăng nhập thành công!");
+        // navigate("/home");
+        window.location.reload();
+    })
+    .catch(() => {
+      toast.error("Đăng nhập thất bại!");
+      setLoading(false);
     });
   }
 
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value
-    });
-  }
-
-  handleLogin(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      loading: true
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.email, this.state.password).then(
-        () => {
-          toast.success("Đăng nhập thành công!");
-          this.props.router.navigate("/home");
-          window.location.reload();
-        },
-        error => {
-          toast.error("Đăng nhập thất bại!");
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            loading: false,
-            message: resMessage
-          });
-        }
-      );
-    } else {
-      this.setState({
-        loading: false
-      });
+  if(isLoggedIn) {
+    if(currentUser.roles.includes("ROLE_ADMIN")){
+      return <Navigate to="/admin"/>
     }
+    return <Navigate to="/home"/>
   }
-  render(){
+
     return (
       <div>
         <div class="form-shape-wrapper">
@@ -141,38 +109,42 @@ class Login extends Component {
                                       <h3 className="font-weight-bold" style={{fontWeight: '600'}}>Đăng nhập</h3>
                                       <p className="text-muted" style={{fontSize: '16px'}}>Vui lòng đăng nhập để tiếp tục</p>
                                   </div>
-                                  <Form onSubmit={this.handleLogin}
-                                    ref={c => {this.form = c;}}> 
+                                  <Formik
+                                     initialValues={initialValues}
+                                     validationSchema={validationSchema}
+                                     onSubmit={handleLogin}
+                                  >
+                                  <Form> 
                                       <div className="form-group">
                                           <div className="form-icon-wrapper">
-                                              <Input 
+                                              <Field 
                                               name="email"
                                               type="email"
                                               className="form-control" 
-                                              style={{fontSize: '16px'}} 
+                                              style={{fontSize: '16px', position: "relative"}} 
                                               placeholder="Nhập email" autofocus 
-                                              required 
-                                              value={this.state.email}
-                                              onChange={this.onChangeEmail}
-                                              validations={[required, vemail]}
                                               />
                                               <FontAwesomeIcon className="form-icon-left" icon={faEnvelope} />
+                                              <ErrorMessage
+                                                name="email"
+                                                component="small"
+                                                className="form-text text-danger" style={{top: "5px", position: "relative"}}></ErrorMessage>
                                           </div>
                                       </div>
                                       <div className="form-group">
                                           <div className="form-icon-wrapper">
-                                              <Input 
+                                              <Field 
                                               name="password"
                                               type="password" 
                                               className="form-control" 
-                                              style={{fontSize: '16px'}} 
+                                              style={{fontSize: '16px', position: "relative"}} 
                                               placeholder="Nhập mật khẩu"
-                                              required 
-                                              value={this.state.password}
-                                              onChange={this.onChangePassword}
-                                              validations={[required, vpassword]}
                                               />
                                               <FontAwesomeIcon className="form-icon-left" icon={faLock} />
+                                              <ErrorMessage
+                                                name="password"
+                                                component="small"
+                                                className="form-text text-danger" style={{top: "5px", position: "relative"}}></ErrorMessage>
                                           </div>
                                       </div>
                                       <p className="text-center mb-4" style={{fontSize: '14px'}}>
@@ -183,23 +155,14 @@ class Login extends Component {
                                           className="btn btn-primary btn-block mb-4" 
                                           style={{padding: '16px', fontSize: '16px', fontWeight: '600', border: 'none'}}
                                           onClick={() => {this.handleLogin()}}
-                                          disabled={this.state.loading}>Đăng nhập
-                                           {this.state.loading && (
+                                          disabled={loading}>Đăng nhập
+                                           {loading && (
                                             <span className="spinner-border spinner-border-sm" style={{marginLeft: "10px"}}></span>
                                           )}
                                       </button>
-                                      {this.state.message && (
-                                          <div className="form-group">
-                                            <div className="alert alert-danger" role="alert">
-                                              {this.state.message}
-                                            </div>
-                                          </div>
-                                        )}
-                                      <CheckButton
-                                        style={{ display: "none" }}
-                                        ref={c => {this.checkBtn = c;}}
-                                      />
                                   </Form>
+                                  </Formik>
+                                  </div>
                                   <div className="text-divider" style={{fontSize: '14px'}}>hoặc</div>
                                   <div className="social-links justify-content-center">
                                       <a href='#top' style={{fontSize: '16px'}} >
@@ -216,10 +179,8 @@ class Login extends Component {
                 </div>
             </div>
         </div>
-      </div>
-      
       );
     }
-  }
 
-export default withRouter(Login);
+
+export default Login;
