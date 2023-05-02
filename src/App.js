@@ -8,6 +8,7 @@ import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import About from './pages/client/About';
 import ProjectDetail from './containers/ProjectDetail';
+import ProjectDonation from './containers/ProjectDonation';
 import Project from './pages/client/Project';
 import Contact from './pages/client/Contact';
 import Report from './pages/client/Report';
@@ -49,6 +50,10 @@ export default function App() {
         {
           path: "project/:id",
           element: <ProjectDetail/>,
+        },
+        {
+          path: "project/donations",
+          element: <ProjectDonation/>,
         },
         {
           path: "contact",
