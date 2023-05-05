@@ -8,8 +8,8 @@ import AboutLeft from "./../assets/images/about_left.png";
 
 function About(){
     return (
-        <div id="about" class="about-us section">
-            <div class="services-right-dec">
+        <div id="about" className="about-us section">
+            <div className="services-right-dec">
                 <img src={AboutRight} alt=""
                 style={{  width: "200px",
                     height: "200px",
@@ -18,8 +18,8 @@ function About(){
                     position: "absolute",
                     zIndex: "1"}}/>
             </div>
-            <div class="container" style={{fontFamily: 'Montserrat, sans-serif'}}>
-                <div class="services-left-dec">
+            <div className="container" style={{fontFamily: 'Montserrat, sans-serif'}}>
+                <div className="services-left-dec">
                     <img src={AboutLeft} 
                         style={{  width: "240px",
                             height: "410px",
@@ -29,49 +29,49 @@ function About(){
                             zIndex: "1"}}
                         alt=""/>
                 </div>
-                <div class="row" >
-                    <div class="col-lg-6 align-self-center">
-                        <div class="left-image">
+                <div className="row" >
+                    <div className="col-lg-6 align-self-center">
+                        <div className="left-image">
                             <img src={AboutUs} alt="Two Girls working together"/>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="section-heading">
+                    <div className="col-lg-6">
+                        <div className="section-heading">
                             <h2>Giới thiệu về <em>SUN</em><span>SHINE</span></h2>
                             <p>Quỹ Từ thiện Sunshine (gọi tắt là Quỹ Sunshine) là Quỹ Từ thiện tư nhân được thành lập theo Quyết định số: 24/QĐ-BNV do Bộ Nội vụ cấp phép ngày 5 tháng 1 năm 2020. Quỹ Bông Sen là phiên bản mở rộng của Quỹ Từ thiện Tình Thương thành phố Đà Nẵng được thành lập qua Quyết Định 2267/QĐ-UBND của Ủy ban nhân dân thành phố Đà Nẵng cấp ngày 5 tháng 5 năm 2015.</p>
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="fact-item">
-                                        <div class="count-area-content">
-                                            <div class="icon">
+                            <div className="row">
+                                <div className="col-lg-4">
+                                    <div className="fact-item">
+                                        <div className="count-area-content">
+                                            <div className="icon">
                                                 <img src={AboutIcon1} alt=""/>
                                             </div>
-                                            <div class="count-digit">15M</div>
-                                            <div class="count-title">Tổng số tiền quyên góp</div>
+                                            <div className="count-digit">15M</div>
+                                            <div className="count-title">Tổng số tiền quyên góp</div>
                                             <p>Từ mạnh thường quân</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="fact-item">
-                                        <div class="count-area-content">
-                                            <div class="icon">
+                                <div className="col-lg-4">
+                                    <div className="fact-item">
+                                        <div className="count-area-content">
+                                            <div className="icon">
                                                 <img src={AboutIcon2}  alt=""/>
                                             </div>
-                                            <div class="count-digit">15</div>
-                                            <div class="count-title">Dự án đã, đang triển khai</div>
+                                            <div className="count-digit">15</div>
+                                            <div className="count-title">Dự án đã, đang triển khai</div>
                                             <p>Lĩnh vực y tế, giáo dục,...</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="fact-item">
-                                        <div class="count-area-content">
-                                            <div class="icon">
+                                <div className="col-lg-4">
+                                    <div className="fact-item">
+                                        <div className="count-area-content">
+                                            <div className="icon">
                                                 <img src={AboutIcon3}  alt=""/>
                                             </div>
-                                            <div class="count-digit"> 18</div>
-                                            <div class="count-title">Tổ chức, cá nhân tài trợ</div>
+                                            <div className="count-digit"> 18</div>
+                                            <div className="count-title">Tổ chức, cá nhân tài trợ</div>
                                             <p>Trên khắp cả nước</p>
                                         </div>
                                     </div>

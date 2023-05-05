@@ -17,11 +17,11 @@ const onFinish = (values) => {
 const ProjectDonation = () => {
     return (
         <div className="container" style={{fontFamily: 'Montserrat, sans-serif', marginTop: "30px"}}>
-        <div class="container-title">
-            <div class="section-heading row">
+        <div className="container-title">
+            <div className="section-heading row">
                 <div className='col-12'>
                 <h2 >Đóng góp cho dự án từ thiện của <em>SUN</em><span>SHINE</span></h2>
-                <div class="line-dec"></div>
+                <div className="line-dec"></div>
                 <p style={{paddingLeft: "150px", paddingRight: "150px"}}>Cảm ơn bạn vì đã là một phần của Sunshine, cùng chung tay lan tỏa yêu thương đến cộng đồng </p>
                 </div>
             </div>

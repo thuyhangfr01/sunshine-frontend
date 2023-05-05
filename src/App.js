@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import { Outlet } from "react-router-dom";
-
+import { useDispatch, useSelector } from 'react-redux';
+import Test from './containers/test';
 import Login from './components/auth/Login';
 import Home from './pages/client/Home';
 import Navbar from './components/navbar/Navbar';
@@ -14,6 +15,7 @@ import Contact from './pages/client/Contact';
 import Report from './pages/client/Report';
 import ErrorPage from './components/error/ErrorPage';
 import { ToastContainer, toast } from 'react-toastify';
+import ClipLoader from "react-spinners/ClipLoader";
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -31,6 +33,9 @@ const Layout = () => {
 }
 
 export default function App() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.projects.isLoading)
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -72,25 +77,29 @@ export default function App() {
     {
       path: "/admin",
       element: <UserManagement/>
+    },
+    {
+      path: "/test",
+      element: <Test/>
     }
   ]);
 
   return (
-    <>
-    <RouterProvider router={router} />
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-      style={{fontSize: "16px"}}
-      />
+      <>
+        <RouterProvider router={router} />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          style={{fontSize: "16px"}}
+          />
     </>
   )
 }

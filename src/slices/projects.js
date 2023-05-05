@@ -1,7 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import ProjectService from '../services/project.service'
 
-const initialState = [];
+const initialState = {
+    projects: [],
+    images: [],
+    money: [],
+    artifacts: [],
+    proofs: []
+};
+
+export const retrieveProjs = createAsyncThunk(
+    "projs/retrieve",
+    async () => {
+        const res = await ProjectService.getAllProj();
+        return res.data;
+    }
+)
 
 export const retrieveProjects = createAsyncThunk(
     "projects/retrieve",
@@ -29,16 +43,48 @@ export const retrieveProject = createAsyncThunk (
 
 export const findProjectByType = createAsyncThunk (
     "project/findByType",
-    async ({id}) => {
-        const res = await ProjectService.findByType(id);
+    async (params) => {
+        const res = await ProjectService.findByType(params);
         return res.data;
     }
 )
 
 export const findProjectByStatus = createAsyncThunk (
     "project/findByStatus",
-    async ({id}) => {
-        const res = await ProjectService.findByType(id);
+    async (params) => {
+        const res = await ProjectService.findByType(params);
+        return res.data;
+    }
+)
+
+export const getAllStatus = createAsyncThunk (
+    "project/getAllStatus",
+    async (id) => {
+        const res = await ProjectService.getAllImages(id);
+        return res.data;
+    }
+)
+
+export const getAllMoney = createAsyncThunk (
+    "project/getAllMoney",
+    async (id) => {
+        const res = await ProjectService.getAllMoney(id);
+        return res.data;
+    }
+)
+
+export const getAllArtifacts = createAsyncThunk (
+    "project/getAllArtifacts",
+    async (id) => {
+        const res = await ProjectService.getAllArtifacts(id);
+        return res.data;
+    }
+)
+
+export const getAllProofs = createAsyncThunk (
+    "project/getAllProofs",
+    async (id) => {
+        const res = await ProjectService.getAllProofs(id);
         return res.data;
     }
 )
@@ -47,6 +93,9 @@ const projectSlice = createSlice({
     name: "projects",
     initialState,
     extraReducers: {
+        [retrieveProjs.fulfilled]: (state, action) => {
+            return [...action.payload];
+        },
         [retrieveProjects.fulfilled]: (state, action) => {
             return [...action.payload];
         },

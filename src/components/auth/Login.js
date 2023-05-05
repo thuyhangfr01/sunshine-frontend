@@ -69,8 +69,8 @@ const Login = () => {
 
     return (
       <div>
-        <div class="form-shape-wrapper">
-            <div class="form-shape">
+        <div className="form-shape-wrapper">
+            <div className="form-shape">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
                     <path fill="red" d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
                 </svg>
@@ -87,7 +87,7 @@ const Login = () => {
                           <div>
                               <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
                               <p className="lead my-5" style={{fontWeight: '400'}}>tạo tài khoản mới để đồng hành cùng Sunshine nào!</p>
-                              <Link to={"/register"} class="btn btn-outline-primary 2btn-lg" 
+                              <Link to={"/register"} className="btn btn-outline-primary 2btn-lg" 
                                 style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '10px 20px 10px 20px', marginBottom: '-15px'}}>Đăng ký</Link>
                           </div>
                           <ul className="list-inline">

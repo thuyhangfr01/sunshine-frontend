@@ -11,21 +11,13 @@ export const retrieveTypes = createAsyncThunk(
     }
 )
 
-// export const retrieveStatus = createAsyncThunk(
-//     "projects/retrieve/status",
-//     async () => {
-//         const res = await ProjectService.getAllStatus();
-//         return res.data;
-//     }
-// )
-
 const typeSlice = createSlice({
     name: "types",
     initialState,
     extraReducers: {
         [retrieveTypes.fulfilled]: (state, action) => {
             return [...action.payload];
-        }
+        },
     }
 })
 

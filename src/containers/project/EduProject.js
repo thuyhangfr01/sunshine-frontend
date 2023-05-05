@@ -9,13 +9,13 @@ import ProjectRight from "../../assets/images/projects_right_dec.png";
 function EduProject(){
     return (
         <div style={{fontFamily: 'Montserrat, sans-serif'}}>
-            <div class="projects section" id="projects">
-                <div class="container" style={{marginTop: "-30px"}}>
-                    <div class="container-title">
-                        <div class="section-heading row">
+            <div className="projects section" id="projects">
+                <div className="container" style={{marginTop: "-30px"}}>
+                    <div className="container-title">
+                        <div className="section-heading row">
                             <div className='col-9'>
                                 <h2 >Những dự án hỗ trợ <em>Giáo</em><span> Dục</span></h2>
-                                <div class="line-dec"></div>
+                                <div className="line-dec"></div>
                                 <p>Trẻ em cần một môi trường giáo dục tốt để phát triển và Qũy từ thiện Sunshine đang ngày một đồng hành cùng các em nhỏ, trao tặng những suất học bổng đến các em.</p>
                                 </div>
                             <div className='col-3'>
@@ -56,9 +56,9 @@ function EduProject(){
                     sliderClass=""
                     slidesToSlide={1}
                     swipeable>
-                        {EduProjectItems.map((project) =>{
+                        {EduProjectItems.map((project, index) =>{
                             return(
-                            <div className='card-project'>
+                            <div key={index} className='card-project'>
                                 <div className='card-img'>
                                     <img className='img-project' src={project.imageurl}></img>
                                     {(() => {
@@ -93,8 +93,8 @@ function EduProject(){
                                     </div>
                                     <p className='amountRequest'><span>Cần huy động:</span> {project.tienCanGoi}</p>
                                     <p className='amountReceipt'><span>Tiền góp được:</span> {project.tienNhanDuoc}</p>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                                    <div className="progress">
+                                        <div className="progress-bar progress-bar-striped " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
                                             style={{width: project.progressBar}}></div>
                                     </div>
                                     {(() => {

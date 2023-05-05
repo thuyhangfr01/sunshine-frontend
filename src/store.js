@@ -3,11 +3,13 @@ import authReducer from "./slices/auth";
 import messageReducer from "./slices/message";
 import projectReducer from "./slices/projects";
 import typeReducer from "./slices/types";
+import statusReducer from "./slices/status";
 const reducer = {
     auth: authReducer,
     message: messageReducer,
     projects: projectReducer,
-    types: typeReducer
+    types: typeReducer,
+    status: statusReducer
 }
 
 const store = configureStore({
