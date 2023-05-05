@@ -3,7 +3,6 @@ export const MenuItems = [
         title : "TRANG CHỦ",
         url : "/",
         cName : "scroll-to-section",
-        exact: "true"
     },
     {
         title : "GIỚI THIỆU",

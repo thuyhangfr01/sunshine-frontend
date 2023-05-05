@@ -53,28 +53,28 @@ export default function Navbar() {
                 </div>
                 <header className={fix ? 'header-area fixed wow slideInDown' : 'header-area'} data-wow-duration="0.75s" data-wow-delay="0s" 
                     style={{fontFamily: 'Montserrat, sans-serif', fontSize: "14px"}}>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <nav class="main-nav">
-                                    <a href="index.html" class="logo">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-12">
+                                <nav className="main-nav">
+                                    <a href="index.html" className="logo">
                                         <img src={LogoCut} style={{ heigh: "60px !important"}}/>
                                     </a>
-                                    <ul class="nav">
+                                    <ul className="nav">
                                         <li className="scroll-to-section">
-                                            <NavLink to="/home" className="n-item" activeClassName="active" exact={true}>TRANG CHỦ</NavLink>
+                                            <NavLink to="/home" className="n-item"  exact="true">TRANG CHỦ</NavLink>
                                         </li>
                                         <li className="scroll-to-section">
-                                            <NavLink to="/about" className="n-item" activeClassName="active">GIỚI THIỆU</NavLink>
+                                            <NavLink to="/about" className="n-item" >GIỚI THIỆU</NavLink>
                                         </li>
                                         <li className="scroll-to-section">
-                                            <NavLink to="/project" className="n-item" activeClassName="active">CHƯƠNG TRÌNH</NavLink>
+                                            <NavLink to="/project" className="n-item" >CHƯƠNG TRÌNH</NavLink>
                                         </li>
                                         <li className="scroll-to-section">
-                                            <NavLink to="/report" className="n-item" activeClassName="active">BÁO CÁO TÀI CHÍNH</NavLink>
+                                            <NavLink to="/report" className="n-item" >BÁO CÁO TÀI CHÍNH</NavLink>
                                         </li>
                                         <li className="scroll-to-section">
-                                            <NavLink to="/contact" className="n-item" activeClassName="active">LIÊN HỆ</NavLink>
+                                            <NavLink to="/contact" className="n-item" >LIÊN HỆ</NavLink>
                                         </li>
                                         {currentUser ? (
                                             <li

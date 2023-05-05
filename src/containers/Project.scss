@@ -9,12 +9,12 @@
 
   .project-card {
     position: relative;
-    width: 300px;
-    margin-left: 50px;
-    margin-bottom: 60px;
+    width: 313px;
+    margin-left: 40px;
+    margin-bottom: 40px;
     border: 1px solid #e7e7e7;
     border-radius: 8px;
-    height: 550px;
+    height: 555px;
 
     .project-img-card {
       position: relative;
@@ -36,7 +36,7 @@
       .project-img {
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
-        height: 188px;
+        height: 210px;
       }
     }
   }
@@ -56,6 +56,7 @@
       line-height: 27px;
       color: #182838;
       font-weight: 600;
+      margin-top: 20px;
       &:hover {
         color: #3968af;
       }
@@ -72,7 +73,6 @@
       p {
         line-height: 30px !important;
         font-weight: 400;
-        margin-top: 5px;
       }
     }
 
@@ -94,18 +94,20 @@
       font-weight: 600;
       color: #698dc3;
       font-size: 15px;
+      margin-right: 8px;
     }
 
     .project-amountReceipt span {
       font-weight: 600;
       color: #084298;
       font-size: 15px;
+      margin-right: 8px;
     }
 
     .btn {
       padding: 10px !important;
       margin-left: 30%;
-      margin-top: 22px;
+      margin-top: 17px;
       font-weight: 500;
     }
   }
@@ -114,8 +116,21 @@
 .types-container {
   .types-text {
     font-size: 16px;
-    color: blue;
+    color: rgb(61, 128, 214);
     font-weight: 600;
+  }
+  .list-group {
+    .list-group-item {
+      cursor: pointer;
+      font-size: 15px;
+      &:hover {
+        color: rgb(71, 142, 201);
+        font-weight: 500;
+      }
+    }
+    .list-group-item.active {
+      color: red;
+    }
   }
 }
 
@@ -150,10 +165,24 @@
       font-style: italic;
     }
   }
+  p.project-type {
+    font-size: 15px;
+    font-family: "Montserrat";
+    font-weight: 600;
+    color: #2e7fb5;
+    font-style: italic;
+    text-align-last: right;
+    span {
+      color: #767676;
+      font-style: italic;
+    }
+  }
 }
 
 .project-row2 {
-  margin-top: -25px;
+  top: -20px;
+  height: 310px;
+  position: relative;
   .project-info {
     font-family: "Montserrat";
     font-size: 15px;
@@ -168,6 +197,18 @@
         margin-left: 20px;
         font-size: 16px;
       }
+    }
+    p.project-notice-vol {
+      color: #bf292a;
+      font-style: italic;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+    p.project-notice {
+      color: #bf292a;
+      font-style: italic;
+      font-weight: 500;
+      margin-top: 15px;
     }
     p.project-amountReceipt {
       color: #202020;
@@ -211,17 +252,24 @@
       }
     }
   }
-  .project-image-carousel {
-    img {
-      height: 400px;
-      width: 600px;
+  .project-img {
+    .ant-image-img {
+      height: 450px;
+      width: 640px;
+    }
+    .ant-image .ant-image-mask {
+      height: 450px;
+      width: 640px;
+    }
+    .ant-carousel .slick-dots-bottom {
+      bottom: 40px !important;
     }
   }
 }
 
 .project-row3 {
-  margin-top: -50px;
-  padding-left: 25px;
+  position: relative;
+  top: 100px;
   button.btn.btn-info {
     font-family: "Montserrat";
     padding: 10px;
@@ -231,6 +279,9 @@
     color: #fff;
     margin-right: 10px;
     border: none;
+    &:disabled {
+      background: #a8a8a8;
+    }
   }
   button.btn.btn-danger {
     font-family: "Montserrat";
@@ -240,13 +291,17 @@
     font-weight: 500;
     color: #fff;
     border: none;
+    &:disabled {
+      background: #a8a8a8;
+    }
   }
 }
 
 .project-row4 {
-  margin-top: 20px;
+  top: 100px;
+  position: relative;
   padding-left: 25px;
-  text {
+  p {
     font-size: 15px;
     font-family: "Montserrat";
     line-height: 30px;
@@ -256,7 +311,8 @@
 }
 
 .project-row5 {
-  margin-top: 20px;
+  top: 100px;
+  position: relative;
   padding-left: 25px;
   font-family: "Montserrat";
   .project-text {
@@ -306,6 +362,8 @@
 }
 
 .project-row6 {
+  top: 90px;
+  position: relative;
   font-family: "Montserrat, sans-serif";
   padding-left: 25px;
   p.project-title {
@@ -314,10 +372,31 @@
     font-weight: 600;
     margin-top: -20px;
     color: #396bc7;
-    img {
-      width: 25px;
-      padding-top: 27px;
-      margin-right: 10px;
+  }
+}
+.ant-image.css-dev-only-do-not-override-yp8pcc {
+  margin-left: 10px;
+  margin-top: -30px;
+}
+.ant-image-preview-img-wrapper img.ant-image-preview-img {
+  object-fit: contain;
+}
+.project-group-btn {
+  position: absolute;
+  right: 145px;
+  top: 265px;
+  .project-btn {
+    width: 90px;
+    background: linear-gradient(90deg, rgb(255, 73, 85), rgb(103, 58, 183));
+    color: #ffffff;
+    font-family: "Montserrat";
+    font-weight: 500;
+    border: none;
+    &:hover {
+      background: linear-gradient(90deg, #ff4955, #291056);
+    }
+    b {
+      font-size: 18px;
     }
   }
 }
