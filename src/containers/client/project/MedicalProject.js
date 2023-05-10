@@ -3,8 +3,6 @@ import 'react-multi-carousel/lib/styles.css';
 
 import "./ProjectStyle.scss";
 import { responsive, MedicalProjectItems } from './MedicalProjectItems';
-import Covid3 from "../../assets/images/tn_covid3.jpeg";
-import ProjectRight from "../../assets/images/projects_right_dec.png";
 
 function MedicalProject(){
     return (

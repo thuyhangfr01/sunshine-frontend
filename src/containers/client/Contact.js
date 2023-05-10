@@ -2,9 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons'
 
 import "./ContactStyle.scss";
-import ContactDec from "../assets/images/contact_dec.png";
-import ContactFormBg from "../assets/images/contact_form_bg.png";
-import ContactLeftDec from "../assets/images/contact_left_dec.png";
+import ContactDec from "../../assets/images/contact_dec.png";
+import ContactLeftDec from "../../assets/images/contact_left_dec.png";
 
 function Contact(){
     return (

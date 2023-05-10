@@ -1,10 +1,10 @@
 import "./AboutStyle.scss";
-import AboutUs from "./../assets/images/about.jpg";
-import AboutIcon1 from "./../assets/images/about_icon1.png";
-import AboutIcon2 from "./../assets/images/about_icon2.png";
-import AboutIcon3 from "./../assets/images/about_icon3.png";
-import AboutRight from "./../assets/images/about_right.png";
-import AboutLeft from "./../assets/images/about_left.png";
+import AboutUs from "../../assets/images/about.jpg";
+import AboutIcon1 from "../../assets/images/about_icon1.png";
+import AboutIcon2 from "../../assets/images/about_icon2.png";
+import AboutIcon3 from "../../assets/images/about_icon3.png";
+import AboutRight from "../../assets/images/about_right.png";
+import AboutLeft from "../../assets/images/about_left.png";
 
 function About(){
     return (

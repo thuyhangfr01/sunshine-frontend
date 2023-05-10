@@ -1,11 +1,8 @@
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeartbeat } from '@fortawesome/free-solid-svg-icons'
 import "./ProjectStyle.scss";
 import { responsive, LatestProjectItems } from './LatestProjectItems';
-import Covid3 from "../../assets/images/tn_covid3.jpeg";
-import ProjectRight from "../../assets/images/projects_right_dec.png";
+import ProjectRight from "../../../assets/images/projects_right_dec.png";
 
 function LatestProject(){
     return (

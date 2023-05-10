@@ -1,0 +1,63 @@
+div.ant-upload-list.ant-upload-list-text {
+  display: none !important;
+  &:before {
+    display: none !important;
+  }
+}
+.ant-upload-list-item-container {
+  &:before {
+    display: none;
+    .ant-upload-wrapper.ant-upload-list.ant-upload-list-itemm-uploading {
+      display: none !important;
+      .ant-upload-icon {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.ant-image-mask {
+  width: 190px;
+  height: 130px;
+  margin-top: -30px;
+  margin-left: -20px;
+}
+
+.project-drawer-add {
+  title {
+    font-family: "Montserrat";
+    font-weight: 600;
+    color: #c95b5b !important;
+  }
+}
+
+.project-form-add {
+  label {
+    font-family: "Montserrat";
+    font-weight: 600;
+    color: #304fa3 !important;
+  }
+  input {
+    font-family: "Montserrat";
+  }
+  .ant-input-number-input-wrap {
+    input {
+      font-family: "Montserrat";
+    }
+  }
+  .ant-select-selector {
+    font-family: "Montserrat";
+  }
+  button {
+    font-family: "Montserrat";
+    span {
+      font-weight: 600;
+    }
+    span.anticon.anticon-plus {
+      color: #304fa3 !important;
+    }
+  }
+  textarea {
+    font-family: "Montserrat";
+  }
+}

@@ -2,20 +2,20 @@ import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from 'react-router-dom';
 
-import ProjectDataService from "../services/project.service";
-import {retrieveProjs} from "../slices/projects";
+import ProjectDataService from "../../services/project.service";
+import {retrieveProjs} from "../../slices/projects";
 
 import "./Project.scss";
 import {Tabs, Row, Col, Carousel, Button} from "antd";
 import {Table, Divider, Image} from 'antd';
-import icSunRed from "../../src/assets/images/ic_sunRed.png";
-import icSunBlue from "../../src/assets/images/ic_sunBlue.png";
-import AboutLeft from "./../assets/images/about_left.png";
-import TablesLRight from "../assets/images/tables_right_dec.png";
+import icSunRed from "../../assets//images/ic_sunRed.png";
+import icSunBlue from "../../assets/images/ic_sunBlue.png";
+import AboutLeft from "../../assets/images/about_left.png";
+import TablesLRight from "../../assets/images/tables_right_dec.png";
 import moment from "moment";
 import vi from "moment/locale/vi";
 
-const ProjectDetail = (props) => {
+const ProjectDetail = () => {
     let navigate = useNavigate();
 
     const { id } = useParams();
@@ -29,7 +29,7 @@ const ProjectDetail = (props) => {
 
     const totalProj = useSelector((state) => state.projects)
     const dispatch = useDispatch();
-    const [columns, setColumns] = useState([
+    const columns = [
       {
         title: 'Tên hiện vật',
         dataIndex: 'artifactName',
@@ -38,7 +38,7 @@ const ProjectDetail = (props) => {
         title: 'Số lượng',
         dataIndex: 'minQuantity',
       }
-    ]);
+    ];
     const [dataSource, setDataSource] = useState([]);
 
     //lay tat ca project
@@ -290,7 +290,7 @@ const ProjectDetail = (props) => {
                         onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
                       }}
                     >
-                      <Image style={{height: 300}} src={proof.name} />
+                      <Image src={proof.name} />
                     </Image.PreviewGroup>
                   </Row>
                 ))
