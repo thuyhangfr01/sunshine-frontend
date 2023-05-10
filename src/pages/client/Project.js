@@ -1,4 +1,4 @@
-import ProjectList from "../../containers/ProjectList"
+import ProjectList from "../../containers/client/ProjectList"
 
 function Project() {
     return (

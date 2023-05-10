@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
-import ProjectDataService from "../services/project.service";
-import { retrieveStatus } from "../slices/status";
-import { retrieveTypes } from "../slices/types";
+import ProjectDataService from "../../services/project.service";
+import { retrieveStatus } from "../../slices/status";
+import { retrieveTypes } from "../../slices/types";
 
 import BeatLoader from "react-spinners/BeatLoader";
 import "./Project.scss";

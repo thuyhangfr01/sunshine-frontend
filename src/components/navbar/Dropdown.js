@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import EventBus from "../../common/EventBus";
-import './Dropdown.scss';
 import { Link } from 'react-router-dom';
+
 import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faUser, faListCheck, faArrowRightFromBracket  } from '@fortawesome/free-solid-svg-icons'
 import { logout } from "../../slices/auth";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser, faListCheck, faArrowRightFromBracket  } from '@fortawesome/free-solid-svg-icons'
+import './Dropdown.scss';
+
 
 function Dropdown() {
   const [showBenefactorBoard, setShowBenefactorBoard] = useState(false);

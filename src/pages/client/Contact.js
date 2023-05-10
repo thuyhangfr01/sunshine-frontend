@@ -1,4 +1,4 @@
-import ContactBoard from "../../containers/Contact";
+import ContactBoard from "../../containers/client/Contact";
 
 function Contact() {
     return (

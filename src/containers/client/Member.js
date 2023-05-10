@@ -1,10 +1,9 @@
 import "./MemberStyle.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {fab, faTwitter, faFacebookF, faInstagram, faTiktok} from "@fortawesome/free-brands-svg-icons";
-import Team4 from "../assets/images/team4.jpg"
-import Ava1 from "../assets/images/ava1.jpg"
-import TablesLeft from "../assets/images/tables_left_dec.png";
-import TablesLRight from "../assets/images/tables_right_dec.png";
+import {faTwitter, faFacebookF, faInstagram, faTiktok} from "@fortawesome/free-brands-svg-icons";
+import Ava1 from "../../assets/images/ava1.jpg"
+import TablesLeft from "../../assets/images/tables_left_dec.png";
+import TablesLRight from "../../assets/images/tables_right_dec.png";
 
 function Member(){
     return (

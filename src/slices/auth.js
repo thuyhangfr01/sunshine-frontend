@@ -48,8 +48,8 @@ export const logout = createAsyncThunk(
 );
 
 const initialState = user 
-    ? { isLoggedIn: true, user }
-    : { isLoggedIn: false, user:null };
+    ? { isLoggedIn: true, user, showLoading: false }
+    : { isLoggedIn: false, user:null, showLoading: true };
 
 const authSlice = createSlice({
     name: "auth",
@@ -57,20 +57,25 @@ const authSlice = createSlice({
     extraReducers: {
         [register.fulfilled] : (state, action) => {
             state.isLoggedIn = false;
+            state.showLoading= false;
         },
         [register.rejected] : (state, action) => {
             state.isLoggedIn = false;
+            state.showLoading= false;
         },
         [login.fulfilled] : (state, action) => {
             state.isLoggedIn = true;
+            state.showLoading= true;
             state.user = action.payload.user;
         },
         [login.rejected] : (state, action) => {
             state.isLoggedIn = false;
+            state.showLoading= false;
             state.user = null;
         },
         [logout.fulfilled] : (state, action) => {
             state.isLoggedIn = false;
+            state.showLoading= false;
             state.user = null;
         },
     },

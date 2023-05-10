@@ -1,10 +1,10 @@
-import Banner from "../../containers/Banner";
-import About from "../../containers/About";
-import LatestProject from "../../containers/project/LatestProject";
-import MedicalProject from "../../containers/project/MedicalProject";
-import EduProject from "../../containers/project/EduProject";
-import Member from "../../containers/Member";
-import Contact from "../../containers/Contact";
+import Banner from "../../containers/client/Banner";
+import About from "../../containers/client/About";
+import LatestProject from "../../containers/client/project/LatestProject";
+import MedicalProject from "../../containers/client/project/MedicalProject";
+import EduProject from "../../containers/client/project/EduProject";
+import Member from "../../containers/client/Member";
+import Contact from "../../containers/client/Contact";
 
 function Home(){
     return (

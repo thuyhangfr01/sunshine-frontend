@@ -33,6 +33,22 @@ export const retrieveLatestProjects = createAsyncThunk (
     }
 )
 
+export const retrieveLatestProjectsByName = createAsyncThunk(
+    "tutorials/retrieveLatestByName",
+    async ({name}) => {
+      const res = await ProjectService.findByTitle(name);
+      return res.data;
+    }
+  );
+
+export const retrieveTop5LatestProjects = createAsyncThunk (
+    "projects/retrieveTop5Latest",
+    async () => {
+        const res = await ProjectService.getTop5LatestProject();
+        return res.data;
+    }
+)
+
 export const retrieveProject = createAsyncThunk (
     "project/retrieveById",
     async ({id}) => {
@@ -89,10 +105,55 @@ export const getAllProofs = createAsyncThunk (
     }
 )
 
+export const createProject = createAsyncThunk (
+    "project/createProject",
+    async ({name, details, typeId, numVolunteers, startTime, endTime, holdTime, position}) => {
+        const res = await ProjectService.createProject(name, details, typeId, numVolunteers, startTime, endTime, holdTime, position);
+        return res.data;
+    }
+)
+
+export const createMoneyByProject = createAsyncThunk (
+    "project/createMoneyByProject",
+    async ({id, minMoney}) => {
+        const res = await ProjectService.createMoneyByProject(id, minMoney);
+        return res.data;
+    }
+)
+
+export const createArtifactByProject = createAsyncThunk (
+    "project/createActifactByProject",
+    async ({id, artifactName, minQuantity, calculationUnit}) => {
+        const res = await ProjectService.createArtifactByProject(id, artifactName, minQuantity, calculationUnit);
+        return res.data;
+    }
+)
+
+export const createImageByProject = createAsyncThunk (
+    "project/createImageByProject",
+    async ({id, name}) => {
+        const res = await ProjectService.createImageByProject(id, name);
+        return res.data;
+    }
+)
+
+
 const projectSlice = createSlice({
     name: "projects",
     initialState,
     extraReducers: {
+        [createProject.fulfilled]: (state, action) => {
+            state.projects = action.payload;
+        },
+        [createMoneyByProject.fulfilled]: (state, action) => {
+            state.money = action.payload;
+        },
+        [createArtifactByProject.fulfilled]: (state, action) => {
+            state.artifacts.push(action.payload);
+        },
+        [createImageByProject.fulfilled]: (state, action) => {
+            state.images.push(action.payload);
+        },
         [retrieveProjs.fulfilled]: (state, action) => {
             return [...action.payload];
         },
@@ -100,6 +161,12 @@ const projectSlice = createSlice({
             return [...action.payload];
         },
         [retrieveLatestProjects.fulfilled]: (state, action) => {
+            return [...action.payload];
+        },
+        [retrieveLatestProjectsByName.fulfilled]: (state, action) => {
+            return [...action.payload];
+        },
+        [retrieveTop5LatestProjects.fulfilled]: (state, action) => {
             return [...action.payload];
         },
         [retrieveProject.fulfilled]: (state, action) => {

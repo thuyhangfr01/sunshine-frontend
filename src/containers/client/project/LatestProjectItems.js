@@ -1,5 +1,3 @@
-import Covid3 from "../../assets/images/tn_covid3.jpeg";
-
 export const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1024 },
