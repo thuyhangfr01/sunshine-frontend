@@ -17,11 +17,13 @@ const { TextArea } = Input;
 
 const ProjectAdd = (props) => {
     const [form] = Form.useForm();
+
+    const open = props.openViewAddProject;
+
     const [newProjectId, setNewProjectId] = useState(null);
     const [money, setMoney] = useState(0);
     const [artifacts, setArtifacts] = useState([]);
 
-    const open = props.openViewAddProject;
     const typesList = useSelector((state) => state.types);
     const dispatch = useDispatch();
     const [isSubmit, setIsSubmit] = useState(false);
@@ -79,9 +81,7 @@ const ProjectAdd = (props) => {
         const data = await response.json();
         setImages([...images, {url: data.secure_url}])
         return data.secure_url;
-}
-
-    console.log("imgs:" + JSON.stringify(images));
+    }
 
     //them tien
     const handleAddMinMoney = () => {
@@ -120,10 +120,6 @@ const ProjectAdd = (props) => {
             })
         }
     }
-
-    console.log("id " + newProjectId);
-    console.log("images " + images);
-    console.log("artifacts " + artifacts);
 
     useEffect(handleAddMinMoney, [newProjectId, money]);
     useEffect(handleAddArtifact, [newProjectId, artifacts]);
@@ -190,7 +186,7 @@ const ProjectAdd = (props) => {
                                     rules={[{ required: true, message: 'Vui lòng nhập số tiền kêu gọi!' }]}
                                 >
                                     <InputNumber
-                                        min={0}
+                                        min={10000}
                                         style={{ width: '100%' }}
                                         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                         addonAfter="VND"

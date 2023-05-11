@@ -64,6 +64,18 @@ const createImageByProject = (id, name) => {
     return http.post(`/project/${id}/image`, {name});
 }
 
+const updateProject = (id, name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position) => {
+    return http.put(`/project/${id}`, {name, details, typeId, numVolunteers, statusId, startTime, endTime, holdTime, position})
+}
+
+const updateMoneyById = (moneyId, minMoney) => {
+    return http.put(`/project/money/${moneyId}`, {minMoney})
+}
+
+const updateArtifactById = (artifactId, artifactName, minQuantity, calculationUnit) => {
+    return http.put(`/project/artifact/${artifactId}`, {artifactName, minQuantity, calculationUnit})
+}
+
 const ProjectService = {
     getAllProj,
     getAll,
@@ -79,7 +91,10 @@ const ProjectService = {
     createProject,
     createMoneyByProject,
     createArtifactByProject,
-    createImageByProject
+    createImageByProject,
+    updateProject,
+    updateMoneyById,
+    updateArtifactById
 }
 
 export default ProjectService;

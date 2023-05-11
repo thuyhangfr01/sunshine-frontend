@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { login } from "../../slices/auth";
@@ -8,24 +8,20 @@ import { clearMessage } from "../../slices/message";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-import {fab, faFacebookF, faGoogle} from "@fortawesome/free-brands-svg-icons";
-import { isEmpty } from 'validator';
+import { faFacebookF, faGoogle} from "@fortawesome/free-brands-svg-icons";
 import './LoginStyle.scss';
 import LogoTextMin from "../../assets/images/logo_text_min.png";
 import Cover from "../../assets/images/cover1.png";
 import { toast } from 'react-toastify';
-import { withRouter } from '../../common/with-router';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
 const Login = () => {
-  let navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
   const {isLoggedIn} = useSelector((state) => state.auth);
   const {user: currentUser} = useSelector((state) => (state.auth));
-  const {message} = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
