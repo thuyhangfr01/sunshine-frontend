@@ -12,7 +12,6 @@ import "./LayoutAdmin.scss";
 import {
     AppstoreOutlined,
     ExceptionOutlined,
-    HeartTwoTone,
     TeamOutlined,
     UserOutlined,
     DollarCircleOutlined,
@@ -21,10 +20,10 @@ import {
     DownOutlined, FormOutlined, LockOutlined,
     ContactsOutlined, SaveOutlined, ReadOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, Dropdown, Space, message } from 'antd';
+import { Layout, Menu, Dropdown, Space } from 'antd';
 import LogoTextMin from "./../../assets/images/logo_text_min.png";
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const items = [
     {
@@ -85,7 +84,6 @@ const items = [
 ];
 
 const LayoutAdmin = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [collapsed, setCollapsed] = useState(false);
@@ -139,12 +137,12 @@ const LayoutAdmin = () => {
                         })}
                     </span>
                     <Dropdown style={{fontStyle: "Montserrat"}} menu={{ items: itemsDropdown }} trigger={['click']}>
-                        <a onClick={(e) => e.preventDefault()}>
+                        <Link onClick={(e) => e.preventDefault()}>
                             <Space style={{color: "#4079cd", fontWeight: 500, fontStyle: "italic"}}>
                                 Xin chào, <span style={{fontWeight: 600}}>{currentUser?.name}</span>
                                 <DownOutlined />
                             </Space>
-                        </a>
+                        </Link>
                     </Dropdown>
                 </div>
                 <Content>

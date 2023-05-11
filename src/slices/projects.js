@@ -137,6 +137,30 @@ export const createImageByProject = createAsyncThunk (
     }
 )
 
+export const updateProject = createAsyncThunk (
+    "project/updateProject",
+    async ({id, name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position }) => {
+        const res = await ProjectService.updateProject(id, name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position);
+        return res.data;
+    }
+)
+
+export const updateMoneyById = createAsyncThunk (
+    "project/updateMoneyById",
+    async ({moneyId, minMoney }) => {
+        const res = await ProjectService.updateMoneyById(moneyId, minMoney);
+        return res.data;
+    }
+)
+
+export const updateArtifactById = createAsyncThunk (
+    "project/updateArtifactById",
+    async ({artifactId, artifactName, minQuantity, calculationUnit}) => {
+        const res = await ProjectService.updateArtifactById(artifactId, artifactName, minQuantity, calculationUnit);
+        return res.data;
+    }
+)
+
 
 const projectSlice = createSlice({
     name: "projects",
@@ -153,6 +177,27 @@ const projectSlice = createSlice({
         },
         [createImageByProject.fulfilled]: (state, action) => {
             state.images.push(action.payload);
+        },
+        [updateProject.fulfilled]: (state, action) =>{
+            const index = state.projects.findIndex(project => project.id === action.payload.id);
+            state.projects[index] = {
+                ...state.projects[index],
+                ...action.payload
+            }
+        },
+        [updateMoneyById.fulfilled]: (state, action) =>{
+            const index = state.money.findIndex(m => m.id === action.payload.moneyId);
+            state.money[index] = {
+                ...state.money[index],
+                ...action.payload
+            }
+        },
+        [updateArtifactById.fulfilled]: (state, action) =>{
+            const index = state.artifacts.findIndex(a => a.id === action.payload.artifactId);
+            state.artifacts[index] = {
+                ...state.artifacts[index],
+                ...action.payload
+            }
         },
         [retrieveProjs.fulfilled]: (state, action) => {
             return [...action.payload];

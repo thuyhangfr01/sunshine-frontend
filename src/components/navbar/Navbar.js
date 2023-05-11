@@ -1,11 +1,10 @@
-import React, { Component, useState } from "react";
-import { Link, NavLink, Navigate } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faPhone, faAngleDown} from '@fortawesome/free-solid-svg-icons'
 // import AuthService from "../services/auth.service";
 import "./NavbarStyle.scss"
-import { MenuItems } from "./MenuItems";
 import Dropdown from './Dropdown';
 import LogoCut from "./../../assets/images/logo_cut3.png"
 
@@ -13,8 +12,6 @@ export default function Navbar() {
     const {user: currentUser} = useSelector((state) => (state.auth));
     const[fix, setFix] = useState(false);
     const [dropdown, setDropdown] = useState(false);
-    
-    const [show, setShow] = useState(false);
 
     function setFixed(){
         if(window.scrollY >= 200){

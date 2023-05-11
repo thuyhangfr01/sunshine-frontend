@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from "react";
-import {Table, Tag, Button} from "antd";
-import {DeleteFilled, ImportOutlined, ExportOutlined, PlusOutlined} from '@ant-design/icons'
+import { useSelector, useDispatch } from "react-redux";
+import {Table, Tag, Button, Spin} from "antd";
+import {DeleteFilled, EditOutlined, ImportOutlined, ExportOutlined, PlusOutlined} from '@ant-design/icons'
 import { Link } from 'react-router-dom';
 import ProjectDataService from "../../../services/project.service";
 import ProjectDetail from "./ProjectDetail";
 import ProjectAdd from "./ProjectAdd";
+import ProjectUpdate from "./ProjectUpdate";
+import { retrieveTypes } from "../../../slices/types";
+import moment from "moment";
+import vi from "moment/locale/vi";
 
 const ProjectManagement = () => {
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState([]);
     const [openViewAddProject, setOpenViewAddProject] = useState(false);
-    
+    const [openViewUpdateProject, setOpenViewUpdateProject] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const typesList = useSelector((state) => state.types);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(retrieveTypes());
+    }, [])
+
+
     const [page, setPage] = React.useState(1);
     const columns = [
         {
@@ -30,11 +45,20 @@ const ProjectManagement = () => {
                 }}>{text}
                 </Link>
             )
-          }
+          },
         },
         {
           title: 'Loại dự án',
           dataIndex: ['projectType', 'name'],
+          render: (text, record, index) => {
+            return (
+                <Link onClick={() => {
+                    setDataViewDetail(record);
+                    setOpenViewDetail(true);
+                }}>{text}
+                </Link>
+            )
+          }
         },
         {
             title: 'Trạng thái',
@@ -65,12 +89,24 @@ const ProjectManagement = () => {
             }
         },
         {
+            title: 'Ngày tạo',
+            dataIndex: 'createdAt',
+            render: (text, record, index) => {
+                return moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
+            }
+        },
+        {
             title: 'Thao tác',
             key: 'action',
             render: (text, record, index) => {
               return (
                 <>
-                    <DeleteFilled style={{color: "#a50f0f", fontSize: 16, paddingLeft: "25px"}}/>
+                    <EditOutlined style={{color: "#dbbb33", fontSize: 16, paddingLeft: "25px"}}
+                        onClick={() => {
+                            setOpenViewUpdateProject(true);
+                            setDataUpdate(record);
+                        }}/>
+                    <DeleteFilled style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px"}}/>
                 </>
               )
             },
@@ -79,11 +115,14 @@ const ProjectManagement = () => {
     const [dataSource, setDataSource] = useState([]);
 
     const getLatestProject = () => {
+        setLoading(true);
         ProjectDataService.getLatestProject()
             .then(response => {
+                setLoading(false);
                 setDataSource(response.data);
             })
             .catch(e => {
+                setLoading(false);
                 console.log(e);
             });
         }
@@ -106,20 +145,30 @@ const ProjectManagement = () => {
     }
     return (
         <div style={{padding: "55px 30px 30px 30px"}}>
-            <Table className="project-artifact" columns={columns} dataSource={dataSource}
-                title={renderHeader}
-                style={{marginTop: 20}}
-                pagination={{
-                    pageSize: 8,
-                    onChange(current) {
-                        setPage(current);
-                    }
+            <Spin spinning={loading}>
+                <Table className="project-artifact" columns={columns} dataSource={dataSource}
+                    title={renderHeader}
+                    style={{marginTop: 20}}
+                    pagination={{
+                        pageSize: 8,
+                        onChange(current) {
+                            setPage(current);
+                        }
                 }}/>
+            </Spin>
 
             <ProjectAdd
                 openViewAddProject={openViewAddProject}
                 setOpenViewAddProject={setOpenViewAddProject}
                 getLatestProject={getLatestProject}
+            />
+
+            <ProjectUpdate
+                openViewUpdateProject={openViewUpdateProject}
+                setOpenViewUpdateProject={setOpenViewUpdateProject}
+                getLatestProject={getLatestProject}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
             />
 
             <ProjectDetail
