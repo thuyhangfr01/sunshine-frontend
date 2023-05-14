@@ -64,6 +64,10 @@ const createImageByProject = (id, name) => {
     return http.post(`/project/${id}/image`, {name});
 }
 
+const createProofByProject = (id, name) => {
+    return http.post(`/project/${id}/proof`, {name});
+}
+
 const updateProject = (id, name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position) => {
     return http.put(`/project/${id}`, {name, details, typeId, numVolunteers, statusId, startTime, endTime, holdTime, position})
 }
@@ -92,6 +96,7 @@ const ProjectService = {
     createMoneyByProject,
     createArtifactByProject,
     createImageByProject,
+    createProofByProject,
     updateProject,
     updateMoneyById,
     updateArtifactById

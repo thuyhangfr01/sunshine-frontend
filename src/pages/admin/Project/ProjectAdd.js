@@ -27,7 +27,8 @@ const ProjectAdd = (props) => {
     const typesList = useSelector((state) => state.types);
     const dispatch = useDispatch();
     const [isSubmit, setIsSubmit] = useState(false);
-    
+
+    const [showImage, setShowImage] = useState(false);
     const [images, setImages] = useState([]);
     const [loadingImage, setLoadingImage] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -56,6 +57,7 @@ const ProjectAdd = (props) => {
             setIsSubmit(false);
             form.resetFields();
             props.getLatestProject();
+            props.setOpenViewAddProject(false);
             return;
           })
           .catch(e => {
@@ -95,7 +97,7 @@ const ProjectAdd = (props) => {
     const handleAddArtifact = () => {
         const id = newProjectId;
         let artifactName = null, minQuantity = 0, calculationUnit = null;
-        if(artifacts.length !== 0) {
+        if(artifacts !== undefined) {
             artifacts.map((artifact) => {
                 artifactName = artifact.nameArtifact;
                 minQuantity = artifact.quantity;
@@ -109,6 +111,7 @@ const ProjectAdd = (props) => {
 
     //them anh
     const handleAddImage = () => {
+        setShowImage(true);
         const id = newProjectId;
         let name = null;
         if(images.length !== 0) {
@@ -125,7 +128,7 @@ const ProjectAdd = (props) => {
     useEffect(handleAddArtifact, [newProjectId, artifacts]);
     useEffect(handleAddImage, [newProjectId, images]);
 
-    return (
+    return ( 
         <Drawer
             className="project-drawer-add"
             title="Thêm mới dự án"
@@ -133,6 +136,7 @@ const ProjectAdd = (props) => {
             onClose={() => {
                 form.resetFields();
                 props.setOpenViewAddProject(false)
+                setShowImage(false);
                 setImages([])
             }}
             open={open}
@@ -201,7 +205,7 @@ const ProjectAdd = (props) => {
                                     label="Số lượng tình nguyện viên:"
                                     rules={[{ required: true, message: 'Vui lòng nhập số lượng tình nguyện viên!' }]}
                                 >
-                                    <InputNumber min={1} style={{width: 370}}/>
+                                    <InputNumber min={0} style={{width: 370}}/>
                                 </Form.Item>
                             </Col>
                             {/* Thông tin hiện vật*/}
@@ -342,22 +346,24 @@ const ProjectAdd = (props) => {
                                     </CloudinaryContext>
                                 </Form.Item>
                             </Col>
-                            <Col span={24} style={{display: "flex"}}>
-                                {loadingImage 
-                                ? 
-                                    <Space size="large" style={{marginLeft: 50}}>
-                                        <Spin size="middle"/>
-                                    </Space>
-                                :
-                                    <>
-                                    {images && images.map((image, index) => (
-                                        <Card key={index} style={{height: 160, width: 220, marginRight: 10}}>
-                                            <Image src={image.url} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
-                                        </Card>
-                                        ))}
-                                    </>
-                                }
-                            </Col>
+                            {showImage &&
+                                <Col span={24} style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25}}>
+                                    {loadingImage 
+                                    ? 
+                                        <Space size="large" style={{marginLeft: 50}}>
+                                            <Spin size="middle"/>
+                                        </Space>
+                                    :
+                                        <>
+                                        {images && images.map((image, index) => (
+                                            <Card key={index} style={{height: 160, width: 220,}}>
+                                                <Image src={image.url} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                                            </Card>
+                                            ))}
+                                        </>
+                                    }
+                                </Col>
+                            }
                             <Button style={{marginTop: 15, color: "#fff !important"}} type="primary" htmlType="submit" loading={isSubmit}>
                                 Thêm mới
                             </Button>

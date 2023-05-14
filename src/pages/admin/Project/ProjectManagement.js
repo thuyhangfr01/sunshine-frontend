@@ -50,15 +50,6 @@ const ProjectManagement = () => {
         {
           title: 'Loại dự án',
           dataIndex: ['projectType', 'name'],
-          render: (text, record, index) => {
-            return (
-                <Link onClick={() => {
-                    setDataViewDetail(record);
-                    setOpenViewDetail(true);
-                }}>{text}
-                </Link>
-            )
-          }
         },
         {
             title: 'Trạng thái',
@@ -132,7 +123,7 @@ const ProjectManagement = () => {
     const renderHeader = () => {
         return (
             <div style={{display: "flex", justifyContent: "space-between"}}>
-                <span>Danh sách dự án</span>
+                <span className="title">DANH SÁCH DỰ ÁN</span>
                 <span style={{display: "flex", gap: 10}}>
                     <Button><ExportOutlined /> Export</Button>
                     <Button><ImportOutlined /> Import</Button>
