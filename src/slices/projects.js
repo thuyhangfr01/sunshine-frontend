@@ -137,6 +137,14 @@ export const createImageByProject = createAsyncThunk (
     }
 )
 
+export const createProofByProject = createAsyncThunk (
+    "project/createProofByProject",
+    async ({id, name}) => {
+        const res = await ProjectService.createProofByProject(id, name);
+        return res.data;
+    }
+)
+
 export const updateProject = createAsyncThunk (
     "project/updateProject",
     async ({id, name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position }) => {
@@ -177,6 +185,9 @@ const projectSlice = createSlice({
         },
         [createImageByProject.fulfilled]: (state, action) => {
             state.images.push(action.payload);
+        },
+        [createProofByProject.fulfilled]: (state, action) => {
+            state.proofs.push(action.payload);
         },
         [updateProject.fulfilled]: (state, action) =>{
             const index = state.projects.findIndex(project => project.id === action.payload.id);

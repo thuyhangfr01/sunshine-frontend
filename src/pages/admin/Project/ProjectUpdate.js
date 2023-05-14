@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import moment from "moment";
 import "./ProjectStyle.scss";
-import { updateProject, updateMoneyById, updateArtifactById } from "../../../slices/projects";
+import { updateProject, updateMoneyById, updateArtifactById, createProofByProject, createImageByProject } from "../../../slices/projects";
 import { retrieveTypes } from "../../../slices/types";
 import { retrieveStatus } from "../../../slices/status";
 
@@ -23,6 +23,12 @@ const ProjectUpdate = (props) => {
 
     const [showImage, setShowImage] = useState(false);
     const [images, setImages] = useState([]);
+    const [imagesCurrent, setImagesCurrent] = useState([]);
+    const [loadingImage, setLoadingImage] = useState(false);
+    const [showProof, setShowProof] = useState(false);
+    const [proofs, setProofs] = useState([]);
+    const [proofsCurrent, setProofsCurrent] = useState([]);
+    const [loadingProof, setLoadingProof] = useState(false);
 
     const typesList = useSelector((state) => state.types);
     const statusList = useSelector((state) => state.status);
@@ -70,6 +76,11 @@ const ProjectUpdate = (props) => {
                 return {
                     name: image.name
                 }
+            });
+            const proofList = dataUpdate?.projectProofs?.map(proof => {
+                return {
+                    name: proof.name
+                }
             })
             const init = {
                 id: dataUpdate.id,
@@ -90,7 +101,9 @@ const ProjectUpdate = (props) => {
             }
             setInitForm(init);
             setImages(imageList);
+            setProofs(proofList);
             setShowImage(true);
+            setShowProof(true);
             setCurrentStatus(dataUpdate.projectStatus.name);
             setCurrentId(dataUpdate.id)
             setCurrentArtifact(artifact)
@@ -102,6 +115,7 @@ const ProjectUpdate = (props) => {
         }
     }, [dataUpdate])
 
+    //bat su kien an form
     const onFinish = (values) => {
         const id = currentId;
         const { name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position, idMoney, minMoney, artifacts} = values;
@@ -116,6 +130,7 @@ const ProjectUpdate = (props) => {
             toast.success("Cập nhật dự án thành công!");
             setIsSubmit(false);
             setShowImage(false);
+            setShowProof(false);
             form.resetFields();
             props.getLatestProject();
             setOpenViewUpdateProject(false)
@@ -135,18 +150,20 @@ const ProjectUpdate = (props) => {
         const currMinMoney = currentMoney.minMoney;
         const moneyId = currMoneyId;
         const minMoney = currMinMoney;
-        dispatch(updateMoneyById({moneyId, minMoney}))
-        .unwrap()
-        .then(response => {
-            console.log(response);
-        })
-        .catch(e => {
-            console.log(e);
-        })
+        if(moneyId !== undefined){
+            dispatch(updateMoneyById({moneyId, minMoney}))
+            .unwrap()
+            .then(response => {
+                console.log(response);
+            })
+            .catch(e => {
+                console.log(e);
+            })
+        }
     }
     useEffect(handleUpdateMoney, [currentMoney]);
 
-    // cap nhat hien vat
+    //cap nhat hien vat
     const handleUpdateArtifact = () => {
         if(currentArtifact.length > 0) {
             currentArtifact?.map((current) => {
@@ -167,6 +184,80 @@ const ProjectUpdate = (props) => {
     }
     useEffect(handleUpdateArtifact, [currentArtifact]);
 
+    //cap nhat hinh anh minh chung
+    const handleProofUpload = async ({ file }) => {
+        console.log("file khi handle: " +  file);
+        setLoadingProof(true);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'sunshine');
+        const response = await fetch("https://api.cloudinary.com/v1_1/dp0hbi49d/image/upload",
+        {
+            method: 'POST',
+            body: formData
+        })
+        setLoadingProof(false);
+        const data = await response.json();
+        setProofsCurrent([...proofsCurrent, {name: data.secure_url}])
+        setProofs([...proofs, {name: data.secure_url}])
+        return data.secure_url;
+    }
+
+    console.log("proofs current: " + JSON.stringify(proofsCurrent));
+    console.log("proofs: " +  JSON.stringify(proofs));
+
+    const handleAddProof = () => {
+        const id = currentId;
+        let name = null;
+        if(proofsCurrent.length !== 0) {
+            proofsCurrent.map((proof) => {
+                name = proof.name;
+                if(id !== null && name !== null){
+                    dispatch(createProofByProject({id, name}))
+                } 
+            })
+        }
+    }
+
+    useEffect(handleAddProof, [currentId, proofs]);
+
+    //cap nhat hinh anh 
+    const handleImagesUpload = async ({ file }) => {
+        console.log("file khi handle: " +  file);
+        setLoadingImage(true);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'sunshine');
+        const response = await fetch("https://api.cloudinary.com/v1_1/dp0hbi49d/image/upload",
+        {
+            method: 'POST',
+            body: formData
+        })
+        setLoadingImage(false);
+        const data = await response.json();
+        setImagesCurrent([...imagesCurrent, {name: data.secure_url}])
+        setImages([...images, {name: data.secure_url}])
+        return data.secure_url;
+    }
+
+    console.log("images current: " + JSON.stringify(imagesCurrent));
+    console.log("images: " +  JSON.stringify(images));
+
+    const handleAddImage = () => {
+        const id = currentId;
+        let name = null;
+        if(imagesCurrent.length !== 0) {
+            imagesCurrent.map((image) => {
+                name = image.name;
+                if(id !== null && name !== null){
+                    dispatch(createImageByProject({id, name}))
+                } 
+            })
+        }
+    }
+
+    useEffect(handleAddImage, [currentId, images]);
+
     return (
         <Drawer
             className="project-drawer-add"
@@ -177,8 +268,13 @@ const ProjectUpdate = (props) => {
                 setInitForm(null);
                 setDataUpdate(null);
                 setShowImage(false);
+                setShowProof(false);
                 setCurrentMoney({});
-                setOpenViewUpdateProject(false)
+                setProofsCurrent([]);
+                setProofs([]);
+                setImagesCurrent([]);
+                setImages([]);
+                setOpenViewUpdateProject(false);
             }}
             open={openViewUpdateProject}
             maskClosable={false}>
@@ -244,6 +340,7 @@ const ProjectUpdate = (props) => {
                                 {/* Tiền kêu gọi */}
                                 <Col span={24}>
                                     <Form.Item
+                                        hidden
                                         name="idMoney"
                                         label="id Money:"
                                         labelCol={{ span: 24 }}
@@ -277,12 +374,11 @@ const ProjectUpdate = (props) => {
                                         labelCol={{ span: 24 }}
                                         name="numVolunteers"
                                         label="Số lượng tình nguyện viên:"
-                                        rules={[{ required: true, message: 'Vui lòng nhập số lượng tình nguyện viên!' }]}
                                     >
-                                        <InputNumber min={1} style={{width: 370}}/>
+                                        <InputNumber style={{width: 370}}/>
                                     </Form.Item>
                                 </Col>
-                                {/* Thông tin hiện vật*/}
+                                {/* Thông tin hiện vật*/} 
                                 <Col span={24}>
                                     <Form.List name="artifacts" label="Thông tin hiện vật">
                                         {(fields, { add, remove }) => (
@@ -290,11 +386,11 @@ const ProjectUpdate = (props) => {
                                             {fields.map((field, index ) => (
                                                 <Space key={field.key} style={{display: "flex"}} direction="horizontal">
                                                     <Form.Item hidden name={[field.name, "idArtifact"]}  >
-                                                        <Input style={{width: 267}} placeholder='Tên hiện vật'/>
+                                                        <Input style={{width: 250}} placeholder='Tên hiện vật'/>
                                                     </Form.Item>
                                                     <Form.Item name={[field.name, "nameArtifact"]} label={`${index+1}- Hiện vật:`}  
                                                         rules={[{ required: true, message: "Vui lòng nhập tên hiện vật!" }]}>
-                                                        <Input style={{width: 267}} placeholder='Tên hiện vật'/>
+                                                        <Input style={{width: 250}} placeholder='Tên hiện vật'/>
                                                     </Form.Item>
                                                     <Form.Item name={[field.name, "quantity"]}
                                                         rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}>
@@ -304,13 +400,14 @@ const ProjectUpdate = (props) => {
                                                         rules={[{ required: true, message: "Vui lòng nhập đơn vị!" }]}>
                                                         <Input placeholder='Đơn vị'/>
                                                     </Form.Item>
-                                                    <MinusCircleOutlined style={{color: "red", paddingBottom: 25}} onClick={() => remove(field.name)} />
+                                                    {/* <MinusCircleOutlined style={{color: "red", paddingBottom: 25}} onClick={() => remove(field.name)} /> */}
                                                 </Space>
                                             ))}
                                         </>
                                         )}
                                     </Form.List>
                                 </Col>
+                                
                                 {/* Thời gian kêu gọi */}
                                 <Col span={8}>
                                     <Form.Item 
@@ -397,50 +494,61 @@ const ProjectUpdate = (props) => {
                                     </Form.Item>
                                 </Col>
                                 {/* Upload hình ảnh */}
-                                <Col span={24}>
-                                    <Form.Item
-                                        label="Hình ảnh của dự án"
-                                        name="file"
-                                    >
-                                        <CloudinaryContext cloudName="dp0hbi49d">
-                                            <Upload
-                                                name="file"
-                                                listType="text"
-                                                className="avatar-uploader"
-                                                multiple={true}
-                                                // customRequest={handleImageUpload}
-                                                action=""
-                                            >
-                                                <div>
-                                                    <Button icon={<PlusOutlined />} style={{borderStyle: "dashed",  }}>Chọn ảnh</Button>
-                                                </div>
-                                            </Upload>
-                                        </CloudinaryContext>
-                                    </Form.Item>
-                                </Col>
                                 {showImage && 
-                                    <Col span={24} style={{display: "flex"}}>
-                                        {images && images.map((image, index) => (
-                                            <Card key={index} style={{height: 160, width: 220, marginRight: 10}}>
-                                                <Image src={image.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
-                                            </Card>
-                                        ))}
+                                <>
+                                    <Col span={24}>
+                                        <Form.Item
+                                            label="Hình ảnh của dự án"
+                                            name="file">
+                                            <CloudinaryContext cloudName="dp0hbi49d">
+                                                <Upload
+                                                    name="file"
+                                                    listType="text"
+                                                    className="avatar-uploader"
+                                                    multiple={true}
+                                                    customRequest={handleImagesUpload}
+                                                    action=""
+                                                >
+                                                    <div>
+                                                        <Button icon={<PlusOutlined />} style={{borderStyle: "dashed",  }}>Chọn ảnh</Button>
+                                                    </div>
+                                                </Upload>
+                                            </CloudinaryContext>
+                                        </Form.Item>
                                     </Col>
+                                    <Col span={24} style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25}}>
+                                    {loadingImage
+                                        ? 
+                                            <Space size="large" style={{marginLeft: 50}}>
+                                                <Spin size="middle"/>
+                                            </Space>
+                                        :
+                                            <>
+                                                {images && images.map((image, index) => (
+                                                    <Card key={index} style={{height: 160, width: 220}}>
+                                                        <Image src={image.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                                                    </Card>
+                                                ))}
+                                            </>
+                                    }
+                                        
+                                    </Col>
+                                </>
                                 }
                                 {/* Upload hình ảnh minh chứng */}
-                                {/* {(dataUpdate.projectStatus.name === "Đang triển khai" || dataUpdate.projectStatus.name === "Đã hoàn thành") &&
+                                {showProof && (currentStatus === "Đang triển khai" || currentStatus === "Đã hoàn thành") &&
                                     <>
                                         <Col span={24}>
                                             <Form.Item
-                                                label="Hình ảanhrtrong quá trình triển khai dự án"
+                                                label="Hình ảnh trong quá trình triển khai dự án"
                                                 name="file"
                                             >
                                                 <CloudinaryContext cloudName="dp0hbi49d">
                                                     <Upload
                                                         name="file"
                                                         listType="text"
-                                                        multiple={true}
-                                                        // customRequest={handleImageUpload}
+                                                        multiple={false}
+                                                        customRequest={handleProofUpload}
                                                         action=""
                                                     >
                                                         <div>
@@ -450,15 +558,24 @@ const ProjectUpdate = (props) => {
                                                 </CloudinaryContext>
                                             </Form.Item>
                                         </Col>
-                                        <Col span={24} style={{display: "flex"}}>
-                                            {images && images.map((image, index) => (
-                                                <Card key={index} style={{height: 160, width: 220, marginRight: 10}}>
-                                                    <Image src={image.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
-                                                </Card>
-                                            ))}
+                                        <Col span={24} style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25}}>
+                                        {loadingProof
+                                            ? 
+                                                <Space size="large" style={{marginLeft: 50}}>
+                                                    <Spin size="middle"/>
+                                                </Space>
+                                            :
+                                                <>
+                                                    {proofs && proofs.map((proof, index) => (
+                                                        <Card key={index} style={{height: 160, width: 220}}>
+                                                            <Image src={proof.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                                                        </Card>
+                                                    ))}
+                                                </>
+                                        }
                                         </Col>
                                     </>
-                                } */}
+                                }
                                 <Button style={{marginTop: 15, color: "#fff !important"}} type="primary" htmlType="submit" loading={isSubmit}>
                                     Cập nhật
                                 </Button>
@@ -526,6 +643,7 @@ const ProjectUpdate = (props) => {
                                 {/* Tiền kêu gọi */}
                                 <Col span={24}>
                                     <Form.Item
+                                        hidden
                                         name="idMoney"
                                         label="id Money:"
                                         labelCol={{ span: 24 }}
@@ -560,9 +678,8 @@ const ProjectUpdate = (props) => {
                                         labelCol={{ span: 24 }}
                                         name="numVolunteers"
                                         label="Số lượng tình nguyện viên:"
-                                        rules={[{ required: true, message: 'Vui lòng nhập số lượng tình nguyện viên!' }]}
                                     >
-                                        <InputNumber disabled min={1} style={{width: 370}}/>
+                                        <InputNumber disabled min={0} style={{width: 370}}/>
                                     </Form.Item>
                                 </Col>
                                 {/* Thông tin hiện vật*/}
@@ -574,7 +691,7 @@ const ProjectUpdate = (props) => {
                                                 <Space key={field.key} style={{display: "flex"}} direction="horizontal">
                                                     <Form.Item name={[field.name, "nameArtifact"]} label={`${index+1}- Hiện vật:`}  
                                                         rules={[{ required: true, message: "Vui lòng nhập tên hiện vật!" }]}>
-                                                        <Input disabled style={{width: 267}} placeholder='Tên hiện vật'/>
+                                                        <Input disabled style={{width: 250}} placeholder='Tên hiện vật'/>
                                                     </Form.Item>
                                                     <Form.Item name={[field.name, "quantity"]}
                                                         rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}>
@@ -584,7 +701,7 @@ const ProjectUpdate = (props) => {
                                                         rules={[{ required: true, message: "Vui lòng nhập đơn vị!" }]}>
                                                         <Input disabled placeholder='Đơn vị'/>
                                                     </Form.Item>
-                                                    <MinusCircleOutlined style={{color: "red", paddingBottom: 25}} onClick={() => remove(field.name)} />
+                                                    {/* <MinusCircleOutlined style={{color: "red", paddingBottom: 25}} onClick={() => remove(field.name)} /> */}
                                                 </Space>
                                             ))}
                                         </>
@@ -617,15 +734,15 @@ const ProjectUpdate = (props) => {
                                         style={{marginRight: 10}}
                                         rules={[
                                             { required: true, message: 'Vui lòng chọn thời gian kết thúc!' },
-                                            { validator: async (_, endTime) => {
-                                                var startTime = form.getFieldValue("startTime");
-                                                if(startTime != null){
-                                                    if(endTime <= startTime)
-                                                        return Promise.reject("Thời gian kết thúc phải sau thời gian vận động!");
-                                                    else
-                                                        return;
-                                                }
-                                            }}
+                                            // { validator: async (_, endTime) => {
+                                            //     var startTime = form.getFieldValue("startTime");
+                                            //     if(startTime != null){
+                                            //         if(endTime <= startTime)
+                                            //             return Promise.reject("Thời gian kết thúc phải sau thời gian vận động!");
+                                            //         else
+                                            //             return;
+                                            //     }
+                                            // }}
                                         ]}>
                                         <DatePicker format="YYYY-MM-DD HH:mm:ss"
                                             disabled
@@ -641,16 +758,16 @@ const ProjectUpdate = (props) => {
                                         name="holdTime"
                                         label="Thời gian tổ chức" 
                                         rules={[
-                                            { required: true, message: 'Vui lòng chọn thời gian tổ chức!' },
-                                            { validator: async (_, holdTime) => {
-                                                var endTime = form.getFieldValue("endTime");
-                                                if(endTime != null){
-                                                    if(holdTime <= endTime)
-                                                        return Promise.reject("Thời gian tổ chức phải sau thời gian kết thúc!");
-                                                    else
-                                                        return;
-                                                }
-                                            }}    
+                                            // { required: true, message: 'Vui lòng chọn thời gian tổ chức!' },
+                                            // { validator: async (_, holdTime) => {
+                                            //     var endTime = form.getFieldValue("endTime");
+                                            //     if(endTime != null){
+                                            //         if(holdTime <= endTime)
+                                            //             return Promise.reject("Thời gian tổ chức phải sau thời gian kết thúc!");
+                                            //         else
+                                            //             return;
+                                            //     }
+                                            // }}    
                                         ]}>
                                         <DatePicker format="YYYY-MM-DD HH:mm:ss"
                                             disabled
@@ -680,6 +797,8 @@ const ProjectUpdate = (props) => {
                                     </Form.Item>
                                 </Col>
                                 {/* Upload hình ảnh */}
+                                {showImage && 
+                                <>
                                 <Col span={24}>
                                     <Form.Item
                                         label="Hình ảnh của dự án"
@@ -691,7 +810,7 @@ const ProjectUpdate = (props) => {
                                                 listType="text"
                                                 className="avatar-uploader"
                                                 multiple={true}
-                                                // customRequest={handleImageUpload}
+                                                customRequest={handleImagesUpload}
                                                 action=""
                                             >
                                                 <div>
@@ -701,19 +820,30 @@ const ProjectUpdate = (props) => {
                                         </CloudinaryContext>
                                     </Form.Item>
                                 </Col>
-                                {showImage && 
-                                    <Col span={24} style={{display: "flex"}}>
-                                        {images && images.map((image, index) => (
-                                            <Card key={index} style={{height: 160, width: 220, marginRight: 10}}>
-                                                <Image src={image.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
-                                            </Card>
-                                        ))}
-                                    </Col>
+                                
+                                <Col span={24} style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25}}>
+                                {loadingImage
+                                    ? 
+                                        <Space size="large" style={{marginLeft: 50}}>
+                                            <Spin size="middle"/>
+                                        </Space>
+                                    :
+                                        <>
+                                            {images && images.map((image, index) => (
+                                                <Card key={index} style={{height: 160, width: 220}}>
+                                                    <Image src={image.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                                                </Card>
+                                            ))}
+                                        </>
+                                }
+                                    
+                                </Col>
+                                </>
                                 }
                                 {/* Upload hình ảnh minh chứng */}
-                                {(currentStatus === "Đã hoàn thành" || currentStatus === "Đang triển khai") &&
+                                {showProof && (currentStatus === "Đang triển khai" || currentStatus === "Đã hoàn thành") &&
                                     <>
-                                        <Col span={24} style={{marginTop: 20}}>
+                                        <Col span={24}>
                                             <Form.Item
                                                 label="Hình ảnh trong quá trình triển khai dự án"
                                                 name="file"
@@ -722,8 +852,8 @@ const ProjectUpdate = (props) => {
                                                     <Upload
                                                         name="file"
                                                         listType="text"
-                                                        multiple={true}
-                                                        // customRequest={handleImageUpload}
+                                                        multiple={false}
+                                                        customRequest={handleProofUpload}
                                                         action=""
                                                     >
                                                         <div>
@@ -733,12 +863,21 @@ const ProjectUpdate = (props) => {
                                                 </CloudinaryContext>
                                             </Form.Item>
                                         </Col>
-                                        <Col span={24} style={{display: "flex"}}>
-                                            {images && images.map((image, index) => (
-                                                <Card key={index} style={{height: 160, width: 220, marginRight: 10}}>
-                                                    <Image src={image.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
-                                                </Card>
-                                            ))}
+                                        <Col span={24} style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25}}>
+                                        {loadingProof
+                                            ? 
+                                                <Space size="large" style={{marginLeft: 50}}>
+                                                    <Spin size="middle"/>
+                                                </Space>
+                                            :
+                                                <>
+                                                    {proofs && proofs.map((proof, index) => (
+                                                        <Card key={index} style={{height: 160, width: 220}}>
+                                                            <Image src={proof.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                                                        </Card>
+                                                    ))}
+                                                </>
+                                        }
                                         </Col>
                                     </>
                                 }

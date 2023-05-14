@@ -61,3 +61,21 @@ div.ant-upload-list.ant-upload-list-text {
     font-family: "Montserrat";
   }
 }
+
+.ant-table-title {
+  span.title {
+    font-family: "Montserrat";
+    font-weight: 600;
+    color: #d74b57;
+    font-size: 16px;
+    margin-top: 5px;
+    margin-left: 10px;
+  }
+}
+
+.ant-table-content {
+  font-family: "Montserrat";
+  .ant-table-cell {
+    font-weight: 500;
+  }
+}

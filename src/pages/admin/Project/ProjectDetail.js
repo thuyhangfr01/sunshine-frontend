@@ -1,5 +1,5 @@
 import React from "react";
-import {Drawer, Descriptions, Badge, Image} from "antd";
+import {Drawer, Descriptions, Badge, Image, Col, Card, Row} from "antd";
 import moment from "moment";
 import vi from "moment/locale/vi";
 
@@ -29,15 +29,13 @@ const ProjectDetail = (props) => {
                 <Descriptions.Item label="Số lượng tình nguyện viên:">{projectDetail?.numVolunteers}</Descriptions.Item>
                 <Descriptions.Item label="Mô tả dự án:" span={2}>{projectDetail?.details}</Descriptions.Item>
             </Descriptions>
-            {projectDetail.projectImages && projectDetail.projectImages.map((img, index) => (
-                <Image.PreviewGroup className="project-detail"
-                    preview={{
-                        onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
-                    }}
-                >
-                    <Image key={index} src={img.name} />
-                </Image.PreviewGroup>
-            ))}
+                <div style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25, marginTop: 20}}>
+                    {projectDetail.projectImages && projectDetail.projectImages.map((img, index) => (
+                        <Card key={index} style={{height: 160, width: 220,}}>
+                            <Image src={img.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                        </Card>
+                    ))}
+                </div>
         </Drawer>
     )
 }
