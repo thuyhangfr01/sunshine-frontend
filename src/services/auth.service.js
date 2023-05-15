@@ -19,16 +19,15 @@ const API_URL = "http://localhost:8080/api/auth/";
 
   const logout= () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("persist:root");
   }
 
-  const register = (uname, uemail, uphone, upassword, r) => {
-    let payload = [r];
+  const register = (uname, uemail, uphone, upassword) => {
     return axios.post(API_URL + "signup", {
       name: uname,
       email: uemail,
       phone: uphone,
       password: upassword,
-      role: payload
     });
   }
 

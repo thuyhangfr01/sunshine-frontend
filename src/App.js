@@ -25,6 +25,7 @@ import LayoutAdmin from "./components/admin/LayoutAdmin";
 import Loading from './components/loading/Loading';
 import locale from 'antd/locale/vi_VN';
 import {ConfigProvider} from "antd";
+import ProjectDonationCarts from "./containers/client/ProjectDonationCarts";
 
 const Layout = () => {
   return(
@@ -64,6 +65,10 @@ export default function App() {
         {
           path: "project/donations",
           element: <ProjectDonation/>,
+        },
+        {
+          path: "order",
+          element: <ProjectDonationCarts/>,
         },
         {
           path: "contact",

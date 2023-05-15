@@ -1,32 +1,42 @@
 import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import ProjectDataService from "../../services/project.service";
 import {retrieveProjs} from "../../slices/projects";
 
 import "./Project.scss";
 import {Tabs, Row, Col, Carousel, Button} from "antd";
-import {Table, Divider, Image} from 'antd';
+import {Table, Divider, Image, Spin} from 'antd';
+import BeatLoader from "react-spinners/BeatLoader";
 import icSunRed from "../../assets//images/ic_sunRed.png";
 import icSunBlue from "../../assets/images/ic_sunBlue.png";
 import AboutLeft from "../../assets/images/about_left.png";
 import TablesLRight from "../../assets/images/tables_right_dec.png";
 import moment from "moment";
 import vi from "moment/locale/vi";
+import ProjectDonation from "./ProjectDonation";
 
 const ProjectDetail = () => {
     let navigate = useNavigate();
 
+    const [loading, setLoading] = useState(false);
+    const [loadingImg, setLoadingImg] = useState(false);
+
     const { id } = useParams();
-    const [currentId, setCurrentId] = useState(id);
+    const [currentProjectId, setCurrentProjectId] = useState(id);
     const [currentProject, setCurrentProject] = useState({});
+    const [currentUserId, setCurrentUserId] = useState(null);
     const [status, setStatus] = useState("");
     const [images, setImages] = useState([]);
     const [money, setMoney] = useState([]);
     const [artifacts, setArtifacts] = useState([]);
     const [proofs, setProofs] = useState([]);
 
+    const [openModalProjectDonation, setOpenModalProjectDonation] = useState(false);
+
+    const {user: currentUser} = useSelector((state) => (state.auth));
     const totalProj = useSelector((state) => state.projects)
     const dispatch = useDispatch();
     const columns = [
@@ -47,9 +57,11 @@ const ProjectDetail = () => {
     }, [])
 
     //lay ra project hien tai
-    const getCurrentProject = currentId => {
-      ProjectDataService.get(currentId)
+    const getCurrentProject = currentProjectId => {
+      setLoading(true);
+      ProjectDataService.get(currentProjectId)
         .then(response => {
+          setLoading(false);
           setCurrentProject(response.data);
           setStatus(response.data.projectStatus.name);
         })
@@ -59,9 +71,11 @@ const ProjectDetail = () => {
     };
 
     //lay ra tat ca anh cua project
-    const getAllImages = (currentId) => {
-      ProjectDataService.getAllImages(currentId)
+    const getAllImages = (currentProjectId) => {
+      setLoadingImg(true);
+      ProjectDataService.getAllImages(currentProjectId)
         .then(response => {
+          setLoadingImg(false)
           setImages(response.data);
         })
         .catch(e => {
@@ -70,8 +84,8 @@ const ProjectDetail = () => {
     }
 
     //lay ra money cua project
-    const getAllMoney = (currentId) => {
-      ProjectDataService.getAllMoney(currentId)
+    const getAllMoney = (currentProjectId) => {
+      ProjectDataService.getAllMoney(currentProjectId)
         .then(response => {
           setMoney(response.data);
         })
@@ -81,8 +95,8 @@ const ProjectDetail = () => {
     }
 
     //lay ra hien vat cua project
-    const getAllArtifacts = (currentId) => {
-      ProjectDataService.getAllArtifacts(currentId)
+    const getAllArtifacts = (currentProjectId) => {
+      ProjectDataService.getAllArtifacts(currentProjectId)
         .then(response => {
           setArtifacts(response.data);
           setDataSource(response.data);
@@ -93,8 +107,8 @@ const ProjectDetail = () => {
     }
 
     //lay ra tat ca anh minh chung cua project
-    const getAllProofs = (currentId) => {
-      ProjectDataService.getAllProofs(currentId)
+    const getAllProofs = (currentProjectId) => {
+      ProjectDataService.getAllProofs(currentProjectId)
         .then(response => {
           setProofs(response.data);
       })
@@ -104,23 +118,21 @@ const ProjectDetail = () => {
     }
 
     useEffect(() => {
-      if (currentId){
-        getCurrentProject(currentId);
-        getAllImages(currentId);
-        getAllMoney(currentId);
-        getAllArtifacts(currentId);
-        getAllProofs(currentId);
+      if (currentProjectId){
+        getCurrentProject(currentProjectId);
+        getAllImages(currentProjectId);
+        getAllMoney(currentProjectId);
+        getAllArtifacts(currentProjectId);
+        getAllProofs(currentProjectId);
       }
-    }, [currentId]);
-    
-    console.log("curr" + currentProject);
+    }, [currentProjectId]);
     
     //lay ra index phia truoc cua project
     const getPrevCurrent = () => {
       const prevIndex = (totalProj.findIndex(proj => proj.id === currentProject.id)) - 1;
       const prevProject = totalProj[prevIndex];
       setCurrentProject(prevProject);
-      setCurrentId(prevProject.id);
+      setCurrentProjectId(prevProject.id);
       navigate("/project/" + prevProject.id);
     }
 
@@ -129,7 +141,7 @@ const ProjectDetail = () => {
       const nextIndex = (totalProj.findIndex(proj => proj.id === currentProject.id)) + 1;
       const nextProject = totalProj[nextIndex];
       setCurrentProject(nextProject);
-      setCurrentId(nextProject.id);
+      setCurrentProjectId(nextProject.id);
       navigate("/project/" + nextProject.id);
     }
 
@@ -141,17 +153,27 @@ const ProjectDetail = () => {
       getNextCurrent();
     }
 
+    const handleShowModal = () => {
+      if(currentUser){
+        setCurrentUserId(currentUser.id);
+        setOpenModalProjectDonation(true);
+      }
+      else{
+        toast.error("Vui lòng đăng nhập để tiếp tục!");
+      }
+    }
+
     return (
         <div className="container" style={{fontFamily: 'Montserrat, sans-serif', marginTop: "30px"}}>
           <div className="container-title">
             <div className="section-heading row">
-                <div className='col-12'>
-                  <h2 >Những dự án từ thiện của <em>SUN</em><span>SHINE</span></h2>
-                  <div className="line-dec"></div>
-                  <p style={{paddingLeft: "150px", paddingRight: "150px"}}>Từ nhiều năm nay, Quỹ Từ thiện Sunshine đã và đang tiếp tục thực hiện nhiều dự án thiện nguyện đến cộng đồng hơn với hy vọng lan tỏa yêu thương, gắn kết mọi người. </p>
-                  </div>
-            </div>
+              <div className='col-12'>
+                <h2 >Những dự án từ thiện của <em>SUN</em><span>SHINE</span></h2>
+                <div className="line-dec"></div>
+                <p style={{paddingLeft: "150px", paddingRight: "150px"}}>Từ nhiều năm nay, Quỹ Từ thiện Sunshine đã và đang tiếp tục thực hiện nhiều dự án thiện nguyện đến cộng đồng hơn với hy vọng lan tỏa yêu thương, gắn kết mọi người. </p>
+              </div>
           </div>
+        </div>
           <div className="services-left-dec">
             <img src={AboutLeft} 
                 style={{  width: "240px",
@@ -173,19 +195,30 @@ const ProjectDetail = () => {
               zIndex: "1",
             }}/>
           </div>
-            <div className="project-group-btn">
-              <Button className="project-btn" type="primary" size="large"
-                  onClick={() => handlePrevProject()}
-                  style={{marginRight: "10px"}}
-                  > <span className="title"><b>&#8249;&#8249; </b>Trước</span>
-                </Button>
-              <Button className="project-btn" type="primary" size="large"
-                onClick={() => handleNextProject()}
-              > <span className="title">Tiếp<b> &#8250;&#8250;</b></span>
+          <div className="project-group-btn">
+            <Button className="project-btn" type="primary" size="large"
+                onClick={() => handlePrevProject()}
+                style={{marginRight: "10px"}}
+                > <span className="title"><b>&#8249;&#8249; </b>Trước</span>
               </Button>
-            </div>
-            <Tabs className="project-tab" style={{fontFamily: 'Montserrat', marginTop: "20px"}}>
-              <Tabs.TabPane tab="Thông tin chi tiết" key="tab1">
+            <Button className="project-btn" type="primary" size="large"
+              onClick={() => handleNextProject()}
+            > <span className="title">Tiếp<b> &#8250;&#8250;</b></span>
+            </Button>
+          </div>
+          <Tabs className="project-tab" style={{fontFamily: 'Montserrat', marginTop: "20px"}}>
+            <Tabs.TabPane tab="Thông tin chi tiết" key="tab1">
+              {loading ? 
+                <div style={{height: 300}}>
+                    <BeatLoader
+                        color="#17709b"
+                        loading={loading}
+                        size={15}
+                        cssOverride={{marginLeft: "50%", marginTop: "20%"}}
+                    ></BeatLoader> 
+                </div>
+              : 
+                <>
                 <Row className="project-row1">
                   <Col span={20}>
                       <p className="project-title"><img src={icSunRed}/>{currentProject.name}</p>
@@ -223,13 +256,15 @@ const ProjectDetail = () => {
                     </div>
                   </Col>
                   <Col className="project-img" span={12}>
-                    <Carousel autoplay>
-                      {images.map((image, index) => (
-                        <div key={index}>
-                          <Image src={image.name} />
-                        </div>
-                      ))}
-                    </Carousel>
+                    <Spin spinning={loadingImg}>
+                        <Carousel autoplay>
+                            {images.map((image, index) => (
+                              <div key={index}>
+                                <Image src={image.name} />
+                              </div>
+                            ))}
+                        </Carousel>
+                      </Spin>
                   </Col>
                 </Row>
 
@@ -242,7 +277,7 @@ const ProjectDetail = () => {
                       }
 
                       {status === "Đang vận động" ?
-                        <button type="button" className="btn btn-danger">Đóng góp</button>
+                        <button type="button" className="btn btn-danger" onClick={handleShowModal}>Đóng góp</button>
                       :
                         <button type="button" className="btn btn-danger" disabled>Đóng góp</button>
                       }                 
@@ -286,21 +321,31 @@ const ProjectDetail = () => {
                     <Divider  orientation="left" orientationMargin="0"> 
                     <p className="project-title"><img src={icSunBlue}/>Hình ảnh dự án được triển khai</p></Divider>
                     <Image.PreviewGroup className="project-proof"
-                      preview={{
-                        onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
-                      }}
+                      // preview={{
+                      //   onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
+                      // }}
                     >
                       <Image src={proof.name} />
                     </Image.PreviewGroup>
                   </Row>
                 ))
                 }
-              </Tabs.TabPane>
+                </>
+              }
+            </Tabs.TabPane>
 
-              <Tabs.TabPane tab="Tiến độ ủng hộ" key="tab2">
-                <p className="project-tab" ><img src={icSunRed}/>Trụ cột bất ngờ gặp nạn, gia đình khó khăn chồng chất</p>
-              </Tabs.TabPane>
-            </Tabs>
+            <Tabs.TabPane tab="Tiến độ ủng hộ" key="tab2">
+              <p className="project-tab" ><img src={icSunRed}/>Trụ cột bất ngờ gặp nạn, gia đình khó khăn chồng chất</p>
+            </Tabs.TabPane>
+          </Tabs>
+
+          <ProjectDonation
+              openModalProjectDonation = {openModalProjectDonation}
+              setOpenModalProjectDonation = {setOpenModalProjectDonation}
+              currentUserId = {currentUserId}
+              currentProjectId = {currentProjectId}
+              currentProject = {currentProject}
+          />
         </div>
     )
 }

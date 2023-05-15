@@ -1,104 +1,223 @@
-import {Button, Form, Input, InputNumber, Select, Divider, Tabs, Space, Row, Col} from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import "./Project.scss";
 import React from 'react';
+import {useEffect, useState} from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {Button, Form, Input, InputNumber, Modal, Divider, Tabs, Space, Row, Col, Select, Spin} from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
+import "./Project.scss";
 
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 12 },
-    size: 'large',
-  };
+import  {retrieveListProjectName} from "../../slices/name";
+import  {createContribution, createArtifactByContribution} from "../../slices/contribution";
+
 const { TextArea } = Input;
+const ProjectDonation = (props) => {
+    let navigate = useNavigate();
+    const {openModalProjectDonation, setOpenModalProjectDonation, currentUserId, currentProject} = props;
+    
+    const [form] = Form.useForm();
+    const [initForm, setInitForm] = useState(null);
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [isNavigate, setIsNavigate] = useState(false);
+    const [loading1, setLoading1] = useState(false);
+    // const [loading2, setLoading2] = useState(false);
 
-const onFinish = (values) => {
-    console.log(values);
-  };
+    //sau khi sumbit form moi set gia tri nay
+    const [newContributionId, setNewContributionId] = useState(null);
+    const [artifacts, setArtifacts] = useState([]);
 
-const ProjectDonation = () => {
+    //get danh sach ten du an
+    const listProjectName = useSelector((state) => state.name);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(retrieveListProjectName());
+    }, [])
+
+    //get gia tri mac dinh cho form
+    useEffect(() => {
+        if(currentProject){
+            const init = {
+                projectId: currentProject.id,
+                projectName: currentProject.name,
+                userId: currentUserId,
+                nickname: "Ẩn danh",
+            }
+            setInitForm(init);
+            form.setFieldsValue(init);
+        }
+        return () => {
+            form.resetFields();
+        }
+    }, [currentProject])
+
+    const onFinish = (values) => {
+        const userId = currentUserId;
+        const { nickname, messages, projectId, amountMoney, artifacts} = values;
+        setIsSubmit(true)
+        setLoading1(true);
+        dispatch(createContribution({ userId, projectId, nickname, messages, amountMoney }))
+        .unwrap()
+        .then(data => {
+            console.log("dataaa: " + JSON.stringify(data));
+            setNewContributionId(data.id);
+            setArtifacts(artifacts);
+            setLoading1(false);
+            toast.success("Thêm đơn đóng góp thành công!");
+            setIsSubmit(false);
+            if(isNavigate === true) {
+                navigate("/order");
+            }
+            form.resetFields();
+            props.setOpenModalProjectDonation(false);
+            return;
+        })
+        .catch(e => {
+          toast.error("Thêm đơn đóng góp thất bại!");
+          console.log(e);
+          setIsSubmit(false);
+          setLoading1(false);
+          setIsNavigate(false);
+        });
+      };
+
+    //them hien vat
+    const handleAddArtifact = () => {
+        console.log("new id: " + newContributionId);
+        let artifactName = null, donatedAmount = 0, calculationUnit = null;
+        if(artifacts !== undefined) {
+            artifacts.map((artifact) => {
+                const id = newContributionId;
+                artifactName = artifact.nameArtifact;
+                donatedAmount = artifact.amount;
+                calculationUnit = artifact.unit;
+                if(id !== undefined && artifactName !== null && donatedAmount !== 0 && calculationUnit !== null){
+                    dispatch(createArtifactByContribution({id, artifactName, donatedAmount, calculationUnit}))
+                } 
+            })
+        }
+    }
+
+    useEffect(handleAddArtifact, [newContributionId, artifacts]);
+
     return (
-        <div className="container" style={{fontFamily: 'Montserrat, sans-serif', marginTop: "30px"}}>
-        <div className="container-title">
-            <div className="section-heading row">
-                <div className='col-12'>
-                <h2 >Đóng góp cho dự án từ thiện của <em>SUN</em><span>SHINE</span></h2>
-                <div className="line-dec"></div>
-                <p style={{paddingLeft: "150px", paddingRight: "150px"}}>Cảm ơn bạn vì đã là một phần của Sunshine, cùng chung tay lan tỏa yêu thương đến cộng đồng </p>
-                </div>
-            </div>
-        </div>
-        <Form className="project-form" {...layout}
-            name="nest-messages"
-            onFinish={onFinish}>
-                <Row>
-                    <Col span={12}>
-                        <Divider>Thông tin người đóng góp</Divider>
-                        <Form.Item label="Họ và tên:">
-                            <Input disabled></Input>
-                        </Form.Item>
-                        <Form.Item label="Email:">
-                            <Input disabled></Input>
-                        </Form.Item>
-                        <Form.Item label="Số điện thoại:">
-                            <Input disabled></Input>
-                        </Form.Item>
-                        <Form.Item label="Tên công khai:">
-                            <Input></Input>
-                        </Form.Item>
-                        <Form.Item label="Sử dụng vào dự án:">
-                            <Input disabled></Input>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Divider>Chi tiết đóng góp</Divider>
-                        <Tabs centered className="project-tab" style={{fontFamily: 'Montserrat'}}>
-                            <Tabs.TabPane tab="Đóng góp tiền" key="tab1">
-                                <Form.Item className="project-label" label="Nhập số tiền">
-                                    <InputNumber className="input-money"
-                                        defaultValue={10000}
-                                    />
-                                </Form.Item>
-                                <Form.Item label="Nhập lời nhắn">
-                                    <TextArea rows={4} />
-                                </Form.Item>
-                            </Tabs.TabPane>
-
-                            <Tabs.TabPane tab="Đóng góp hiện vật" key="tab2">
-                                <Form.List name="artifact">
+        <Modal
+            title="Đơn đóng góp"
+            centered
+            width={800}
+            style={{padding: 30}}
+            open={openModalProjectDonation}
+            onOk={() => setOpenModalProjectDonation(false)}
+            onCancel={() => {
+                setOpenModalProjectDonation(false)
+                form.setFieldsValue(initForm)}}
+            footer={[
+                <Button key="1" type="primary" 
+                    loading1={isSubmit}
+                    onClick={() => { form.submit() }}
+                    style={{fontSize: 15, fontFamily: "Montserrat", background: "#d95c5c !important"}}>
+                  Thêm vào danh sách chờ
+                </Button>,
+                <Button key="2" type="primary"
+                     style={{fontSize: 15, fontFamily: "Montserrat"}}
+                    //  loading2={isSubmit}
+                     onClick={() => { form.submit(); setIsNavigate(true)}}>
+                  Đóng góp
+                </Button>
+              ]}
+        >
+            <Spin spinning={loading1}>
+                <Form className="donation-form"
+                    form={form}
+                    autoComplete="off"
+                    layout="horizontal"
+                    onFinish={onFinish}>
+                    <Row>
+                        {/* nickname */}
+                        <Col span={24}>
+                            <Form.Item hidden name="userId" >
+                                <Input></Input>
+                            </Form.Item>
+                            <Form.Item name="nickname" labelCol={{ span: 24 }} label="Tên công khai:"
+                                rules={[{ required: true, message: 'Vui lòng nhập tên công khai!' }]}>
+                                <Input></Input>
+                            </Form.Item>
+                        </Col>
+                        {/* messages */}
+                        <Col span={24}>
+                            <Form.Item name="messages" labelCol={{ span: 24 }}label="Lời nhắn:">
+                                <TextArea></TextArea>
+                            </Form.Item>
+                        </Col>
+                        {/* project name */}
+                        <Col span={24} style={{fontStyle: "Montserrat"}}>
+                            <Form.Item name="projectId" labelCol={{ span: 24 }} label="Sử dụng vào dự án:"
+                                rules={[{ required: true, message: 'Vui lòng chọn dự án!' }]}>
+                                <Select placeholder="Chọn dự án muốn đóng góp..." 
+                                    showSearch
+                                    allowClear
+                                    style={{fontFamily: 'Montserrat'}}>
+                                    {listProjectName && listProjectName.map((name, index) => (
+                                        <Select.Option style={{fontFamily: 'Montserrat'}} key={index} value={name.projectId}>{name.projectName}</Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        {/* money */}
+                        <Col span={24}>
+                            <Divider>Thông tin đóng góp</Divider>
+                            <Form.Item name="amountMoney" labelCol={{ span: 24 }} className="project-label" label="Nhập số tiền"
+                                rules={[{ required: true, message: 'Vui lòng nhập số tiền!' }]}>
+                                <InputNumber
+                                    min={0}
+                                    style={{ width: '100%', fontFamily: "Montserrat" }}
+                                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    addonAfter="VND"
+                                />
+                            </Form.Item>
+                        </Col>   
+                        {/* artifact  */}
+                        <Col span={24} style={{fontFamily: "Montserrat"}}>
+                            <p style={{fontFamily: "Montserrat", fontSize: "15px", color: "#2b4c8f", fontWeight: 500}}>Đóng góp hiện vật</p>
+                            <Form.List labelCol={{ span: 24 }} name="artifacts">
                                 {(fields, { add, remove }) => (
-                                <>
-                                {fields.map(({ key, name, ...restField }) => (
-                                    <Space key={key} style={{display: "flex", marginBottom: 8}} align="baseline">
-                                        <Form.Item name={['user', 'name']}  rules={[{ required: true }]}>
-                                            <Input placeholder='Tên hiện vật'/>
-                                        </Form.Item>
-                                        <Form.Item >
-                                            <InputNumber placeholder='Số lượng' className="input-quantity"/>
-                                        </Form.Item>
-                                        <Form.Item>
-                                            <InputNumber placeholder='Đơn vị' className="input-donvi"/>
-                                        </Form.Item>
-                                        <MinusCircleOutlined onClick={() => remove(name)} />
-                                    </Space>
-                                ))}
-                                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                    Add field
-                                    </Button>
-                                </Form.Item>
+                                    <>
+                                    {fields.map((field, index ) => (
+                                        <Space key={field.key} style={{display: "flex"}} direction="horizontal">
+                                            <Form.Item name={[field.name, "nameArtifact"]} label={`${index+1}- Hiện vật:`}  
+                                                rules={[{ required: true, message: "Vui lòng nhập tên hiện vật!" }]}>
+                                                <Input style={{width: 240}} placeholder='Tên hiện vật'/>
+                                            </Form.Item>
+                                            <Form.Item style={{fontFamily: "Montserrat"}} name={[field.name, "amount"]}
+                                                rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}>
+                                                <InputNumber min={1} style={{width: 120, fontFamily: "Montserrat"}} placeholder='Số lượng'/>
+                                            </Form.Item>
+                                            <Form.Item name={[field.name, "unit"]}
+                                                rules={[{ required: true, message: "Vui lòng nhập đơn vị!" }]}>
+                                                <Input style={{width: 150}} placeholder='Đơn vị'/>
+                                            </Form.Item>
+                                            <MinusCircleOutlined style={{color: "red", paddingBottom: 25}} onClick={() => remove(field.name)} />
+                                        </Space>
+                                    ))}
+                                    <Form.Item>
+                                        <Button style={{fontSize: 15, fontFamily: "Montserrat", fontWeight: "500"}} type="dashed" onClick={() => {add()}} block icon={<PlusOutlined />}>
+                                            Thêm hiện vật
+                                        </Button>
+                                    </Form.Item>
                                 </>
                                 )}
-                                </Form.List>
-                            </Tabs.TabPane>
-                        </Tabs>
-                    </Col>
-                </Row>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
-        </div>
+                            </Form.List>
+                        </Col> 
+                        <Col span={24} style={{fontFamily: "Montserrat", marginTop: "20px"}}>
+                            <p className='text-title'>*Các thông tin cần lưu ý khi đóng góp:</p>
+                            <p className='text-content'>1. Vui lòng nhập đủ các thông tin yêu cầu.</p>
+                            <p className='text-content'>2. Bạn có thể đóng góp cho dự án bạn muốn bằng tiền hoặc hiện vật hoặc cả hai.</p>
+                            <p className='text-content'>3. Bạn có thể đóng góp những hiện vật theo yêu cầu của dự án hoặc bạn có thể đóng góp hiện vật khác.</p>
+                            <p className='text-content'>4. Đơn đóng góp hiện vật sẽ phải chờ Admin phê duyệt và nếu được duyệt, bạn cần đem hiện vật tới địa chỉ mà tổ chức yêu cầu.</p>
+                        </Col> 
+                    </Row>
+                </Form>
+            </Spin>
+      </Modal>
     )
 
 }

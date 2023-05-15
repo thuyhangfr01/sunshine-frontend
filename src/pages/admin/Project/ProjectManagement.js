@@ -155,7 +155,7 @@ const ProjectManagement = () => {
                 openViewAddProject={openViewAddProject}
                 setOpenViewAddProject={setOpenViewAddProject}
                 getLatestProject={getLatestProject}
-            />
+            /> 
 
             <ProjectUpdate
                 openViewUpdateProject={openViewUpdateProject}

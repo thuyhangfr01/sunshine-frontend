@@ -11,9 +11,9 @@ const getCollaboratorBoard = () => {
   return axios.get(API_URL + 'collaborator', { headers: authHeader() });
 }
 
-const getRecipientBoard = () => {
-  return axios.get(API_URL + 'recipient', { headers: authHeader() });
-}
+// const getRecipientBoard = () => {
+//   return axios.get(API_URL + 'recipient', { headers: authHeader() });
+// }
 
 const getBenefactorBoard = () => {
   return axios.get(API_URL + 'benefactor', { headers: authHeader() });
@@ -22,7 +22,7 @@ const getBenefactorBoard = () => {
 const userService = {
   getAdminBoard,
   getCollaboratorBoard,
-  getRecipientBoard,
+  // getRecipientBoard,
   getBenefactorBoard
 }
 

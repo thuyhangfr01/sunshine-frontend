@@ -3,6 +3,7 @@ import ProjectService from '../services/project.service'
 
 const initialState = {
     projects: [],
+    listProjectName: [],
     images: [],
     money: [],
     artifacts: [],

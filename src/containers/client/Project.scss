@@ -255,11 +255,12 @@
   .project-img {
     .ant-image-img {
       height: 450px;
-      width: 640px;
+      width: 630px;
     }
     .ant-image .ant-image-mask {
-      height: 450px;
-      width: 640px;
+      height: 480px;
+      width: 630px;
+      margin-left: 0px;
     }
     .ant-carousel .slick-dots-bottom {
       bottom: 40px !important;
@@ -421,9 +422,17 @@
   background-image: url(../../assets/images/banner.jpg);
 }
 
-form.project-form {
-  width: 1000px;
-  margin-left: 180px;
+.ant-modal .ant-modal-title {
+  font-family: "Montserrat";
+  color: #1b5d91 !important;
+}
+
+form.donation-form {
+  padding-top: 15px;
+  .ant-select-selector {
+    font-family: "Montserrat";
+    font-size: 15px;
+  }
   span.ant-divider-inner-text {
     font-size: 16px;
     font-weight: 600;
@@ -445,12 +454,13 @@ form.project-form {
     font-size: 15px !important;
     font-family: "Montserrat";
     font-weight: 500 !important;
+    color: #2b4c8f;
   }
   input,
   textarea {
     font-size: 15px !important;
     font-family: "Montserrat";
-    font-weight: 500 !important;
+    font-weight: 400 !important;
   }
   .ant-input-number .input-money {
     width: 250px;
@@ -463,8 +473,21 @@ form.project-form {
   .ant-input-number .input.input-donvi {
     width: 120px;
   }
+  p.text-title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #b52727 !important;
+  }
+  p.text-content {
+    margin-top: -10px;
+    font-size: 14px;
+  }
 }
-
+.ant-input-number-input-wrap {
+  input {
+    font-family: "Montserrat";
+  }
+}
 .ant-descriptions .ant-descriptions-item-label {
   font-size: 14px;
   line-height: 1.5714285714285714;
