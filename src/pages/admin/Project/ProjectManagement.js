@@ -50,6 +50,9 @@ const ProjectManagement = () => {
         {
           title: 'Loại dự án',
           dataIndex: ['projectType', 'name'],
+          render: (text, record, index) => {
+            return ({text})
+          }
         },
         {
             title: 'Trạng thái',
@@ -152,7 +155,7 @@ const ProjectManagement = () => {
                 openViewAddProject={openViewAddProject}
                 setOpenViewAddProject={setOpenViewAddProject}
                 getLatestProject={getLatestProject}
-            />
+            /> 
 
             <ProjectUpdate
                 openViewUpdateProject={openViewUpdateProject}

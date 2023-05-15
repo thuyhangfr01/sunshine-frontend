@@ -44,11 +44,11 @@ let navigate = useNavigate();
  });
 
  const handleRegister = (formValue) =>{
-  const {name, email, phone, password, role} = formValue;
+  const {name, email, phone, password} = formValue;
   setLoading(true);
   setSuccessful(true);
 
-  dispatch(register({name, email, phone, password, role}))
+  dispatch(register({name, email, phone, password}))
     .unwrap()
     .then(() => {
       toast.success("Đăng ký thành công!");
@@ -77,16 +77,16 @@ let navigate = useNavigate();
       </div>
       </div>
       <div className="form-wrapper" style={{ marginTop: "-20px"}}>
-          <div className="container">
+          <div className="signup-form" style={{margin: "0 auto"}}>
               <div className="card">
                   <div className="row no-gutters">
                       <div className="col d-none d-lg-flex" style={{backgroundImage: `url(${Cover})`}}>
                           <div className="logo">
-                            <img src={LogoTextMin} alt="logo" style={{width: '220px', marginBottom: '-60px', marginTop: '50px'}} />
+                            <img src={LogoTextMin} alt="logo" style={{width: '220px', marginTop: '40px'}} />
                           </div>
                           <div>
                             <h3 style={{fontSize: '18px', fontWeight: '600', marginBottom: "10px"}}>Chào bạn,</h3>
-                            <p className="lead" style={{fontWeight: '400', marginBottom: "30px"}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
+                            <p className="lead" style={{fontWeight: '400', marginBottom: "50px"}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
                             <Link to={"/login"} className="btn btn-outline-primary 2btn-lg" 
                               style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '10px 20px 10px 20px', marginBottom: '-15px'}}>Đăng nhập</Link>
                         </div>
@@ -102,9 +102,6 @@ let navigate = useNavigate();
                       <div className="col">
                           <div className="row">
                               <div className="col-md-10 offset-md-1">
-                                  <div className="logo d-block d-lg-none text-center text-lg-left">
-                                      <img src={LogoTextMin} alt="logo"/>
-                                  </div>
                                   <div className="text-lg-left" style={{marginTop: "10px", marginBottom: "30px"}}>
                                     <h3 className="font-weight-bold" style={{fontWeight: '600'}}>Đăng ký</h3>
                                     <p className="text-muted" style={{fontSize: '16px'}}>Vui lòng nhập đầy đủ thông tin để tạo tài khoản mới</p>
@@ -178,7 +175,7 @@ let navigate = useNavigate();
                                                     className="form-text text-danger" style={{top: "5px", position: "relative"}}></ErrorMessage>
                                               </div>
                                           </div>
-                                          <div className="radio" style={{display: "flex", fontSize: "16px", marginBottom: "15px"}} >
+                                          {/* <div className="radio" style={{display: "flex", fontSize: "16px", marginBottom: "15px"}} >
                                               <p style={{
                                                 fontSize: "16px",
                                                 fontWeight: "600",
@@ -205,7 +202,7 @@ let navigate = useNavigate();
                                                 Đơn vị nhận hỗ trợ
                                               </label>
                                             
-                                          </div>
+                                          </div> */}
                                           <button 
                                                 className="btn btn-primary btn-block"
                                                 style={{padding: '16px', fontSize: '16px', fontWeight: '600', border: 'none'}}

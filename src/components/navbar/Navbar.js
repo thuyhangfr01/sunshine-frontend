@@ -2,16 +2,25 @@ import React, { useState } from "react";
 import { NavLink} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faPhone, faAngleDown} from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faPhone, faAngleDown, faCartPlus, faBell} from '@fortawesome/free-solid-svg-icons'
 // import AuthService from "../services/auth.service";
 import "./NavbarStyle.scss"
 import Dropdown from './Dropdown';
+import DropdownNoti from './DropdownNoti';
 import LogoCut from "./../../assets/images/logo_cut3.png"
 
 export default function Navbar() {
+    const contributions = useSelector((state) => state.contributions)
+    const data = contributions.contributions;
+    let counter = Object.keys(data).length;
+    // for(let i = 0; i < data.lenght; i++){
+    //     counter++;
+    // }
+    console.log("count: " + counter);
     const {user: currentUser} = useSelector((state) => (state.auth));
     const[fix, setFix] = useState(false);
     const [dropdown, setDropdown] = useState(false);
+    const [dropDownNoti, setDropDownNoti] = useState(false);
 
     function setFixed(){
         if(window.scrollY >= 200){
@@ -74,15 +83,35 @@ export default function Navbar() {
                                             <NavLink to="/contact" className="n-item" >LIÊN HỆ</NavLink>
                                         </li>
                                         {currentUser ? (
-                                            <li
-                                            onMouseEnter={() => setDropdown(true)}
-                                            onMouseLeave={() => setDropdown(false)}
-                                            className="scroll-to-section">
-                                            <NavLink to="/infoUser" className="n-item" activeClassName="active">Chào, <span style={{textTransform: "uppercase"}}>{currentUser.name}</span>
-                                                <FontAwesomeIcon icon={faAngleDown} style={{marginLeft: "7px"}} />
-                                            </NavLink>
-                                            {dropdown && <Dropdown/>}
-                                            </li>
+                                            <>
+                                                <li style={{display: "flex"}}>
+                                                    <FontAwesomeIcon icon={faCartPlus} style={{marginTop: 9, fontSize: 20, color: "#4b78a4"}} />
+                                                    <span style={{width: "17px", height: "17px", textAlign: "center", borderRadius: "10px", marginLeft: "-4px", background: "#dc3545"}}>
+                                                        <p style={{color: "#fff", fontWeight: "600", fontSize: "10", marginTop: "-7px", fontSize: "10px"}}>
+                                                            {counter > 0 ? counter : 0}
+                                                        </p>
+                                                    </span>
+                                                </li>
+                                                <li style={{display: "flex"}}
+                                                    onMouseEnter={() => setDropDownNoti(true)}
+                                                    onMouseLeave={() => setDropDownNoti(false)}>
+                                                    <FontAwesomeIcon icon={faBell} style={{marginTop: 9, fontSize: 20, color: "#4b78a4", marginLeft: "-25px"}} />
+                                                    <span style={{width: "17px", height: "17px", textAlign: "center", borderRadius: "10px", marginLeft: "-4px", background: "#dc3545"}}>
+                                                        <p style={{color: "#fff", fontWeight: "600", fontSize: "10", marginTop: "-7px", fontSize: "10px"}}>3</p>
+                                                    </span>
+                                                    {dropDownNoti && <DropdownNoti/>}
+                                                </li>
+                                                <li
+                                                    style={{marginLeft: "-20px"}}
+                                                    onMouseEnter={() => setDropdown(true)}
+                                                    onMouseLeave={() => setDropdown(false)}
+                                                    className="scroll-to-section">
+                                                    <NavLink to="/infoUser" className="n-item" activeClassName="active">Chào, <span style={{textTransform: "uppercase"}}>{currentUser.name}</span>
+                                                        <FontAwesomeIcon icon={faAngleDown} style={{marginLeft: "7px"}} />
+                                                    </NavLink>
+                                                    {dropdown && <Dropdown/>}
+                                                </li>
+                                            </>
                                         ) : <></>}
                                     </ul>  
                                 </nav>

@@ -12,7 +12,7 @@ import './Dropdown.scss';
 
 function Dropdown() {
   const [showBenefactorBoard, setShowBenefactorBoard] = useState(false);
-  const [showRecipientBoard, setShowRecipientBoard] = useState(false);
+  // const [showRecipientBoard, setShowRecipientBoard] = useState(false);
   // const [showAdminBoard, setShowAdminBoard] = useState(false);
 
   const [dropdown, setDropdown] = useState(false);
@@ -26,10 +26,10 @@ function Dropdown() {
   useEffect(() => {
     if (currentUser) {
       setShowBenefactorBoard(currentUser.roles.includes("ROLE_BENEFACTOR"));
-      setShowRecipientBoard(currentUser.roles.includes("ROLE_RECIPIENT"));
+      // setShowRecipientBoard(currentUser.roles.includes("ROLE_RECIPIENT"));
     } else {
       setShowBenefactorBoard(false);
-      setShowRecipientBoard(false);
+      // setShowRecipientBoard(false);
     }
 
     EventBus.on("logout", () => {
@@ -56,13 +56,13 @@ function Dropdown() {
                 onClick={() => setDropdown(false)}>Chi tiết ủng hộ</Link>
               </li>
             )}
-            {showRecipientBoard && (
+            {/* {showRecipientBoard && (
               <li>
                 <FontAwesomeIcon icon={faListCheck} />
                 <Link className="submenu-item" to="/recipDetails"
                 onClick={() => setDropdown(false)}>Chi tiết quyên góp</Link>
               </li>
-            )}
+            )} */}
             {currentUser ? (
               <li>
                 <FontAwesomeIcon icon={faArrowRightFromBracket} />
