@@ -48,6 +48,10 @@ const getAllProofs = (id) => {
     return http.get(`/project/${id}/proofs`);
 };
 
+const getTotalMoneyByProjectId = (id) => {
+    return http.get(`/project/${id}/totalMoney`);
+};
+
 const createProject = (name, details, typeId, numVolunteers, startTime, endTime, holdTime, position) => {
     return http.post("/project", {name, details, typeId, numVolunteers, startTime, endTime, holdTime, position});
 }
@@ -92,6 +96,7 @@ const ProjectService = {
     getAllMoney,
     getAllArtifacts,
     getAllProofs,
+    getTotalMoneyByProjectId,
     createProject,
     createMoneyByProject,
     createArtifactByProject,

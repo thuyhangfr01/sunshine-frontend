@@ -7,7 +7,8 @@ const initialState = {
     images: [],
     money: [],
     artifacts: [],
-    proofs: []
+    proofs: [],
+    totalMoney: 0
 };
 
 export const retrieveProjs = createAsyncThunk(
@@ -102,6 +103,14 @@ export const getAllProofs = createAsyncThunk (
     "project/getAllProofs",
     async (id) => {
         const res = await ProjectService.getAllProofs(id);
+        return res.data;
+    }
+)
+
+export const getTotalMoneyByProjectId = createAsyncThunk (
+    "project/getTotalMoney",
+    async ({id}) => {
+        const res = await ProjectService.getTotalMoneyByProjectId(id);
         return res.data;
     }
 )
@@ -234,6 +243,9 @@ const projectSlice = createSlice({
         },
         [findProjectByStatus.fulfilled]: (state, action) => {
             return [...action.payload];
+        },
+        [getTotalMoneyByProjectId.fulfilled]: (state, action) => {
+            state.totalMoney = action.payload.totalMoney;
         },
     }
 })

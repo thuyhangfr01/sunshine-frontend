@@ -26,6 +26,8 @@ import Loading from './components/loading/Loading';
 import locale from 'antd/locale/vi_VN';
 import {ConfigProvider} from "antd";
 import ProjectDonationCarts from "./containers/client/ProjectDonationCarts";
+import Payment from "./containers/client/Payment";
+import HistoryContribution from "./containers/client/HistoryContribution";
 
 const Layout = () => {
   return(
@@ -69,6 +71,14 @@ export default function App() {
         {
           path: "order",
           element: <ProjectDonationCarts/>,
+        },
+        {
+          path: "payment",
+          element: <Payment/>,
+        },
+        {
+          path: "historyContribution",
+          element: <HistoryContribution/>,
         },
         {
           path: "contact",

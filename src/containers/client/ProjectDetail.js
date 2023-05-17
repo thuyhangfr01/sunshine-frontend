@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import ProjectDataService from "../../services/project.service";
-import {retrieveProjs} from "../../slices/projects";
+import {retrieveProjs, getTotalMoneyByProjectId} from "../../slices/projects";
 
 import "./Project.scss";
 import {Tabs, Row, Col, Carousel, Button} from "antd";
@@ -23,7 +23,7 @@ const ProjectDetail = () => {
 
     const [loading, setLoading] = useState(false);
     const [loadingImg, setLoadingImg] = useState(false);
-
+  
     const { id } = useParams();
     const [currentProjectId, setCurrentProjectId] = useState(id);
     const [currentProject, setCurrentProject] = useState({});
@@ -31,6 +31,8 @@ const ProjectDetail = () => {
     const [status, setStatus] = useState("");
     const [images, setImages] = useState([]);
     const [money, setMoney] = useState([]);
+    const [totalMoney, setTotalMoney] = useState([]);
+    const [per, setPer] = useState([]);
     const [artifacts, setArtifacts] = useState([]);
     const [proofs, setProofs] = useState([]);
 
@@ -47,6 +49,10 @@ const ProjectDetail = () => {
       {
         title: 'Số lượng',
         dataIndex: 'minQuantity',
+      },
+      {
+        title: 'Đơn vị',
+        dataIndex: 'calculationUnit',
       }
     ];
     const [dataSource, setDataSource] = useState([]);
@@ -61,10 +67,12 @@ const ProjectDetail = () => {
       setLoading(true);
       ProjectDataService.get(currentProjectId)
         .then(response => {
+          const id = currentProjectId;
+          console.log("currentId: " + id);
           setLoading(false);
           setCurrentProject(response.data);
           setStatus(response.data.projectStatus.name);
-        })
+          })
         .catch(e => {
           console.log(e);
         });
@@ -87,7 +95,7 @@ const ProjectDetail = () => {
     const getAllMoney = (currentProjectId) => {
       ProjectDataService.getAllMoney(currentProjectId)
         .then(response => {
-          setMoney(response.data);
+          setMoney(response.data[0].minMoney);
         })
         .catch(e => {
           console.log(e);
@@ -117,6 +125,27 @@ const ProjectDetail = () => {
         });
     }
 
+    const getTotalMoney = (currentProjectId) => {
+      ProjectDataService.getTotalMoneyByProjectId(currentProjectId)
+        .then(response => {
+          // console.log("hmmm: " + JSON.stringify(response.data.totalMoney));
+          setTotalMoney(response.data.totalMoney)
+      })
+        .catch(e => {
+          console.log(e);
+          setTotalMoney(0)
+        });
+    }
+
+    const setValueProgressBar = () => {
+      const a = money;
+      const b = totalMoney;
+      if(a !== 0)
+        setPer((b/a)*100);
+    }
+
+    console.log("per: " + per);
+
     useEffect(() => {
       if (currentProjectId){
         getCurrentProject(currentProjectId);
@@ -124,6 +153,8 @@ const ProjectDetail = () => {
         getAllMoney(currentProjectId);
         getAllArtifacts(currentProjectId);
         getAllProofs(currentProjectId);
+        getTotalMoney(currentProjectId);
+        setValueProgressBar();
       }
     }, [currentProjectId]);
     
@@ -164,7 +195,7 @@ const ProjectDetail = () => {
     }
 
     return (
-        <div className="container" style={{fontFamily: 'Montserrat, sans-serif', marginTop: "30px"}}>
+        <div className="container" style={{fontFamily: 'Montserrat, sans-serif', marginTop: "30px", marginBottom: 100}}>
           <div className="container-title">
             <div className="section-heading row">
               <div className='col-12'>
@@ -231,13 +262,11 @@ const ProjectDetail = () => {
                 <Row className="project-row2">
                   <Col className="project-info" span={12}>
                     <div>
-                      {money.map((_money, index) => (
-                        <p key={index} className='project-amountRequest'>*Cần huy động:<span> {_money.minMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
-                      ))}
-                      <p className='project-amountReceipt'>*Tiền góp được:<span> 8.000.000 VND</span></p>
+                      <p className='project-amountRequest'>*Cần huy động:<span> {money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
+                      <p className='project-amountReceipt'>*Tiền góp được:<span>{totalMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
                       <div className="progress">
                         <div className="progress-bar progress-bar-striped " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                            style={{width: "75%"}}></div>
+                          style={{width: `${per}%`}}></div>
                       </div>
                       {currentProject.numVolunteers !== 0 ?
                         <p className='project-numVolunteers'>*Số lượng tình nguyện viên:<span> {currentProject.numVolunteers} tình nguyện viên</span></p>
@@ -345,6 +374,7 @@ const ProjectDetail = () => {
               currentUserId = {currentUserId}
               currentProjectId = {currentProjectId}
               currentProject = {currentProject}
+              dataSource = {dataSource}
           />
         </div>
     )
