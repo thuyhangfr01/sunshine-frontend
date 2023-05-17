@@ -13,18 +13,13 @@ import  {createContribution, createArtifactByContribution} from "../../slices/co
 const { TextArea } = Input;
 const ProjectDonation = (props) => {
     let navigate = useNavigate();
-    const {openModalProjectDonation, setOpenModalProjectDonation, currentUserId, currentProject} = props;
+    const {openModalProjectDonation, setOpenModalProjectDonation, currentUserId, currentProject, dataSource} = props;
     
     const [form] = Form.useForm();
     const [initForm, setInitForm] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
     const [isNavigate, setIsNavigate] = useState(false);
-    const [loading1, setLoading1] = useState(false);
-    // const [loading2, setLoading2] = useState(false);
-
-    //sau khi sumbit form moi set gia tri nay
-    const [newContributionId, setNewContributionId] = useState(null);
-    const [artifacts, setArtifacts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     //get danh sach ten du an
     const listProjectName = useSelector((state) => state.name);
@@ -41,6 +36,7 @@ const ProjectDonation = (props) => {
                 projectName: currentProject.name,
                 userId: currentUserId,
                 nickname: "Ẩn danh",
+                artifacts: dataSource
             }
             setInitForm(init);
             form.setFieldsValue(init);
@@ -52,16 +48,14 @@ const ProjectDonation = (props) => {
 
     const onFinish = (values) => {
         const userId = currentUserId;
-        const { nickname, messages, projectId, amountMoney, artifacts} = values;
+        const { nickname, messages, projectId, amountMoney, contributionArtifacts} = values;
         setIsSubmit(true)
-        setLoading1(true);
-        dispatch(createContribution({ userId, projectId, nickname, messages, amountMoney }))
+        setLoading(true);
+        dispatch(createContribution({ userId, projectId, nickname, messages, amountMoney, contributionArtifacts }))
         .unwrap()
         .then(data => {
             console.log("dataaa: " + JSON.stringify(data));
-            setNewContributionId(data.id);
-            setArtifacts(artifacts);
-            setLoading1(false);
+            setLoading(false);
             toast.success("Thêm đơn đóng góp thành công!");
             setIsSubmit(false);
             if(isNavigate === true) {
@@ -75,29 +69,10 @@ const ProjectDonation = (props) => {
           toast.error("Thêm đơn đóng góp thất bại!");
           console.log(e);
           setIsSubmit(false);
-          setLoading1(false);
+          setLoading(false);
           setIsNavigate(false);
         });
       };
-
-    //them hien vat
-    const handleAddArtifact = () => {
-        console.log("new id: " + newContributionId);
-        let artifactName = null, donatedAmount = 0, calculationUnit = null;
-        if(artifacts !== undefined) {
-            artifacts.map((artifact) => {
-                const id = newContributionId;
-                artifactName = artifact.nameArtifact;
-                donatedAmount = artifact.amount;
-                calculationUnit = artifact.unit;
-                if(id !== undefined && artifactName !== null && donatedAmount !== 0 && calculationUnit !== null){
-                    dispatch(createArtifactByContribution({id, artifactName, donatedAmount, calculationUnit}))
-                } 
-            })
-        }
-    }
-
-    useEffect(handleAddArtifact, [newContributionId, artifacts]);
 
     return (
         <Modal
@@ -112,7 +87,7 @@ const ProjectDonation = (props) => {
                 form.setFieldsValue(initForm)}}
             footer={[
                 <Button key="1" type="primary" 
-                    loading1={isSubmit}
+                    loading={isSubmit}
                     onClick={() => { form.submit() }}
                     style={{fontSize: 15, fontFamily: "Montserrat", background: "#d95c5c !important"}}>
                   Thêm vào danh sách chờ
@@ -125,7 +100,7 @@ const ProjectDonation = (props) => {
                 </Button>
               ]}
         >
-            <Spin spinning={loading1}>
+            <Spin spinning={loading}>
                 <Form className="donation-form"
                     form={form}
                     autoComplete="off"
@@ -178,20 +153,20 @@ const ProjectDonation = (props) => {
                         {/* artifact  */}
                         <Col span={24} style={{fontFamily: "Montserrat"}}>
                             <p style={{fontFamily: "Montserrat", fontSize: "15px", color: "#2b4c8f", fontWeight: 500}}>Đóng góp hiện vật</p>
-                            <Form.List labelCol={{ span: 24 }} name="artifacts">
+                            <Form.List labelCol={{ span: 24 }} name="contributionArtifacts">
                                 {(fields, { add, remove }) => (
                                     <>
                                     {fields.map((field, index ) => (
                                         <Space key={field.key} style={{display: "flex"}} direction="horizontal">
-                                            <Form.Item name={[field.name, "nameArtifact"]} label={`${index+1}- Hiện vật:`}  
+                                            <Form.Item name={[field.name, "artifactName"]} label={`${index+1}- Hiện vật:`}  
                                                 rules={[{ required: true, message: "Vui lòng nhập tên hiện vật!" }]}>
                                                 <Input style={{width: 240}} placeholder='Tên hiện vật'/>
                                             </Form.Item>
-                                            <Form.Item style={{fontFamily: "Montserrat"}} name={[field.name, "amount"]}
+                                            <Form.Item style={{fontFamily: "Montserrat"}} name={[field.name, "donatedAmount"]}
                                                 rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}>
                                                 <InputNumber min={1} style={{width: 120, fontFamily: "Montserrat"}} placeholder='Số lượng'/>
                                             </Form.Item>
-                                            <Form.Item name={[field.name, "unit"]}
+                                            <Form.Item name={[field.name, "calculationUnit"]}
                                                 rules={[{ required: true, message: "Vui lòng nhập đơn vị!" }]}>
                                                 <Input style={{width: 150}} placeholder='Đơn vị'/>
                                             </Form.Item>

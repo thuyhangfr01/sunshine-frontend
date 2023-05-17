@@ -8,8 +8,10 @@ import "./NavbarStyle.scss"
 import Dropdown from './Dropdown';
 import DropdownNoti from './DropdownNoti';
 import LogoCut from "./../../assets/images/logo_cut3.png"
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
+    let navigate = useNavigate();
     const contributions = useSelector((state) => state.contributions)
     const data = contributions.contributions;
     let counter = Object.keys(data).length;
@@ -28,6 +30,10 @@ export default function Navbar() {
         } else{
             setFix(false)
         }
+    }
+
+    function handleClick(){
+        navigate("/order");
     }
 
     window.addEventListener("scroll", setFixed)
@@ -85,7 +91,8 @@ export default function Navbar() {
                                         {currentUser ? (
                                             <>
                                                 <li style={{display: "flex"}}>
-                                                    <FontAwesomeIcon icon={faCartPlus} style={{marginTop: 9, fontSize: 20, color: "#4b78a4"}} />
+                                                    <FontAwesomeIcon onClick={handleClick}
+                                                        icon={faCartPlus} style={{marginTop: 9, fontSize: 20, color: "#4b78a4", cursor: "pointer"}} />
                                                     <span style={{width: "17px", height: "17px", textAlign: "center", borderRadius: "10px", marginLeft: "-4px", background: "#dc3545"}}>
                                                         <p style={{color: "#fff", fontWeight: "600", fontSize: "10", marginTop: "-7px", fontSize: "10px"}}>
                                                             {counter > 0 ? counter : 0}
