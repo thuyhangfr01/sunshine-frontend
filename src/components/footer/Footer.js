@@ -2,7 +2,7 @@ import "./FooterStyle.scss";
 import FooterDec from "../../assets/images/footer_dec.png";
 import Logo from "../../assets/images/logo_text.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {fab, faTwitter, faFacebookF, faInstagram, faTiktok} from "@fortawesome/free-brands-svg-icons";
+import {faTwitter, faFacebookF, faInstagram, faTiktok} from "@fortawesome/free-brands-svg-icons";
 
 function Footer(){
     return (

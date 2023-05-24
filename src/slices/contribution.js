@@ -4,6 +4,7 @@ import ContributionService from '../services/contribution.service'
 const initialState = {
     contributions: [],
     artifacts: [],
+    contributionsByUser: [],
 };
 
 const contributionArtifacts = [
@@ -14,10 +15,42 @@ const contributionArtifacts = [
     }
 ]
 
+export const getContributionsByProjectId = createAsyncThunk(
+    "contribution/getContributionsByProjectId",
+    async ({id}) => {
+        const res = await ContributionService.getContributionsByProjectId(id);
+        return res.data;
+    }
+)
+
+export const getContributionsByUserId = createAsyncThunk(
+    "contribution/getContributionsByUserId",
+    async ({id}) => {
+        const res = await ContributionService.getContributionsByUserId(id);
+        return res.data;
+    }
+)
+
+export const getContributionById = createAsyncThunk(
+    "contribution/getContributionById",
+    async ({id}) => {
+        const res = await ContributionService.getContributionById(id);
+        return res.data;
+    }
+)
+
 export const createContribution = createAsyncThunk(
     "contribution/createContribution", 
-    async ({userId, projectId, nickname, messages, amountMoney, contributionArtifacts}) => {
-        const res = await ContributionService.createContribution(userId, projectId, nickname, messages, amountMoney, contributionArtifacts);
+    async ({userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts}) => {
+        const res = await ContributionService.createContribution(userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts);
+        return res.data;
+    }
+)
+
+export const importContribution = createAsyncThunk(
+    "contribution/importContribution", 
+    async (data) => {
+        const res = await ContributionService.createContribution(data);
         return res.data;
     }
 )
@@ -67,7 +100,19 @@ const contributionSlice = createSlice({
     name: "contributions",
     initialState,
     extraReducers: {
+        [getContributionsByProjectId.fulfilled]: (state, action) => {
+            state.contributions = [...action.payload];
+        },
+        [getContributionsByUserId.fulfilled]: (state, action) => {
+            state.contributionsByUser = [...action.payload];
+        },
+        [getContributionById.fulfilled]: (state, action) => {
+            state.contributions = [...action.payload];
+        },
         [createContribution.fulfilled]: (state, action) => {
+            state.contributions = [...state.contributions, action.payload];
+        },
+        [importContribution.fulfilled]: (state, action) => {
             state.contributions = [...state.contributions, action.payload];
         },
         [createArtifactByContribution.fulfilled]: (state, action) => {

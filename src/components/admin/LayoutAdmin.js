@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
 import EventBus from "../../common/EventBus";
@@ -58,10 +58,27 @@ const items = [
                 icon: <SaveOutlined />,
             },
             {
-                label: <Link to='/admin/contribution'>Duyệt đơn đóng góp</Link>,
+                label: <Link to='/admin/contribution'>Đơn đóng góp hiện vật</Link>,
                 key: 'contribution',
                 icon: <ReadOutlined />,
             }
+        ]
+    },
+    {
+        label: <span>Quản lý thu chi</span>,
+        key: 'receiptAndPayment',
+        icon: <ExceptionOutlined />,
+        children: [
+            {
+                label: <Link to='/admin/receiptPayment'>Cập nhật thu chi</Link>,
+                key: 'payment',
+                icon: <SaveOutlined />,
+            },
+            {
+                label: <Link to='/admin/receiptPayment'>Cập nhật báo cáo</Link>,
+                key: 'report',
+                icon: <SaveOutlined />,
+            },
         ]
     },
     {
@@ -70,12 +87,12 @@ const items = [
         icon: <DollarCircleOutlined />,
         children: [
             {
-                label: <Link to='/admin/request'>Duyệt đơn yêu cầu hỗ trợ</Link>,
-                key: 'request',
+                label: <Link to='/admin/help'>Đơn yêu cầu hỗ trợ</Link>,
+                key: 'help',
                 icon: <FormOutlined />,
             },
             {
-                label: <Link to='/admin/volunteer'>Duyệt đơn yêu cầu TNV</Link>,
+                label: <Link to='/admin/volunteer'>Đơn yêu cầu TNV</Link>,
                 key: 'volunteer',
                 icon: <ReadOutlined />,
             }

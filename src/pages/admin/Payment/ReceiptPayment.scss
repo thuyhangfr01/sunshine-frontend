@@ -1,0 +1,54 @@
+.ant-table-wrapper tfoot > tr > td {
+  padding: 10px 20px !important;
+}
+.receipt-payment {
+  .ant-table-row {
+    height: 65px !important;
+    text-align: center !important;
+  }
+  .ant-statistic .ant-statistic-content .ant-statistic-content-value {
+    padding: 13px;
+  }
+  th.ant-table-cell {
+    text-align: center !important;
+  }
+  td.ant-table-cell {
+    padding-left: 40px !important;
+  }
+  p.p-text {
+    margin-top: 5px;
+    font-family: "Montserrat" !important;
+    font-weight: 500 !important;
+    font-size: 15px !important;
+  }
+  .ant-select-selector {
+    margin-left: 20px;
+    width: 550px !important;
+    height: 40px !important;
+    align-items: center !important;
+    font-family: "Montserrat" !important;
+    font-weight: 500 !important;
+  }
+  .ant-picker .ant-picker-input {
+    width: 220px !important;
+    height: 30px !important;
+    align-items: center !important;
+    font-family: "Montserrat" !important;
+    font-weight: 500 !important;
+  }
+}
+.payment {
+  margin: 35px;
+  .ant-statistic .ant-statistic-title {
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-family: "Montserrat";
+    font-weight: 500;
+  }
+}
+
+.upload-modal {
+  div.ant-upload-list.ant-upload-list-text {
+    display: block !important;
+  }
+}

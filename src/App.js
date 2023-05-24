@@ -2,7 +2,15 @@ import React from "react";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import {ConfigProvider} from "antd";
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+
 import Login from './components/auth/Login';
+import Register from "./components/auth/Register";
 import Home from './pages/client/Home';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
@@ -12,22 +20,21 @@ import ProjectDonation from './containers/client/ProjectDonation';
 import Project from './pages/client/Project';
 import Contact from './pages/client/Contact';
 import NotFound from './components/error/NotFound';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-import Register from "./components/auth/Register";
+import ProjectDonationCarts from "./containers/client/ProjectDonationCarts";
+import HistoryContribution from "./containers/client/contribution/HistoryContribution";
+import Payment from "./containers/client/Payment";
+import FormHelp from "./containers/client/form/FormHelp";
+
 // import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import AdminPage from "./pages/admin/AdminPage";
 import UserManagement from "./pages/admin/User/UserManagement";
 import ProjectManagement from "./pages/admin/Project/ProjectManagement";
+import ReceiptPayment from "./pages/admin/Payment/ReceiptPayment";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
+import FormHelpManagement from './pages/admin/Form/FormHelp';
 import Loading from './components/loading/Loading';
+
 import locale from 'antd/locale/vi_VN';
-import {ConfigProvider} from "antd";
-import ProjectDonationCarts from "./containers/client/ProjectDonationCarts";
-import Payment from "./containers/client/Payment";
-import HistoryContribution from "./containers/client/HistoryContribution";
 
 const Layout = () => {
   return(
@@ -81,6 +88,10 @@ export default function App() {
           element: <HistoryContribution/>,
         },
         {
+          path: "formHelp",
+          element: <FormHelp/>,
+        },
+        {
           path: "contact",
           element: <Contact/>,
         },
@@ -109,6 +120,20 @@ export default function App() {
           element: 
           // <ProtectedRoute>
             <ProjectManagement />
+          // {/* </ProtectedRoute> */}
+        },
+        {
+          path: "receiptPayment",
+          element: 
+          // <ProtectedRoute>
+          <ReceiptPayment />
+          // {/* </ProtectedRoute> */}
+        },
+        {
+          path: "help",
+          element: 
+          // <ProtectedRoute>
+          <FormHelpManagement />
           // {/* </ProtectedRoute> */}
         },
       ],

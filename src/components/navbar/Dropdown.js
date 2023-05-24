@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slices/auth";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faListCheck, faArrowRightFromBracket  } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faListCheck, faArrowRightFromBracket, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons'
 import './Dropdown.scss';
 
 
@@ -50,11 +50,18 @@ function Dropdown() {
               onClick={() => setDropdown(false)}>Thông tin cá nhân</Link>
             </li>
             {showBenefactorBoard && (
+              <>
               <li>
                 <FontAwesomeIcon icon={faListCheck} />
-                <Link className="submenu-item" to="/beneDteails"
-                onClick={() => setDropdown(false)}>Chi tiết ủng hộ</Link>
+                <Link className="submenu-item" to="/historyContribution"
+                onClick={() => setDropdown(false)}>Lịch sử đóng góp</Link>
               </li>
+              <li>
+                <FontAwesomeIcon icon={faEnvelopeOpenText} />
+                  <Link className="submenu-item" to="/formHelp"
+                  onClick={() => setDropdown(false)}>Gửi đơn yêu cầu hỗ trợ</Link>
+              </li>
+              </>
             )}
             {/* {showRecipientBoard && (
               <li>

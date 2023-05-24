@@ -88,7 +88,7 @@ let navigate = useNavigate();
                             <h3 style={{fontSize: '18px', fontWeight: '600', marginBottom: "10px"}}>Chào bạn,</h3>
                             <p className="lead" style={{fontWeight: '400', marginBottom: "50px"}}>bạn đã có tài khoản để đồng hành cùng Sunshine chưa?</p>
                             <Link to={"/login"} className="btn btn-outline-primary 2btn-lg" 
-                              style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '10px 20px 10px 20px', marginBottom: '-15px'}}>Đăng nhập</Link>
+                              style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '15px 20px 15px 20px', marginBottom: '-15px'}}>Đăng nhập</Link>
                         </div>
                         <ul className="list-inline">
                             <li className="list-inline-item">

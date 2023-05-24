@@ -39,7 +39,7 @@ const ProjectManagement = () => {
           dataIndex: 'name',
           render: (text, record, index) => {
             return (
-                <Link onClick={() => {
+                <Link style={{color: "#1554ad", fontWeight: 600}} onClick={() => {
                     setDataViewDetail(record);
                     setOpenViewDetail(true);
                 }}>{text}
@@ -51,7 +51,8 @@ const ProjectManagement = () => {
           title: 'Loại dự án',
           dataIndex: ['projectType', 'name'],
           render: (text, record, index) => {
-            return ({text})
+            console.log("type: " + text);
+            return (<p style={{fontSize: 14}}>{text}</p>)
           }
         },
         {
@@ -144,7 +145,7 @@ const ProjectManagement = () => {
                     title={renderHeader}
                     style={{marginTop: 20}}
                     pagination={{
-                        pageSize: 8,
+                        pageSize: 6,
                         onChange(current) {
                             setPage(current);
                         }
