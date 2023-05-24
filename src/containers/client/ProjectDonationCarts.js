@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Row, Col, Card, InputNumber, Table, Radio, Space, Button, Result } from "antd";
+import {Row, Col, Card, InputNumber, Table, Radio, Space, Button, Result, Popconfirm } from "antd";
 import {DeleteFilled} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 import {updateAmountMoneyById, removeContribution, updateStatusMoney } from "../../slices/contribution";
 import {createPayment} from "../../slices/payment";
 
@@ -57,7 +57,13 @@ const ProjectDonationCarts = () => {
 
     const handleDelete = (contribution) => {
         const id = contribution.id;
-        dispatch(removeContribution({id}));
+        dispatch(removeContribution({id}))
+        .then((response) => {
+            toast.success("Xóa đơn đóng góp thành công!");
+        })
+        .catch((error) => {
+            toast.error("Xóa đơn đóng góp thất bại!");
+        });
     }
 
     const updateStatusByMoneyId = () => {
@@ -104,9 +110,16 @@ const ProjectDonationCarts = () => {
                             <Card key={index} style={{margin: 20}}>
                                 <div style={{display: "flex", justifyContent: "space-between"}}>
                                     <p style={{fontSize: "15px", fontWeight: 500}}>{contribution.projectName}</p>
-                                    <DeleteFilled 
-                                        onClick = {() => handleDelete(contribution)}
-                                        style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px", cursor: "pointer"}}/>
+                                    <Popconfirm
+                                        placement="leftTop"
+                                        title={"Xác nhận xóa đơn đóng góp"}
+                                        description={"Bạn có chắc chắn muốn xóa đơn này không?"}
+                                        onConfirm={handleDelete(contribution)}
+                                        onText="Xác nhận"
+                                        cancelText="Hủy">
+                                            <DeleteFilled 
+                                                style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px", cursor: "pointer"}}/>
+                                    </Popconfirm>
                                 </div>
                                 {contribution.contributionArtifacts !== null && 
                                     <div className="project-table" style={{marginBottom: 20}}>

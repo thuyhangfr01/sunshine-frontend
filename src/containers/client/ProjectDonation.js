@@ -5,10 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import {Button, Form, Input, InputNumber, Modal, Divider, Tabs, Space, Row, Col, Select, Spin} from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
+import moment from "moment";
+import vi from "moment/locale/vi";
+import dayjs from 'dayjs';
 import "./Project.scss";
 
 import  {retrieveListProjectName} from "../../slices/name";
-import  {createContribution, createArtifactByContribution} from "../../slices/contribution";
+import  {createContribution} from "../../slices/contribution";
 
 const { TextArea } = Input;
 const ProjectDonation = (props) => {
@@ -21,6 +24,7 @@ const ProjectDonation = (props) => {
     const [isNavigate, setIsNavigate] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const currentTime = moment().locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
     //get danh sach ten du an
     const listProjectName = useSelector((state) => state.name);
     const dispatch = useDispatch();
@@ -31,12 +35,19 @@ const ProjectDonation = (props) => {
     //get gia tri mac dinh cho form
     useEffect(() => {
         if(currentProject){
+            const artifact = dataSource?.map(data => {
+                return {
+                    artifactName: data.artifactName,
+                    donatedAmount: data.minQuantity,
+                    calculationUnit: data.calculationUnit
+                }
+            });
             const init = {
                 projectId: currentProject.id,
                 projectName: currentProject.name,
                 userId: currentUserId,
                 nickname: "Ẩn danh",
-                artifacts: dataSource
+                contributionArtifacts: artifact
             }
             setInitForm(init);
             form.setFieldsValue(init);
@@ -160,7 +171,7 @@ const ProjectDonation = (props) => {
                                         <Space key={field.key} style={{display: "flex"}} direction="horizontal">
                                             <Form.Item name={[field.name, "artifactName"]} label={`${index+1}- Hiện vật:`}  
                                                 rules={[{ required: true, message: "Vui lòng nhập tên hiện vật!" }]}>
-                                                <Input style={{width: 240}} placeholder='Tên hiện vật'/>
+                                                <Input style={{width: 275}} placeholder='Tên hiện vật'/>
                                             </Form.Item>
                                             <Form.Item style={{fontFamily: "Montserrat"}} name={[field.name, "donatedAmount"]}
                                                 rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}>
@@ -192,7 +203,7 @@ const ProjectDonation = (props) => {
                     </Row>
                 </Form>
             </Spin>
-      </Modal>
+        </Modal>
     )
 
 }

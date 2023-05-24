@@ -6,6 +6,8 @@ import typeReducer from "./slices/types";
 import statusReducer from "./slices/status";
 import nameReducer from "./slices/name";
 import contributionReducer from "./slices/contribution";
+import receiptPaymentReducer from "./slices/receiptPayment";
+import formReducer from "./slices/form";
 
 import {
     persistStore,
@@ -33,7 +35,9 @@ const rootReducer = combineReducers({
     types: typeReducer,
     status: statusReducer,
     name: nameReducer,
-    contributions: contributionReducer
+    contributions: contributionReducer,
+    receiptPayment: receiptPaymentReducer,
+    form: formReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 

@@ -1,7 +1,23 @@
 import http from "../http-common";
 
-const createContribution = (userId, projectId, nickname, messages, amountMoney, contributionArtifacts) => {
-    return http.post("/contribution", {userId, projectId, nickname, messages, amountMoney, contributionArtifacts});
+const getContributionsByProjectId = (id) => {
+    return http.get(`/contribution/project/${id}`);
+}
+
+const getContributionsByUserId = (id) => {
+    return http.get(`/contribution/user/${id}`);
+}
+
+const getContributionById = (id) => {
+    return http.get(`/contribution/${id}`);
+}
+
+const createContribution = (userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts) => {
+    return http.post("/contribution", {userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts});
+}
+
+const importContribution = (data) => {
+    return http.post("/contribution", data);
 }
 
 const createArtifactByContribution = (id, artifactName, donatedAmount, calculationUnit) => {
@@ -26,11 +42,15 @@ const removeContribution = (id) => {
 
 const ContributionService = {
     createContribution,
+    importContribution,
     createArtifactByContribution,
     updateAmountMoneyById,
     updateStatusMoney,
     removeContribution,
-    getArtifactsByContributionId
+    getArtifactsByContributionId,
+    getContributionsByProjectId,
+    getContributionsByUserId,
+    getContributionById
 }
 
 export default ContributionService;

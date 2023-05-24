@@ -24,6 +24,10 @@ const get = id => {
     return http.get(`/project/${id}`)
 }
 
+const getPaymentsByProjectId = id => {
+    return http.get(`/project/${id}/payment`)
+}
+
 const findByType = params => {
     return http.get("/type/projects", {params})
 }
@@ -52,6 +56,10 @@ const getTotalMoneyByProjectId = (id) => {
     return http.get(`/project/${id}/totalMoney`);
 };
 
+const getProjectPaymentById = (id) => {
+    return http.get(`/project/payment/${id}`);
+}
+
 const createProject = (name, details, typeId, numVolunteers, startTime, endTime, holdTime, position) => {
     return http.post("/project", {name, details, typeId, numVolunteers, startTime, endTime, holdTime, position});
 }
@@ -72,6 +80,10 @@ const createProofByProject = (id, name) => {
     return http.post(`/project/${id}/proof`, {name});
 }
 
+const createProjectPayment = (userId, projectId, amountMoney, reason) => {
+    return http.post(`/project/payment?amountMoney=${amountMoney}&projectId=${projectId}&reason=${reason}&userId=${userId}`);
+}
+
 const updateProject = (id, name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position) => {
     return http.put(`/project/${id}`, {name, details, typeId, numVolunteers, statusId, startTime, endTime, holdTime, position})
 }
@@ -90,6 +102,8 @@ const ProjectService = {
     getLatestProject,
     getTop5LatestProject,
     get,
+    getPaymentsByProjectId,
+    getProjectPaymentById,
     findByType,
     findByStatus,
     getAllImages,
@@ -102,6 +116,7 @@ const ProjectService = {
     createArtifactByProject,
     createImageByProject,
     createProofByProject,
+    createProjectPayment,
     updateProject,
     updateMoneyById,
     updateArtifactById

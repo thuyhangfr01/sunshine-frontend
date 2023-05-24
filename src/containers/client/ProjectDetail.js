@@ -17,6 +17,7 @@ import TablesLRight from "../../assets/images/tables_right_dec.png";
 import moment from "moment";
 import vi from "moment/locale/vi";
 import ProjectDonation from "./ProjectDonation";
+import ProjectVolunteer from "./ProjectVolunteer";
 
 const ProjectDetail = () => {
     let navigate = useNavigate();
@@ -37,6 +38,7 @@ const ProjectDetail = () => {
     const [proofs, setProofs] = useState([]);
 
     const [openModalProjectDonation, setOpenModalProjectDonation] = useState(false);
+    const [openModalProjectVolunteer, setOpenModalProjectVolunteer] = useState(false);
 
     const {user: currentUser} = useSelector((state) => (state.auth));
     const totalProj = useSelector((state) => state.projects)
@@ -194,6 +196,10 @@ const ProjectDetail = () => {
       }
     }
 
+    const handleShowModalVolunteer = () => {
+      setOpenModalProjectVolunteer(true);
+    }
+
     return (
         <div className="container" style={{fontFamily: 'Montserrat, sans-serif', marginTop: "30px", marginBottom: 100}}>
           <div className="container-title">
@@ -302,7 +308,7 @@ const ProjectDetail = () => {
                       {currentProject.numVolunteers === 0 || status !== "Đang vận động" ? 
                         <button type="button" className="btn btn-info" disabled>Đăng ký tình nguyện viên</button>  
                       : 
-                        <button type="button" className="btn btn-info">Đăng ký tình nguyện viên</button>  
+                        <button type="button" className="btn btn-info" onClick={handleShowModalVolunteer}>Đăng ký tình nguyện viên</button>  
                       }
 
                       {status === "Đang vận động" ?
@@ -375,6 +381,12 @@ const ProjectDetail = () => {
               currentProjectId = {currentProjectId}
               currentProject = {currentProject}
               dataSource = {dataSource}
+          />
+
+          <ProjectVolunteer
+             openModalProjectVolunteer = {openModalProjectVolunteer}
+             setOpenModalProjectVolunteer = {setOpenModalProjectVolunteer}
+             currentProject = {currentProject}
           />
         </div>
     )
