@@ -1,10 +1,8 @@
 import React from "react";
-import {Drawer, Descriptions, Badge, Image, Col, Card, Row} from "antd";
-import moment from "moment";
-import vi from "moment/locale/vi";
+import {Drawer, Descriptions} from "antd";
 
 const ContributionDetail = (props) => {
-    const {openViewContributionDetail, setOpenViewContributionDetail, dataViewContributionDetail} = props;
+    const {openViewContributionDetail} = props;
 
     const onClose = () => {
         props.setOpenViewContributionDetail(false)

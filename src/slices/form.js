@@ -14,11 +14,24 @@ export const getAllFormVolunteer = createAsyncThunk(
         return res.data;
     }
 )
-
+export const getAllFormVolunteerByProjectId = createAsyncThunk(
+    "form/getAllFormVolunteerByProjectId", 
+    async ({id}) => {
+        const res = await FormService.getAllFormVolunteerByProjectId(id);
+        return res.data;
+    }
+)
 export const createFormVolunteer = createAsyncThunk(
     "form/createFormVolunteer", 
-    async ({email, phone, projectId}) => {
-        const res = await FormService.createFormVolunteer(email, phone, projectId);
+    async ({fullName, email, phone, projectId}) => {
+        const res = await FormService.createFormVolunteer(fullName, email, phone, projectId);
+        return res.data;
+    }
+)
+export const updateStatusFormVolunteer= createAsyncThunk(
+    "form/updateStatusFormVolunteer", 
+    async ({id, fullName, email, phone, projectId, statusId}) => {
+        const res = await FormService.updateStatusFormVolunteer(id, fullName, email, phone, projectId, statusId);
         return res.data;
     }
 )
@@ -30,7 +43,6 @@ export const getAllFormHelp= createAsyncThunk(
         return res.data;
     }
 )
-
 export const createFormHelp = createAsyncThunk(
     "form/createFormHelp", 
     async ({fullName, email, phone, title, contents}) => {
@@ -38,7 +50,6 @@ export const createFormHelp = createAsyncThunk(
         return res.data;
     }
 )
-
 export const createImageByForm= createAsyncThunk(
     "form/createImageByForm", 
     async ({id, name}) => {
@@ -46,7 +57,6 @@ export const createImageByForm= createAsyncThunk(
         return res.data;
     }
 )
-
 export const updateStatusFormHelp= createAsyncThunk(
     "form/updateStatusFormHelp", 
     async ({id, fullName, email, phone, title, contents, statusId}) => {
@@ -62,8 +72,18 @@ const formSlice = createSlice({
         [getAllFormVolunteer.fulfilled]: (state, action) => {
             state.formVolunteer = [...action.payload];
         },
+        [getAllFormVolunteerByProjectId.fulfilled]: (state, action) => {
+            state.formVolunteer = [...action.payload];
+        },
         [createFormVolunteer.fulfilled]: (state, action) => {
             state.formVolunteer = action.payload;
+        },
+        [updateStatusFormVolunteer.fulfilled]: (state, action) => {
+            const index = state.formVolunteer.findIndex(a => a.id === action.payload.id);
+            state.formVolunteer[index] = {
+                ...state.formVolunteer[index],
+                ...action.payload
+            }
         },
         [getAllFormHelp.fulfilled]: (state, action) => {
             state.formHelp = [...action.payload];

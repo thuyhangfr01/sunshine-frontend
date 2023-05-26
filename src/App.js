@@ -18,6 +18,7 @@ import About from './pages/client/About';
 import ProjectDetail from './containers/client/ProjectDetail';
 import ProjectDonation from './containers/client/ProjectDonation';
 import Project from './pages/client/Project';
+import Report from './pages/client/Report';
 import Contact from './pages/client/Contact';
 import NotFound from './components/error/NotFound';
 import ProjectDonationCarts from "./containers/client/ProjectDonationCarts";
@@ -30,8 +31,10 @@ import AdminPage from "./pages/admin/AdminPage";
 import UserManagement from "./pages/admin/User/UserManagement";
 import ProjectManagement from "./pages/admin/Project/ProjectManagement";
 import ReceiptPayment from "./pages/admin/Payment/ReceiptPayment";
+import ReportList from "./pages/admin/Report/ReportList";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
 import FormHelpManagement from './pages/admin/Form/FormHelp';
+import FormVolunteerManagement from './pages/admin/Form/FormVolunteer';
 import Loading from './components/loading/Loading';
 
 import locale from 'antd/locale/vi_VN';
@@ -74,6 +77,10 @@ export default function App() {
         {
           path: "project/donations",
           element: <ProjectDonation/>,
+        },
+        {
+          path: "reports",
+          element: <Report/>,
         },
         {
           path: "order",
@@ -130,10 +137,24 @@ export default function App() {
           // {/* </ProtectedRoute> */}
         },
         {
+          path: "report",
+          element: 
+          // <ProtectedRoute>
+          <ReportList />
+          // {/* </ProtectedRoute> */}
+        },
+        {
           path: "help",
           element: 
           // <ProtectedRoute>
           <FormHelpManagement />
+          // {/* </ProtectedRoute> */}
+        },
+        {
+          path: "volunteer",
+          element: 
+          // <ProtectedRoute>
+          <FormVolunteerManagement />
           // {/* </ProtectedRoute> */}
         },
       ],

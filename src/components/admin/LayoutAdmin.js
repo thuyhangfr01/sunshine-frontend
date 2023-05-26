@@ -75,7 +75,7 @@ const items = [
                 icon: <SaveOutlined />,
             },
             {
-                label: <Link to='/admin/receiptPayment'>Cập nhật báo cáo</Link>,
+                label: <Link to='/admin/report'>Cập nhật báo cáo</Link>,
                 key: 'report',
                 icon: <SaveOutlined />,
             },

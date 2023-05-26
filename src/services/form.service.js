@@ -3,8 +3,14 @@ import http from "../http-common";
 const getAllFormVolunteer = () => {
     return http.get("/latestFormVolunteer")
 }
+const getAllFormVolunteerByProjectId = (id) => {
+    return http.get(`/latestFormVolunteer/project/${id}`)
+}
 const createFormVolunteer = (email, phone, projectId) => {
     return http.post("/formVolunteer", {email, phone, projectId});
+}
+const updateStatusFormVolunteer = (id, fullName, email, phone, projectId, statusId) => {
+    return http.put(`/formVolunteer/${id}/status`, {id, fullName, email, phone, projectId, statusId});
 }
 
 const getAllFormHelp = () => {
@@ -22,7 +28,9 @@ const updateStatusFormHelp = (id, fullName, email, phone, title, contents, statu
 
 const FormService = {
     getAllFormVolunteer,
+    getAllFormVolunteerByProjectId,
     createFormVolunteer,
+    updateStatusFormVolunteer,
     getAllFormHelp,
     createFormHelp,
     createImageByForm,

@@ -1,8 +1,8 @@
-function Report() {
+import ReportContainer from "../../containers/client/Report";
+
+const Report = () => {
     return (
-        <div>
-            <h1>report page</h1>
-        </div>
+        <ReportContainer/>
     )
 }
 

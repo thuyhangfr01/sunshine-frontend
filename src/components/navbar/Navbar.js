@@ -83,7 +83,7 @@ export default function Navbar() {
                                             <NavLink to="/project" className="n-item" >CHƯƠNG TRÌNH</NavLink>
                                         </li>
                                         <li className="scroll-to-section">
-                                            <NavLink to="/report" className="n-item" >BÁO CÁO TÀI CHÍNH</NavLink>
+                                            <NavLink to="/reports" className="n-item" >BÁO CÁO TÀI CHÍNH</NavLink>
                                         </li>
                                         <li className="scroll-to-section">
                                             <NavLink to="/contact" className="n-item" >LIÊN HỆ</NavLink>
