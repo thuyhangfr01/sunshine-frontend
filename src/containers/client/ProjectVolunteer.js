@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
-import {Modal, Form, Spin, Button, Row, Col, Input, Select} from 'antd';
+import {Modal, Form, Spin, Button, Row, Col, Input} from 'antd';
 import { toast } from 'react-toastify';
 
 import  {createFormVolunteer, getAllFormVolunteer} from "../../slices/form";
@@ -33,6 +33,7 @@ const ProjectVolunteer = (props) => {
     useEffect(() => {
         if(currentUser){
             const init = {
+                fullName: currentUser.name,
                 email: currentUser.email,
                 phone: currentUser.phone,
                 projectId: currentProject.id,
@@ -46,18 +47,20 @@ const ProjectVolunteer = (props) => {
         }
     }, [currentProject])
 
-    const checkValidate = (_email, _phone, _projectName) => {
-        return listForm.some(obj => obj.email.trim() === _email.trim() && obj.phone.trim() === _phone.trim() && 
+    const checkValidate = (_fullName, _email, _phone, _projectName) => {
+        return listForm.some(obj => obj.fullName.trim() === _fullName.trim() &&
+            obj.email.trim() === _email.trim() && 
+            obj.phone.trim() === _phone.trim() && 
             obj.projectName.trim() === _projectName.trim())
     }
     
     const onFinish = async (values) => {
-        const { email, phone, projectId, projectName } = values;
+        const { fullName, email, phone, projectId, projectName } = values;
         setIsSubmit(true)
         setLoading(true);
         //check xem da ton tai don dang ky chua
-        if(!checkValidate(email, phone, projectName)){
-            dispatch(createFormVolunteer({ email, phone, projectId }))
+        if(!checkValidate(fullName, email, phone, projectName)){
+            dispatch(createFormVolunteer({ fullName, email, phone, projectId }))
                 .unwrap()
                 .then(data => {
                     console.log("dataaa: " + JSON.stringify(data));
@@ -110,6 +113,13 @@ const ProjectVolunteer = (props) => {
                     layout="horizontal"
                     onFinish={onFinish}>
                     <Row>
+                        {/* fullName */}
+                        <Col span={24}>
+                            <Form.Item name="fullName" labelCol={{ span: 24 }} label="Họ và tên:"
+                                rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
+                                <Input></Input>
+                            </Form.Item>
+                        </Col>
                         {/* email */}
                         <Col span={24}>
                             <Form.Item name="email" labelCol={{ span: 24 }} label="Email:"

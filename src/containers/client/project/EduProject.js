@@ -7,7 +7,7 @@ import { responsive, EduProjectItems } from './EduProjectItems';
 function EduProject(){
     return (
         <div style={{fontFamily: 'Montserrat, sans-serif'}}>
-            <div className="projects section" id="projects">
+            <div className="projects-section" id="projects">
                 <div className="container" style={{marginTop: "-30px"}}>
                     <div className="container-title">
                         <div className="section-heading row">

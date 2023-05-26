@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./ReceiptPayment.scss"
 import {Spin, Table, Select, Row, Col, DatePicker, Card, Statistic, Button} from 'antd';
@@ -241,11 +241,11 @@ const ReceiptPayment = () => {
                 <Button 
                     onClick={() => setShowModalImport(true)}
                     style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
-                    <ExportOutlined /> Import</Button>
+                    <ImportOutlined/> Import</Button>
                 <Button
                     onClick={() => handleExportPdf(dataPdf)}
                      style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
-                    <ImportOutlined /> Export</Button>
+                    <ExportOutlined /> Export</Button>
                 <Button
                      style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
                     <PlusOutlined /> Thêm phiếu chi</Button>

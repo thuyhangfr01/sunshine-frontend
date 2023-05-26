@@ -4,7 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import ProjectDataService from "../../services/project.service";
-import {retrieveProjs, getTotalMoneyByProjectId} from "../../slices/projects";
+import {retrieveProjs} from "../../slices/projects";
+import {getContributionsByProjectId} from "../../slices/contribution";
 
 import "./Project.scss";
 import {Tabs, Row, Col, Carousel, Button} from "antd";
@@ -58,6 +59,78 @@ const ProjectDetail = () => {
       }
     ];
     const [dataSource, setDataSource] = useState([]);
+
+    //sort createdAt
+    const compareTime = (a, b) => {
+      if(a<b){
+          return -1;
+      }
+      if(a>b){
+          return 1;
+      }
+      return 0;
+    }
+
+    const columnsReport = [
+        {
+            title: "STT",
+            key: "index",
+            render: (text, record, index) => (index + 1),
+        },
+        {
+          title: 'Mã đóng góp',
+          dataIndex: 'id',
+          render: (text, record, index) => {
+            return (<p>{text}</p>)
+          },
+        },
+        {
+          title: 'Người gửi',
+          dataIndex: 'nickname',
+          render: (text, record, index) => {
+            return (<p style={{fontSize: 14}}>{text}</p>)
+          }
+        },
+        {
+          title: 'Lời nhắn',
+          dataIndex: 'messages',
+          render: (text, record, index) => {
+            return (<p style={{fontSize: 15, fontWeight: 500}}>{text}</p>)
+          }
+        },
+        {
+          title: 'Số tiền',
+          dataIndex: 'contributionMoney',
+          render: (text, record, index) => {
+            return {
+              props: { style: { fontSize: 15, fontWeight: 500 }},
+              children: text.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})
+            }
+          }
+        },
+        {
+            title: 'Thời gian',
+            dataIndex: 'createdAt',
+            render: (text, record, index) => {
+              return {
+                props: { style: { fontSize: 15, fontWeight: 500 }},
+                children: moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
+              };
+            },
+            sorter: (a,b) => compareTime(a.createdAt, b.createdAt),
+        },
+      ];
+    const [dataSourceReport, setDataSourceReport] = useState([]);
+
+    //lay ra tat ca don dong gop
+    const getContributions = () => {
+      const id = currentProjectId;
+      dispatch(getContributionsByProjectId({id}))
+        .then((res) => {
+          setDataSourceReport(res.payload);
+        })
+    }
+    useEffect(getContributions, [currentProjectId]);
 
     //lay tat ca project
     useEffect(() => {
@@ -142,12 +215,9 @@ const ProjectDetail = () => {
     const setValueProgressBar = () => {
       const a = money;
       const b = totalMoney;
-      if(a !== 0)
+      if(a && b && a !== 0 && a !== NaN && b !== NaN)
         setPer((b/a)*100);
     }
-
-    console.log("per: " + per);
-
     useEffect(() => {
       if (currentProjectId){
         getCurrentProject(currentProjectId);
@@ -156,10 +226,13 @@ const ProjectDetail = () => {
         getAllArtifacts(currentProjectId);
         getAllProofs(currentProjectId);
         getTotalMoney(currentProjectId);
-        setValueProgressBar();
       }
     }, [currentProjectId]);
-    
+    useEffect(() => {
+      if(money && totalMoney) {
+        setValueProgressBar();
+      }
+    }, [money, totalMoney]);
     //lay ra index phia truoc cua project
     const getPrevCurrent = () => {
       const prevIndex = (totalProj.findIndex(proj => proj.id === currentProject.id)) - 1;
@@ -351,26 +424,27 @@ const ProjectDetail = () => {
                   </Col>
                 </Row>
 
-                {proofs.map((proof, index) => (
-                  <Row key={index} className="project-row6">
+                
+                  <Row className="project-row6">
                     <Divider  orientation="left" orientationMargin="0"> 
                     <p className="project-title"><img src={icSunBlue}/>Hình ảnh dự án được triển khai</p></Divider>
-                    <Image.PreviewGroup className="project-proof"
-                      // preview={{
-                      //   onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
-                      // }}
-                    >
-                      <Image src={proof.name} />
-                    </Image.PreviewGroup>
+                    {proofs.map((proof, index) => (
+                      <Image.PreviewGroup key={index} className="project-proof">
+                        <Image src={proof.name} style={{height: 240, width: 285}}/>
+                      </Image.PreviewGroup>
+                      ))
+                    }
                   </Row>
-                ))
-                }
                 </>
               }
             </Tabs.TabPane>
 
             <Tabs.TabPane tab="Tiến độ ủng hộ" key="tab2">
-              <p className="project-tab" ><img src={icSunRed}/>Trụ cột bất ngờ gặp nạn, gia đình khó khăn chồng chất</p>
+              <Spin spinning={loading}>
+                <Table columns={columnsReport} dataSource={dataSourceReport}
+                    style={{marginTop: 20}}
+                    pagination={false}/>
+              </Spin>
             </Tabs.TabPane>
           </Tabs>
 
