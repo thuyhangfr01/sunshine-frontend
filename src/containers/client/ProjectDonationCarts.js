@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {Row, Col, Card, InputNumber, Table, Radio, Space, Button, Result, Popconfirm } from "antd";
 import {DeleteFilled} from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {updateAmountMoneyById, removeContribution, updateStatusMoney } from "../../slices/contribution";
 import {createPayment} from "../../slices/payment";
 
 const ProjectDonationCarts = () => {
     let navigate = useNavigate();
-    const contributions = useSelector((state) => state.contributions.contributions);
+
+    const contributions = useSelector((state) => state.contributions.contributionDonation);
     const dispatch = useDispatch();
     const [sumMoney, setSumMoney] = useState(0);
     const [showCart, setShowCart] = useState(false);
@@ -117,11 +118,11 @@ const ProjectDonationCarts = () => {
                                         onConfirm={handleDelete(contribution)}
                                         onText="Xác nhận"
                                         cancelText="Hủy">
-                                            <DeleteFilled 
+                                            <DeleteFilled onClick={() => handleDelete(contribution)}
                                                 style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px", cursor: "pointer"}}/>
                                     </Popconfirm>
                                 </div>
-                                {contribution.contributionArtifacts !== null && 
+                                {contribution.contributionArtifacts.length !== 0 && 
                                     <div className="project-table" style={{marginBottom: 20}}>
                                     <Table pagination={false} className="project-artifact" columns={columns} dataSource={contribution.contributionArtifacts}/>
                                     </div>

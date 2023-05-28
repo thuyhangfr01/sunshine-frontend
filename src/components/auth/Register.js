@@ -82,7 +82,8 @@ let navigate = useNavigate();
                   <div className="row no-gutters">
                       <div className="col d-none d-lg-flex" style={{backgroundImage: `url(${Cover})`}}>
                           <div className="logo">
-                            <img src={LogoTextMin} alt="logo" style={{width: '220px', marginTop: '40px'}} />
+                            <img src={LogoTextMin} alt="logo" style={{width: '220px', marginTop: '40px', cursor: "pointer"}} 
+                              onClick={() => {navigate("/home");}}/>
                           </div>
                           <div>
                             <h3 style={{fontSize: '18px', fontWeight: '600', marginBottom: "10px"}}>Chào bạn,</h3>
@@ -104,7 +105,7 @@ let navigate = useNavigate();
                               <div className="col-md-10 offset-md-1">
                                   <div className="text-lg-left" style={{marginTop: "10px", marginBottom: "30px"}}>
                                     <h3 className="font-weight-bold" style={{fontWeight: '600'}}>Đăng ký</h3>
-                                    <p className="text-muted" style={{fontSize: '16px'}}>Vui lòng nhập đầy đủ thông tin để tạo tài khoản mới</p>
+                                    <p className="text-muted" style={{fontSize: '16px', marginTop: 5}}>Vui lòng nhập đầy đủ thông tin để tạo tài khoản mới</p>
                                   </div>
                                   <Formik
                                     initialValues={initialValues}

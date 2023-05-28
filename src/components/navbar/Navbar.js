@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Navbar() {
     let navigate = useNavigate();
     const contributions = useSelector((state) => state.contributions)
-    const data = contributions.contributions;
+    const data = contributions.contributionDonation;
     let counter = Object.keys(data).length;
     // for(let i = 0; i < data.lenght; i++){
     //     counter++;
@@ -69,8 +69,8 @@ export default function Navbar() {
                         <div className="row">
                             <div className="col-12">
                                 <nav className="main-nav">
-                                    <a href="index.html" className="logo">
-                                        <img src={LogoCut} style={{ heigh: "60px !important"}}/>
+                                    <a className="logo">
+                                        <img src={LogoCut} style={{ heigh: "60px !important", cursor: "pointer"}}  onClick={() => {navigate("/home");}}/>
                                     </a>
                                     <ul className="nav">
                                         <li className="scroll-to-section">
