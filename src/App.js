@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {ConfigProvider} from "antd";
 
 import { ToastContainer } from 'react-toastify';
@@ -50,7 +51,6 @@ const Layout = () => {
 }
 
 export default function App() {
-  // const dispatch = useDispatch();
   const {showLoading, isLogginIn} = useSelector(state => state.auth);
 
   const router = createBrowserRouter([
@@ -199,6 +199,6 @@ export default function App() {
           :
           <Loading />
       }
-    </>
+      </>
   )
 }

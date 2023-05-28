@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { login } from "../../slices/auth";
@@ -17,7 +18,7 @@ import { toast } from 'react-toastify';
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
 const Login = () => {
-
+  let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const {isLoggedIn} = useSelector((state) => state.auth);
@@ -78,7 +79,8 @@ const Login = () => {
                     <div className="row no-gutters">
                       <div className="col d-none d-lg-flex" style={{backgroundImage: `url(${Cover})` }}>
                           <div className="logo">
-                              <img src={LogoTextMin} alt="logo"/>
+                              <img src={LogoTextMin} alt="logo" style={{cursor: "pointer"}}
+                                onClick={() => {navigate("/home");}}/>
                           </div>
                           <div>
                               <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
@@ -103,7 +105,7 @@ const Login = () => {
                                   </div>
                                   <div className="my-5 text-lg-left">
                                       <h3 className="font-weight-bold" style={{fontWeight: '600'}}>Đăng nhập</h3>
-                                      <p className="text-muted" style={{fontSize: '16px'}}>Vui lòng đăng nhập để tiếp tục</p>
+                                      <p className="text-muted" style={{fontSize: '16px', marginTop: 5}}>Vui lòng đăng nhập để tiếp tục</p>
                                   </div>
                                   <Formik
                                      initialValues={initialValues}

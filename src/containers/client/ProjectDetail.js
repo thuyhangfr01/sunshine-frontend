@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import ProjectDataService from "../../services/project.service";
 import {retrieveProjs} from "../../slices/projects";
-import {getContributionsByProjectId} from "../../slices/contribution";
+import {getContributionsByProjectIdByStatus} from "../../slices/contribution";
 
 import "./Project.scss";
 import {Tabs, Row, Col, Carousel, Button} from "antd";
@@ -125,7 +125,7 @@ const ProjectDetail = () => {
     //lay ra tat ca don dong gop
     const getContributions = () => {
       const id = currentProjectId;
-      dispatch(getContributionsByProjectId({id}))
+      dispatch(getContributionsByProjectIdByStatus({id}))
         .then((res) => {
           setDataSourceReport(res.payload);
         })
@@ -455,6 +455,8 @@ const ProjectDetail = () => {
               currentProjectId = {currentProjectId}
               currentProject = {currentProject}
               dataSource = {dataSource}
+              totalMoney = {totalMoney}
+              money = {money}
           />
 
           <ProjectVolunteer

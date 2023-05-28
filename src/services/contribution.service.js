@@ -4,6 +4,10 @@ const getContributionsByProjectId = (id) => {
     return http.get(`/contribution/project/${id}`);
 }
 
+const getContributionsByProjectIdByStatus = (id) => {
+    return http.get(`/contribution/project/${id}/status`);
+}
+
 const getContributionsByUserId = (id) => {
     return http.get(`/contribution/user/${id}`);
 }
@@ -49,6 +53,7 @@ const ContributionService = {
     removeContribution,
     getArtifactsByContributionId,
     getContributionsByProjectId,
+    getContributionsByProjectIdByStatus,
     getContributionsByUserId,
     getContributionById
 }

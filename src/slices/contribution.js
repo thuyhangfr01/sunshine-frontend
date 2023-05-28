@@ -3,22 +3,24 @@ import ContributionService from '../services/contribution.service'
 
 const initialState = {
     contributions: [],
+    contributionDonation: [],
     artifacts: [],
     contributionsByUser: [],
+    contributionsByProject: []
 };
-
-const contributionArtifacts = [
-    {
-        artifactName: "",
-        calculationUnit: "",
-        donatedAmount: 0
-    }
-]
 
 export const getContributionsByProjectId = createAsyncThunk(
     "contribution/getContributionsByProjectId",
     async ({id}) => {
         const res = await ContributionService.getContributionsByProjectId(id);
+        return res.data;
+    }
+)
+
+export const getContributionsByProjectIdByStatus = createAsyncThunk(
+    "contribution/getContributionsByProjectIdByStatus",
+    async ({id}) => {
+        const res = await ContributionService.getContributionsByProjectIdByStatus(id);
         return res.data;
     }
 )
@@ -101,7 +103,10 @@ const contributionSlice = createSlice({
     initialState,
     extraReducers: {
         [getContributionsByProjectId.fulfilled]: (state, action) => {
-            state.contributions = [...action.payload];
+            state.contributionsByProject = [...action.payload];
+        },
+        [getContributionsByProjectIdByStatus.fulfilled]: (state, action) => {
+            state.contributionsByProject = [...action.payload];
         },
         [getContributionsByUserId.fulfilled]: (state, action) => {
             state.contributionsByUser = [...action.payload];
@@ -110,7 +115,7 @@ const contributionSlice = createSlice({
             state.contributions = [...action.payload];
         },
         [createContribution.fulfilled]: (state, action) => {
-            state.contributions = [...state.contributions, action.payload];
+            state.contributionDonation = [...state.contributions, action.payload];
         },
         [importContribution.fulfilled]: (state, action) => {
             state.contributions = [...state.contributions, action.payload];
@@ -119,24 +124,24 @@ const contributionSlice = createSlice({
             state.artifacts = action.payload;
         },
         [updateAmountMoneyById.fulfilled]: (state, action) => {
-            let index = state.contributions.findIndex(c => c.contributionMoney.id === action.payload.moneyId);
+            let index = state.contributionDonation.findIndex(c => c.contributionMoney.id === action.payload.moneyId);
             if(index > -1){
-                state.contributions[index].amountMoney = action.payload.amountMoney;
-                state.contributions[index].contributionMoney.amountMoney = action.payload.amountMoney;
+                state.contributionDonation[index].amountMoney = action.payload.amountMoney;
+                state.contributionDonation[index].contributionMoney.amountMoney = action.payload.amountMoney;
             } 
         }, 
         [updateStatusMoney.fulfilled]: (state, action) => {
-            let index = state.contributions.findIndex(c => c.contributionMoney.id === action.payload.moneyId);
+            let index = state.contributionDonation.findIndex(c => c.contributionMoney.id === action.payload.moneyId);
             if(index > -1){
-                state.contributions[index].statusMoneyId = action.payload.statusId;
-                state.contributions[index].contributionMoney.mcontributionStatus.id = action.payload.statusId;
+                state.contributionDonation[index].statusMoneyId = action.payload.statusId;
+                state.contributionDonation[index].contributionMoney.mcontributionStatus.id = action.payload.statusId;
             } 
         }, 
         [getArtifactsByContributionId.fulfilled]: (state, action) => {
             state.artifacts = [...action.payload];
         },
         [removeContribution.fulfilled]: (state, action) => {
-            state.contributions = state.contributions.filter(c => c.id !== action.payload.id);
+            state.contributionDonation = state.contributionDonation.filter(c => c.id !== action.payload.id);
             console.log("idddddddđ: " + action.payload.id)
         },
     }

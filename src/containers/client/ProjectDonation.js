@@ -2,12 +2,9 @@ import React from 'react';
 import {useEffect, useState} from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {Button, Form, Input, InputNumber, Modal, Divider, Tabs, Space, Row, Col, Select, Spin} from 'antd';
+import {Button, Form, Input, InputNumber, Modal, Divider, Space, Row, Col, Select, Spin} from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
-import moment from "moment";
-import vi from "moment/locale/vi";
-import dayjs from 'dayjs';
 import "./Project.scss";
 
 import  {retrieveListProjectName} from "../../slices/name";
@@ -16,7 +13,7 @@ import  {createContribution} from "../../slices/contribution";
 const { TextArea } = Input;
 const ProjectDonation = (props) => {
     let navigate = useNavigate();
-    const {openModalProjectDonation, setOpenModalProjectDonation, currentUserId, currentProject, dataSource} = props;
+    const {openModalProjectDonation, setOpenModalProjectDonation, currentUserId, currentProject, dataSource, totalMoney, money} = props;
     
     const [form] = Form.useForm();
     const [initForm, setInitForm] = useState(null);
@@ -24,7 +21,6 @@ const ProjectDonation = (props) => {
     const [isNavigate, setIsNavigate] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const currentTime = moment().locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
     //get danh sach ten du an
     const listProjectName = useSelector((state) => state.name);
     const dispatch = useDispatch();
@@ -70,7 +66,8 @@ const ProjectDonation = (props) => {
             toast.success("Thêm đơn đóng góp thành công!");
             setIsSubmit(false);
             if(isNavigate === true) {
-                navigate("/order");
+                // navigate("/order");
+                navigate('/order');
             }
             form.resetFields();
             props.setOpenModalProjectDonation(false);
