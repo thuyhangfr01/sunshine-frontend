@@ -20,8 +20,8 @@ const createContribution = (userId, projectId, nickname, messages, amountMoney, 
     return http.post("/contribution", {userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts});
 }
 
-const importContribution = (data) => {
-    return http.post("/contribution", data);
+const importContribution = (userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts) => {
+    return http.post("/contributionImport", {userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts});
 }
 
 const createArtifactByContribution = (id, artifactName, donatedAmount, calculationUnit) => {

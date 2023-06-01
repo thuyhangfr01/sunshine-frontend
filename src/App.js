@@ -32,7 +32,6 @@ import AdminPage from "./pages/admin/AdminPage";
 import UserManagement from "./pages/admin/User/UserManagement";
 import ProjectManagement from "./pages/admin/Project/ProjectManagement";
 import ReceiptPayment from "./pages/admin/ReceiptPayment/ReceiptPayment";
-import ReportList from "./pages/admin/Report/ReportList";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
 import FormHelpManagement from './pages/admin/Form/FormHelp';
 import FormVolunteerManagement from './pages/admin/Form/FormVolunteer';
@@ -134,13 +133,6 @@ export default function App() {
           element: 
           // <ProtectedRoute>
           <ReceiptPayment />
-          // {/* </ProtectedRoute> */}
-        },
-        {
-          path: "report",
-          element: 
-          // <ProtectedRoute>
-          <ReportList />
           // {/* </ProtectedRoute> */}
         },
         {

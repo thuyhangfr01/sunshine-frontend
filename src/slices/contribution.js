@@ -52,8 +52,8 @@ export const createContribution = createAsyncThunk(
 
 export const importContribution = createAsyncThunk(
     "contribution/importContribution", 
-    async (data) => {
-        const res = await ContributionService.createContribution(data);
+    async ({userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts}) => {
+        const res = await ContributionService.importContribution(userId, projectId, nickname, messages, amountMoney, createdAt, paymentType, contributionArtifacts);
         return res.data;
     }
 )
@@ -107,7 +107,7 @@ const contributionSlice = createSlice({
             state.contributionsByProject = [...action.payload];
         },
         [getContributionsByProjectIdByStatus.fulfilled]: (state, action) => {
-            state.contributionsByProject = [...action.payload];
+            state.contributionsByProject = action.payload;
         },
         [getContributionsByUserId.fulfilled]: (state, action) => {
             state.contributionsByUser = [...action.payload];
@@ -116,11 +116,10 @@ const contributionSlice = createSlice({
             state.contributions = [...action.payload];
         },
         [createContribution.fulfilled]: (state, action) => {
-            // state.contributionDonation = [...state.contributions, action.payload];
-            state.contributionImport.push(action.payload);
+            state.contributionDonation = [...state.contributions, action.payload];    
         },
         [importContribution.fulfilled]: (state, action) => {
-            state.contributions = [...state.contributions, action.payload];
+            state.contributionImport.push(action.payload);
         },
         [createArtifactByContribution.fulfilled]: (state, action) => {
             state.artifacts = action.payload;
