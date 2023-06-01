@@ -7,21 +7,19 @@ import ProjectDataService from "../../services/project.service";
 import { retrieveStatus } from "../../slices/status";
 import { retrieveTypes } from "../../slices/types";
 
-import BeatLoader from "react-spinners/BeatLoader";
 import "./Project.scss";
-import {Row, Col} from "antd";
+import {Row, Col, Divider} from "antd";
+import moment from "moment";
+import vi from "moment/locale/vi";
 
 const ProjectList = () => {
     let navigate = useNavigate();
-    const [loading, setLoading] = useState(true)
-    const [loadingProject, setLoadingProject] = useState(true);
 
     const [projects, setProjects] = useState([]);
     const [searchName, setSearchName] = useState("");
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(6);
-    const pageSizes =[6,9,12,15];
 
     const typesList = useSelector((state) => state.types);
     const [typeId, setTypeId] = useState(-1);
@@ -50,7 +48,6 @@ const ProjectList = () => {
     }
     
     const handleFilterByType = (id) => {
-        setLoadingProject(true);
         setTypeId(id);
     }
 
@@ -59,15 +56,13 @@ const ProjectList = () => {
         ProjectDataService.findByType(params)
             .then((response) => {
                 const {projects, totalPages} = response.data;
-
-                setLoadingProject(false);
+                // setLoadingProject(false);
                 setProjects(projects);
                 setCount(totalPages);
                 console.log(response.data);
             })
             .catch((e) => {
                 console.log(e);
-                setLoadingProject(true);
             })
     }
 
@@ -89,7 +84,6 @@ const ProjectList = () => {
     }
     
     const handleFilterByStatus = (id) => {
-        setLoadingProject(true);
         setStatusId(id);
     }
 
@@ -98,15 +92,12 @@ const ProjectList = () => {
         ProjectDataService.findByStatus(params)
             .then((response) => {
                 const {projects, totalPages} = response.data;
-
-                setLoadingProject(false);
                 setProjects(projects);
                 setCount(totalPages);
                 console.log(response.data);
             })
             .catch((e) => {
                 console.log(e);
-                setLoadingProject(true);
             })
     }
 
@@ -114,7 +105,6 @@ const ProjectList = () => {
 
     //lay gia tri trong o tim kiem
     const onChangeSearchName = (e) => {
-        // setLoading(true);
         const searchName = e.target.value;
         setSearchName(searchName);
     }
@@ -140,30 +130,26 @@ const ProjectList = () => {
         ProjectDataService.getAll(params)
             .then((response) => {
                 const {projects, totalPages} = response.data;
-
-                setLoading(false);
                 setProjects(projects);
                 setCount(totalPages);
                 console.log(response.data);
             })
             .catch((e) => {
                 console.log(e);
-                setLoading(true);
             })
     }
 
     useEffect(retrieveProjects, [searchName, page, pageSize]);
 
     const handlePageChange = (event, value) => {
-        setLoading(true);
         setPage(value);
     }
 
-    const handlePageSizeChange = (event) => {
-        setLoading(true);
-        setPageSize(event.target.value);
-        setPage(1);
-    }
+    // const handlePageSizeChange = (event) => {
+    //     setLoading(true);
+    //     setPageSize(event.target.value);
+    //     setPage(1);
+    // }
 
     const handleSubmit = (id) => {
         navigate("/project/" + id);
@@ -184,166 +170,153 @@ const ProjectList = () => {
                             </div>
                         </div>
                     </div>
-                    {loading ? 
-                        <div style={{height: 300}}>
-                            <BeatLoader
-                                color="#17709b"
-                                loading={loading}
-                                size={15}
-                                cssOverride={{marginLeft: "50%", marginTop: "20%"}}
-                            ></BeatLoader> 
-                        </div>
-                    : 
-                    <>
-                        <div className="container" style={{paddingLeft: 30, paddingTop: 30}}>
-                            <Row>
-                                <Col span={18}>
-                                    <div className="input-group" style={{fontFamily: "Montserrat"}}>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Tìm kiếm tên dự án bạn muốn..."
-                                            value={searchName}
-                                            onChange={onChangeSearchName}
-                                            style={{fontSize: 15, fontWeight: 400, borderRadius: 5, border: "1px solid #e1e1e1", marginRight: 7}}
-                                        />
-                                        <div className="input-group-append">
-                                            <button
-                                            className="btn btn-primary"
-                                            type="button"
-                                            onClick={retrieveProjects}
-                                            style={{fontSize: 15, fontWeight: 500, border: "none", backgroundColor: "#4773b5"}}>
-                                            Search
-                                            </button>
-                                        </div>
+                    <div className="container" style={{paddingLeft: 30, paddingTop: 30}}>
+                        <Row>
+                            <Col span={18}>
+                                <div className="input-group" style={{fontFamily: "Montserrat"}}>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Tìm kiếm tên dự án bạn muốn..."
+                                        value={searchName}
+                                        onChange={onChangeSearchName}
+                                        style={{fontSize: 15, fontWeight: 400, borderRadius: 5, border: "1px solid #e1e1e1", marginRight: 7}}
+                                    />
+                                    <div className="input-group-append">
+                                        <button
+                                        className="btn btn-primary"
+                                        type="button"
+                                        onClick={retrieveProjects}
+                                        style={{fontSize: 15, fontWeight: 500, border: "none", backgroundColor: "#4773b5"}}>
+                                        Search
+                                        </button>
                                     </div>
-                                </Col>
-                                <Col span={6} style={{fontFamily: "Montserrat"}}>
-                                    <div style={{float: "right"}}>
-                                        <div style={{display: "flex"}}>
-                                            <p style={{fontSize: 15, fontWeight: 500, color: "#4773b5"}}>Số dự án:</p>
-                                            <select onChange={handlePageSizeChange} value={pageSize}
-                                                style={{
-                                                    height: 30, width: 50, textAlignLast: "center", color: "#084298", fontWeight: "600", border: "1px solid #2f74b5", borderRadius: 5
-                                                }}>
-                                                {pageSizes.map((size) => (
-                                                    <option key={size} value={size}>
-                                                    {size}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                </div>
+                            </Col>
+                            <Col span={6} style={{fontFamily: "Montserrat", marginTop: 8}}>
+                                <div style={{ display: "flex", float: "right", marginLeft: 20}}>
+                                    {/* <div style={{display: "flex"}}>
+                                        <p style={{fontSize: 15, fontWeight: 500, color: "#4773b5"}}>Số dự án:</p>
+                                        <select onChange={handlePageSizeChange} value={pageSize}
+                                            style={{
+                                                height: 30, width: 50, textAlignLast: "center", color: "#084298", fontWeight: "600", border: "1px solid #2f74b5", borderRadius: 5, marginLeft: 10
+                                            }}>
+                                            {pageSizes.map((size) => (
+                                                <option key={size} value={size}>
+                                                {size}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div> */}
+                                    <Pagination
+                                    style={{fontFamily: "Montserrat"}}
+                                    count={count}
+                                    page={page}
+                                    siblingCount={1}
+                                    boundaryCount={1}
+                                    variant="outlined"
+                                    shape="rounded"
+                                    onChange={handlePageChange}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                    <div className="container" style={{paddingTop: 50}}>
+                        <Row>
+                            <Col span={20}>
+                                <div className='project-list' style={{marginLeft: "-22px"}}>
+                                    {projects && projects.map((project, index) => (
+                                    <div key={index} className='project-card'>
+                                        <div className='project-img-card'>
+                                            <img className='project-img' src={project.projectImages[0].name}/>
+                                            {(() => {
+                                                if (project.projectStatus.name === "Đang vận động" ) {
+                                                return (
+                                                    <>
+                                                        <p className='status-hover-pending' style={{width: "312px !important"}}>{project.projectStatus.name}</p>
+                                                        <p className='line-pending'></p>
+                                                    </>
+                                                )
+                                                } else if (project.projectStatus.name === "Đã hoàn thành") {
+                                                return (
+                                                    <>
+                                                        <p className='status-hover-success' style={{width: "312px !important"}}>{project.projectStatus.name}</p>
+                                                        <p className='line-success'></p>
+                                                    </>
+                                                )
+                                                } else {
+                                                return (
+                                                    <>
+                                                        <p className='status-hover-cancelable' style={{width: "312px !important"}}>{project.projectStatus.name}</p>
+                                                        <p className='line-cancelable'></p>
+                                                    </>
+                                                )
+                                                }
+                                            })()}
                                         </div>
-                                        <Pagination
-                                        count={count}
-                                        page={page}
-                                        siblingCount={1}
-                                        boundaryCount={1}
-                                        variant="outlined"
-                                        shape="rounded"
-                                        onChange={handlePageChange}
-                                        />
+                                        <div className='project-content'>
+                                            <p className='project-title'>{project.name}</p>
+                                            <div className='project-description'>
+                                                <p>{project.details}</p>
+                                            </div>
+                                            <p className='project-amountRequest'><span>Cần huy động:
+                                                </span> {project.projectMonies.map(money => money.minMoney).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</p>
+                                            <p className='project-createdAt'><span>Thời gian đăng:</span>{moment(project.createdAt).locale("vi", vi).format("DD-MM-YYYY HH:mm")}</p>
+                                            <div className="progress">
+                                                <div className="progress-bar progress-bar-striped " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                                                    style={{width: "75%"}}></div>
+                                            </div>
+                                            {(() => {
+                                                if (project.projectStatus.name=== "Đang vận động" ) {
+                                                return (
+                                                    <>
+                                                        <button type="button" className="btn btn-danger"
+                                                            onClick={()=>handleSubmit(project.id)}
+                                                        >Đóng góp</button>
+                                                    </>
+                                                )
+                                                } else{
+                                                return (
+                                                    <>
+                                                        <button type="button" className="btn btn-success"
+                                                            onClick={()=>handleSubmit(project.id)}>Xem chi tiết</button>
+                                                    </>
+                                                )
+                                                } 
+                                            })()}
+                                            </div>
+                                        </div>  
+                                    ))}  
+                                </div>
+                            </Col>
+                            <Divider type="vertical" style={{height: "1150px", marginLeft: "-50px", marginRight: "40px"}}></Divider>
+                            <Col span={4}>
+                                <div>
+                                    <div className="types-container">
+                                        <h6 className="types-text">Loại dự án</h6> 
+                                        <ul className="list-group" style={{marginTop: 15}}>
+                                            {typesList.map((type) => (
+                                                <li key={type.id} className="list-group-item"
+                                                    onClick={() => handleFilterByType(type.id)}
+                                                ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> {type.name}</li>
+                                            ))}
+                                        </ul>
                                     </div>
-                                </Col>
-                            </Row>
-                        </div>
-                        <div className="container row" style={{margin: "0px auto", paddingTop: "30px"}}>
-                            <div className="col-2" style={{witdh: "20% !important"}}>
-                                <div className="types-container">
-                                    <h6 className="types-text">Loại dự án</h6> 
-                                    <ul className="list-group">
-                                        {typesList.map((type) => (
-                                            <li key={type.id} className="list-group-item"
-                                                onClick={() => handleFilterByType(type.id)}
-                                            ><i className="fas fa-male text-info mx-2"></i>{type.name}</li>
-                                        ))}
-                                        {/* <li className="list-group-item"><i className="fas fa-male text-info mx-2"></i>Hỗ trợ y tế</li>
-                                        <li className="list-group-item"><i className="fas fa-male text-info mx-2"></i>Hỗ trợ dịch COVID</li> */}
-                                    </ul>
+                                    <div className="types-container" style={{marginTop: 30}}>
+                                        <h6 className="types-text">Trạng thái dự án</h6> 
+                                        <ul className="list-group" style={{marginTop: 15}}>
+                                            {statusList.map((status) => (
+                                                <li key={status.id} className="list-group-item"
+                                                    onClick={() => handleFilterByStatus(status.id)}
+                                                ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> {status.name}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div className="types-container">
-                                    <h6 className="types-text">Trạng thái dự án</h6> 
-                                    <ul className="list-group">
-                                        {statusList.map((status) => (
-                                            <li key={status.id} className="list-group-item"
-                                                onClick={() => handleFilterByStatus(status.id)}
-                                            ><i className="fas fa-male text-info mx-2"></i>{status.name}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className='project-list col-10'>
-                                    {loadingProject ? 
-                                    <span className="spinner-border spinner-border-sm" style={{marginLeft: "10px"}}></span>
-                                    :
-                                        <>
-                                            {projects && projects.map((project, index) => (
-                                            <div key={index} className='project-card'>
-                                                <div className='project-img-card'>
-                                                    <img className='project-img' src={project.projectImages[0].name}/>
-                                                    {(() => {
-                                                        if (project.projectStatus.name === "Đang vận động" ) {
-                                                        return (
-                                                            <>
-                                                                <p className='status-hover-pending'>{project.projectStatus.name}</p>
-                                                                <p className='line-pending'></p>
-                                                            </>
-                                                        )
-                                                        } else if (project.projectStatus.name === "Đã hoàn thành") {
-                                                        return (
-                                                            <>
-                                                                <p className='status-hover-success'>{project.projectStatus.name}</p>
-                                                                <p className='line-success'></p>
-                                                            </>
-                                                        )
-                                                        } else {
-                                                        return (
-                                                            <>
-                                                                <p className='status-hover-cancelable'>{project.projectStatus.name}</p>
-                                                                <p className='line-cancelable'></p>
-                                                            </>
-                                                        )
-                                                        }
-                                                    })()}
-                                                </div>
-                                                <div className='project-content'>
-                                                    <p className='project-title'>{project.name}</p>
-                                                    <div className='project-description'>
-                                                        <p>{project.details}</p>
-                                                    </div>
-                                                    <p className='project-amountRequest'><span>Cần huy động:
-                                                        </span> {project.projectMonies.map(money => money.minMoney).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</p>
-                                                    <p className='project-amountReceipt'><span>Tiền góp được:</span> 8.000.000 VND</p>
-                                                    <div className="progress">
-                                                        <div className="progress-bar progress-bar-striped " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                                            style={{width: "75%"}}></div>
-                                                    </div>
-                                                    {(() => {
-                                                        if (project.projectStatus.name=== "Đang vận động" ) {
-                                                        return (
-                                                            <>
-                                                                <button type="button" className="btn btn-danger"
-                                                                    onClick={()=>handleSubmit(project.id)}
-                                                                >Đóng góp</button>
-                                                            </>
-                                                        )
-                                                        } else{
-                                                        return (
-                                                            <>
-                                                                <button type="button" className="btn btn-success"
-                                                                    onClick={()=>handleSubmit(project.id)}>Xem chi tiết</button>
-                                                            </>
-                                                        )
-                                                        } 
-                                                    })()}
-                                                    </div>
-                                                </div>  
-                                            ))}  
-                                        </>
-                                    }
-                            </div>
-                        </div>
-                    </>
-                    }
+                            </Col>
+                        </Row>
+                    </div>
                 </div>
         </div>
     )

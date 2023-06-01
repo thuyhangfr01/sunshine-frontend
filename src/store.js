@@ -6,7 +6,6 @@ import typeReducer from "./slices/types";
 import statusReducer from "./slices/status";
 import nameReducer from "./slices/name";
 import contributionReducer from "./slices/contribution";
-import receiptPaymentReducer from "./slices/receiptPayment";
 import formReducer from "./slices/form";
 import reportReducer from "./slices/report";
 
@@ -37,7 +36,6 @@ const rootReducer = combineReducers({
     status: statusReducer,
     name: nameReducer,
     contributions: contributionReducer,
-    receiptPayment: receiptPaymentReducer,
     form: formReducer,
     report: reportReducer
 })

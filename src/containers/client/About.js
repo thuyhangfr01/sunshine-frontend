@@ -59,7 +59,7 @@ function About(){
                                                 <img src={AboutIcon2}  alt=""/>
                                             </div>
                                             <div className="count-digit">15</div>
-                                            <div className="count-title">Dự án đã, đang triển khai</div>
+                                            <div className="count-title">Tổng số dự án</div>
                                             <p>Lĩnh vực y tế, giáo dục,...</p>
                                         </div>
                                     </div>

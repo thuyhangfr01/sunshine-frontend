@@ -4,12 +4,13 @@
 }
 
 .project-list {
+  font-family: "Montserrat";
   display: flex;
   flex-wrap: wrap;
 
   .project-card {
     position: relative;
-    width: 313px;
+    width: 299px;
     margin-left: 40px;
     margin-bottom: 40px;
     border: 1px solid #e7e7e7;
@@ -83,9 +84,9 @@
       font-size: 16px;
     }
 
-    .project-amountReceipt {
+    .project-createdAt {
       color: #159333;
-      font-weight: 800;
+      font-weight: 600;
       font-size: 16px;
       margin-top: -10px;
     }
@@ -94,14 +95,14 @@
       font-weight: 600;
       color: #698dc3;
       font-size: 15px;
-      margin-right: 8px;
+      margin-right: 7px;
     }
 
-    .project-amountReceipt span {
+    .project-createdAt span {
       font-weight: 600;
-      color: #084298;
+      color: #698dc3;
       font-size: 15px;
-      margin-right: 8px;
+      margin-right: 5px;
     }
 
     .btn {
@@ -114,6 +115,7 @@
 }
 
 .types-container {
+  font-family: "Montserrat";
   .types-text {
     font-size: 16px;
     color: rgb(61, 128, 214);
@@ -126,6 +128,11 @@
       &:hover {
         color: rgb(71, 142, 201);
         font-weight: 500;
+      }
+      span {
+        font-size: 20px;
+        margin-left: -10px;
+        margin-right: 10px;
       }
     }
     .list-group-item.active {
@@ -514,5 +521,91 @@ form.donation-form {
   }
   .ant-image-preview-img-wrapper img.ant-image-preview-img {
     object-fit: contain;
+  }
+}
+
+.detail-cart {
+  font-family: "Montserrat, sans-serif";
+  p.p-title {
+    font-size: 15px;
+    font-family: "Montserrat";
+    font-weight: 600 !important;
+    margin-top: -25px;
+    color: #0087c1;
+    img {
+      width: 25px;
+      padding-top: 27px;
+      margin-right: 10px;
+    }
+    span {
+      font-weight: 500 !important;
+    }
+  }
+  .project-table {
+    .ant-table-thead > tr > th {
+      background-color: #86a2cf;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .ant-table-tbody > tr > td {
+      font-size: 15px;
+      font-weight: 400;
+    }
+    p {
+      font-family: "Montserrat";
+      margin-top: 20px;
+      font-style: italic;
+      color: #c35354;
+      font-weight: 500;
+      span {
+        margin-left: 5px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.money-cart {
+  font-family: "Montserrat";
+  p {
+    font-weight: 500;
+    color: #303030;
+  }
+  .ant-input-number-wrapper.ant-input-number-group.css-dev-only-do-not-override-yp8pcc {
+    .ant-input-number .ant-input-number-input {
+      font-weight: 500 !important;
+      color: #6888bd !important;
+      font-size: 15px !important;
+    }
+    .ant-input-number-group-addon {
+      background: #86a2cf;
+      color: #ffffff;
+      font-weight: 500;
+      font-family: "Montserrat";
+    }
+  }
+}
+
+.card-info {
+  .ant-card-head-title {
+    color: #646464;
+    font-size: 15px;
+  }
+  p {
+    font-size: 15px;
+    color: "rgb(78 78 78)";
+    font-weight: 500;
+    span {
+      margin-left: 10px;
+      font-weight: 600;
+    }
+  }
+  button {
+    width: 100%;
+    justify-content: center;
+    font-weight: 600;
+    background: #d35c5c;
+    margin-top: 5px;
   }
 }

@@ -4,6 +4,7 @@ import ContributionService from '../services/contribution.service'
 const initialState = {
     contributions: [],
     contributionDonation: [],
+    contributionImport: [],
     artifacts: [],
     contributionsByUser: [],
     contributionsByProject: []
@@ -115,7 +116,8 @@ const contributionSlice = createSlice({
             state.contributions = [...action.payload];
         },
         [createContribution.fulfilled]: (state, action) => {
-            state.contributionDonation = [...state.contributions, action.payload];
+            // state.contributionDonation = [...state.contributions, action.payload];
+            state.contributionImport.push(action.payload);
         },
         [importContribution.fulfilled]: (state, action) => {
             state.contributions = [...state.contributions, action.payload];

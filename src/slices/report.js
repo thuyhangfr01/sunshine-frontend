@@ -3,7 +3,9 @@ import ReportService from '../services/report.service'
 
 const initialState = {
     files: null,
-    reports: []
+    reports: [],
+    constributions: [],
+    payments: [],
 };
 
 export const getAllFiles = createAsyncThunk(
@@ -28,6 +30,22 @@ export const addFile = createAsyncThunk(
     }
 )
 
+export const getListContributionsReport = createAsyncThunk(
+    "report/getListContributionsReport", 
+    async ({projectId, fromDate, toDate}) => {
+        const res = await ReportService.getListContributionsReport(projectId, fromDate, toDate);
+        return res.data;
+    }
+)
+
+export const getListPaymentsReport = createAsyncThunk(
+    "report/getListPaymentsReport", 
+    async ({projectId, fromDate, toDate}) => {
+        const res = await ReportService.getListPaymentsReport(projectId, fromDate, toDate);
+        return res.data;
+    }
+)
+
 const reportSlice = createSlice({
     name: "report",
     initialState,
@@ -41,6 +59,12 @@ const reportSlice = createSlice({
         [addFile.fulfilled]: (state, action) => {
             state.reports = action.payload;
         },
+        [getListContributionsReport.fulfilled]: (state, action) => {
+            return [...action.payload];
+        },
+        [getListPaymentsReport.fulfilled]: (state, action) => {
+            return [...action.payload];
+        }
     }
 })
 

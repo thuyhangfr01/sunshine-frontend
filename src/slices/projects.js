@@ -10,7 +10,8 @@ const initialState = {
     artifacts: [],
     proofs: [],
     projectPayment: [],
-    totalMoney: 0
+    totalMoney: 0,
+    listProjects: []
 };
 
 export const retrieveProjs = createAsyncThunk(
@@ -125,14 +126,6 @@ export const getPaymentsByProjectId = createAsyncThunk (
     }
 )
 
-export const getProjectPaymentById = createAsyncThunk (
-    "project/getProjectPaymentById",
-    async ({id}) => {
-        const res = await ProjectService.getProjectPaymentById(id);
-        return res.data;
-    }
-)
-
 export const createProject = createAsyncThunk (
     "project/createProject",
     async ({name, details, typeId, numVolunteers, startTime, endTime, holdTime, position}) => {
@@ -175,8 +168,8 @@ export const createProofByProject = createAsyncThunk (
 
 export const createProjectPayment = createAsyncThunk (
     "project/createProjectPayment",
-    async ({userId, projectId, amountMoney, reason}) => {
-        const res = await ProjectService.createProjectPayment(userId, projectId, amountMoney, reason);
+    async ({userId, projectId, amountMoney, receiver, reason, createdAt, userName}) => {
+        const res = await ProjectService.createProjectPayment(userId, projectId, amountMoney, receiver, reason, createdAt, userName);
         return res.data;
     }
 )
@@ -250,7 +243,7 @@ const projectSlice = createSlice({
             }
         },
         [retrieveProjs.fulfilled]: (state, action) => {
-            return [...action.payload];
+            state.listProjects = [...action.payload];
         },
         [retrieveProjects.fulfilled]: (state, action) => {
             return [...action.payload];
@@ -265,7 +258,7 @@ const projectSlice = createSlice({
             return [...action.payload];
         },
         [retrieveProject.fulfilled]: (state, action) => {
-            return [...action.payload];
+            return action.payload;
         },
         [findProjectByType.fulfilled]: (state, action) => {
             return [...action.payload];
@@ -277,10 +270,7 @@ const projectSlice = createSlice({
             state.totalMoney = action.payload.totalMoney;
         },
         [getPaymentsByProjectId.fulfilled]: (state, action) => {
-            state.payments = [...action.payload];
-        },
-        [getProjectPaymentById.fulfilled]: (state, action) => {
-            state.payments = [...action.payload];
+            return [...action.payload];
         },
     }
 })

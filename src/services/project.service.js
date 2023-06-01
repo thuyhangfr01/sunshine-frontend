@@ -56,10 +56,6 @@ const getTotalMoneyByProjectId = (id) => {
     return http.get(`/project/${id}/totalMoney`);
 };
 
-const getProjectPaymentById = (id) => {
-    return http.get(`/project/payment/${id}`);
-}
-
 const createProject = (name, details, typeId, numVolunteers, startTime, endTime, holdTime, position) => {
     return http.post("/project", {name, details, typeId, numVolunteers, startTime, endTime, holdTime, position});
 }
@@ -80,8 +76,8 @@ const createProofByProject = (id, name) => {
     return http.post(`/project/${id}/proof`, {name});
 }
 
-const createProjectPayment = (userId, projectId, amountMoney, reason) => {
-    return http.post(`/project/payment?amountMoney=${amountMoney}&projectId=${projectId}&reason=${reason}&userId=${userId}`);
+const createProjectPayment = (userId, projectId, amountMoney, receiver, reason, createdAt, userName) => {
+    return http.post(`/project/payment?amountMoney=${amountMoney}&projectId=${projectId}&reason=${reason}&receiver=${receiver}&userId=${userId}`);
 }
 
 const updateProject = (id, name, details, typeId, statusId, numVolunteers, startTime, endTime, holdTime, position) => {
@@ -103,7 +99,6 @@ const ProjectService = {
     getTop5LatestProject,
     get,
     getPaymentsByProjectId,
-    getProjectPaymentById,
     findByType,
     findByStatus,
     getAllImages,

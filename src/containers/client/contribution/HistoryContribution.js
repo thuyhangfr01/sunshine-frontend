@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 
-import {Spin, Table, Tag, Popconfirm} from "antd";
+import {Spin, Table, Tag, Popconfirm, Row, Col, Divider, Card, Statistic} from "antd";
 import {DeleteFilled} from '@ant-design/icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpa, faSackDollar, faPhoneAlt } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify';
 import moment from "moment";
 import vi from "moment/locale/vi";
@@ -21,6 +23,9 @@ const HistoryContribution = () => {
 
     const currentUserId = currentUser.id;
     const [page, setPage] = React.useState(1);
+
+    const [totalMoney, setTotalMoney] = useState(0);
+    const [projectNumber, setProjectNumber] = useState(0);
 
     //sort createdAt
     const compareTime = (a, b) => {
@@ -91,7 +96,7 @@ const HistoryContribution = () => {
             dataIndex: 'createdAt',
             render: (text, record, index) => {
                 return {
-                    props: { style: { fontSize: 15, fontWeight: 500 }},
+                    props: { style: { fontSize: 15, fontWeight: 400 }},
                     children: moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
                   };
             },
@@ -139,6 +144,20 @@ const HistoryContribution = () => {
     }
     useEffect(getListContributions, [])
 
+    const getTotalMoneyAndProject = () => {
+        if(dataSource){
+            let _totalMoney = 0;
+            let _projectNumber = 0;
+            dataSource.forEach((record) =>{
+                _totalMoney += record.contributionMoney;
+                _projectNumber += 1;
+            });
+            setTotalMoney(_totalMoney);
+            setProjectNumber(_projectNumber);
+        }
+    };
+    useEffect(getTotalMoneyAndProject, [dataSource]);
+
     //xoa don dong gop
     const handleDeleteContribution = (contribution) => {
         if(contribution.moneyStatus === 'Đang chờ duyệt' || contribution.moneyStatus === 'Đã từ chối'){
@@ -163,19 +182,34 @@ const HistoryContribution = () => {
                     <div className='col-12'>
                         <h2 >Danh sách đơn <em>ĐÓNG </em><span>GÓP</span></h2>
                         <div className="line-dec"></div>
-                        <p style={{paddingLeft: "150px", paddingRight: "150px"}}>Lịch sử đơn đóng góp tiền và hiện vật của bạn đã ủng hộ cho những dự án của Sunshine. </p>
+                        <p style={{paddingLeft: "150px", paddingRight: "150px", paddingTop: 5}}>Lịch sử đơn đóng góp tiền và hiện vật của bạn đã ủng hộ cho những dự án của Sunshine. </p>
                     </div>
                 </div>
             </div>
+            <div style={{display: "flex", marginTop: 30}}>
+                <div className="card-item">
+                    <div className="line"></div>
+                    <p>Số dự án đã đóng góp</p>
+                    <h3><span>{projectNumber}</span> dự án từ thiện</h3>
+                    <div className="card-icon"><FontAwesomeIcon icon={faSpa} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
+                </div>
+                <div className="card-item-money" style={{marginLeft: 20}}>
+                    <div className="line"></div>
+                    <p>Số tiền đã đóng góp</p>
+                    <h3><span style={{fontSize: 25, marginTop: "0px !important"}}>{totalMoney.toLocaleString('it-IT')}</span>VNĐ</h3>
+                    <div className="card-icon"><FontAwesomeIcon icon={faSackDollar} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
+                </div>
+                <div className="card-item-note" style={{marginLeft: 20}}>
+                    <div className="line"></div>
+                    <p>Nếu có bất cứ thắc mắc nào, vui lòng liên hệ:</p>
+                    <h3><span style={{fontSize: 25, marginTop: "0px !important"}}>0765 700 777</span> - Gặp chị Hằng</h3>
+                    <div className="card-icon"><FontAwesomeIcon icon={faPhoneAlt} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
+                </div>
+            </div>
             <Spin spinning={loading}>
-                <Table className="project-artifact" columns={columns} dataSource={dataSource}
-                    style={{marginTop: 20, fontSize: "15px !important"}}
-                    pagination={{
-                        pageSize: 8,
-                        onChange(current) {
-                            setPage(current);
-                        }
-                }}/>
+                <Table className="table-contribution" columns={columns} dataSource={dataSource}
+                    style={{marginTop: 30, fontSize: "15px !important"}}
+                    pagination={false}/>
             </Spin>
 
             <HistoryContributionDetail
