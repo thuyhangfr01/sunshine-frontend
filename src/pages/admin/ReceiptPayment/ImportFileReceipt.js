@@ -5,7 +5,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import "./ReceiptPayment.scss";
 import { toast } from 'react-toastify';
 
-import  {createContribution} from "../../../slices/contribution";
+import  {importContribution} from "../../../slices/contribution";
 
 import * as XLSX from 'xlsx';
 
@@ -102,7 +102,7 @@ const ImportFileReceipt = (props) => {
             const amountMoney = dataExcel[i].amountMoney;
             // const createdAt = dataExcel[i].createdAt;
             const paymentType = dataExcel[i].paymentType;
-            await dispatch(createContribution({userId, projectId, nickname, amountMoney, paymentType}))
+            await dispatch(importContribution({userId, projectId, nickname, amountMoney, paymentType}))
             .then((response) => {
                 setFileList([]);
                 setIsSubmit(false);

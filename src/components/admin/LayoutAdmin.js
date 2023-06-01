@@ -73,12 +73,7 @@ const items = [
                 label: <Link to='/admin/receiptPayment'>Cập nhật thu chi</Link>,
                 key: 'payment',
                 icon: <SaveOutlined />,
-            },
-            {
-                label: <Link to='/admin/report'>Cập nhật báo cáo</Link>,
-                key: 'report',
-                icon: <SaveOutlined />,
-            },
+            }
         ]
     },
     {

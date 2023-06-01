@@ -1,15 +1,11 @@
 import http from "../http-common";
 
-const getAllFiles = () => {
-    return http.get("/reports");
+const getListContributionsByUser = (userId) => {
+    return http.get(`/reports/contributions/user?userId=${userId}`);
 }
 
-const getFilesByTitle = (title) => {
-    return http.get(`/reports/title?title=${title}`);
-}
-
-const addFile = (title, nameImg, urlImg) => {
-    return http.post(`/report?nameImg=${nameImg}&title=${title}&urlImg=${urlImg}`);
+const getListContributionArtifactsByUser = (userId) => {
+    return http.get(`/reports/contributions/artifacts/user?userId=${userId}`);
 }
 
 const getListContributionsReport = (projectId, fromDate, toDate) => {
@@ -21,9 +17,8 @@ const getListPaymentsReport = (projectId, fromDate, toDate) => {
 }
 
 const ReportService = {
-    getAllFiles,
-    getFilesByTitle,
-    addFile,
+    getListContributionsByUser,
+    getListContributionArtifactsByUser,
     getListContributionsReport,
     getListPaymentsReport
 }

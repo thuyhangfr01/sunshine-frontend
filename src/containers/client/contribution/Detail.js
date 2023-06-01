@@ -1,12 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { useDispatch } from "react-redux";
+
 import {Modal, Badge, Descriptions, Table, Tag} from "antd";
 import moment from "moment";
 import vi from "moment/locale/vi";
 import "./HistoryContribution.scss";
 
+import {getContributionById} from "../../../slices/contribution"
+
 const HistoryContributionDetail = (props) => {
-    const {openViewDetail, setOpenViewDetail, dataViewDetail} = props;
+    const dispatch = useDispatch();
+
+    const {openViewDetail, setOpenViewDetail, dataViewDetail, setDataViewDetail} = props;
+    const [data, setData] = useState({});
     console.log("data nhan dc: " + JSON.stringify(dataViewDetail));
+
+    const getContributionDetail = () => {
+        const id = dataViewDetail;
+        dispatch(getContributionById(id))
+            .then((response) => {
+                console.log(JSON.stringify(response));
+                // setData(response.payload);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+    useEffect(getContributionDetail, [dataViewDetail])
+
 
     const columns = [
         {
@@ -54,9 +75,9 @@ const HistoryContributionDetail = (props) => {
             style={{padding: 30}}
             open={openViewDetail}
             footer = {null}
-            onOk={() => setOpenViewDetail(false)}
-            onCancel={() => {setOpenViewDetail(false)}}>
-            {dataViewDetail.length !== 0 && 
+            onOk={() => {setOpenViewDetail(false); setData({}); setDataViewDetail("")}}
+            onCancel={() => {setOpenViewDetail(false); setData({}); setDataViewDetail("")}}>
+            {/* {dataViewDetail.length !== 0 && 
             <>
             <Descriptions className="detail-contribution" bordered column={3}>                
                 <Descriptions.Item span={3} label="Mã đơn đóng góp">{dataViewDetail?.id} </Descriptions.Item>
@@ -85,7 +106,7 @@ const HistoryContributionDetail = (props) => {
             }
             </>
                 
-        }
+        } */}
         </Modal>
     )
 }
