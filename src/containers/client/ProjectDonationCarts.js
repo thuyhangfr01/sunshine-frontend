@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {Row, Col, Card, InputNumber, Table, Radio, Space, Button, Result, Popconfirm } from "antd";
 import {DeleteFilled} from '@ant-design/icons';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {updateAmountMoneyById, removeContribution, updateStatusMoney } from "../../slices/contribution";
+import {updateAmountMoneyById, removeContribution } from "../../slices/contribution";
 import {createPayment} from "../../slices/payment";
+import icSunBlue from "../../assets//images/ic_sunBlue.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSackDollar } from '@fortawesome/free-solid-svg-icons'
+import "./Project.scss";
 
 const ProjectDonationCarts = () => {
     let navigate = useNavigate();
-
+    
     const contributions = useSelector((state) => state.contributions.contributionDonation);
     const dispatch = useDispatch();
     const [sumMoney, setSumMoney] = useState(0);
@@ -67,24 +71,11 @@ const ProjectDonationCarts = () => {
         });
     }
 
-    const updateStatusByMoneyId = () => {
-        if(contributions){
-            contributions.map((contribution) => {
-                const moneyId = contribution.contributionMoney.id;
-                const statusId = 3;
-                dispatch(updateStatusMoney({moneyId, statusId}))
-                localStorage.removeItem("persist:root");
-            })
-        }
-    }
-
     const handlePayment = (sumMoney) => {
         const amount = sumMoney*100;
         dispatch(createPayment({amount}))
         .then((response) => {
-            console.log("payment: " + JSON.stringify(response.payload.url));
-            window.open(response.payload.url);
-            updateStatusByMoneyId();
+            window.open(response.payload.url, "_self");
         })
         .catch((e) => {
             console.log(e);
@@ -98,74 +89,66 @@ const ProjectDonationCarts = () => {
                     <div className='col-12'>
                         <h2 >Chi tiết đóng góp cho dự án của <em>SUN</em><span>SHINE</span></h2>
                         <div className="line-dec"></div>
-                        <p style={{paddingLeft: "150px", paddingRight: "150px"}}>Sự đóng góp của bạn sẽ góp phần thắp sáng những ước mơ còn dang dở của những người đang gặp khó khăn!</p>
+                        <p style={{paddingLeft: "150px", paddingRight: "150px", paddingTop: 10}}>Sự đóng góp của bạn sẽ góp phần thắp sáng những ước mơ còn dang dở của những người đang gặp khó khăn!</p>
                     </div>
                 </div>
             </div>
             
                 {showCart ? 
                 <>
-                    <Row style={{fontFamily: "Montserrat", marginTop: 50}}>
+                    <Row className="detail-cart" style={{fontFamily: "Montserrat", marginTop: 30}}>
                         <Col span={17} style={{background: "#fbfbfb", borderRadius: 15, height: "fit-content"}}>
                         {contributions && contributions.map((contribution, index) => (
                             <Card key={index} style={{margin: 20}}>
                                 <div style={{display: "flex", justifyContent: "space-between"}}>
-                                    <p style={{fontSize: "15px", fontWeight: 500}}>{contribution.projectName}</p>
+                                    <p className="p-title" style={{fontSize: "15px", fontWeight: 500}}><img src={icSunBlue}/><span>Dự án: </span>{contribution.projectName}</p>
                                     <Popconfirm
                                         placement="leftTop"
                                         title={"Xác nhận xóa đơn đóng góp"}
                                         description={"Bạn có chắc chắn muốn xóa đơn này không?"}
-                                        onConfirm={handleDelete(contribution)}
+                                        onConfirm={() => handleDelete(contribution)}
                                         onText="Xác nhận"
                                         cancelText="Hủy">
-                                            <DeleteFilled onClick={() => handleDelete(contribution)}
-                                                style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px", cursor: "pointer"}}/>
+                                            <DeleteFilled
+                                                style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px", cursor: "pointer", marginTop: "-40px"}}/>
                                     </Popconfirm>
                                 </div>
-                                {contribution.contributionArtifacts.length !== 0 && 
-                                    <div className="project-table" style={{marginBottom: 20}}>
-                                    <Table pagination={false} className="project-artifact" columns={columns} dataSource={contribution.contributionArtifacts}/>
-                                    </div>
-                                }
-                                <div style={{display: "flex", justifyContent: "space-between"}}>
+                                <div className="money-cart" style={{display: "flex", fontFamily: "Montserrat", marginTop: "-25px", marginLeft: 35}}>
+                                    <p >Số tiền quyên góp: </p>
                                     <InputNumber
                                         defaultValue={contribution.amountMoney}
                                         // onChange={(money) => handleChange(money)}
                                         onChange={(value) => handleOnChangeInput(value, contribution)} 
-                                        style={{fontFamily: "Montserrat" }}
+                                        style={{fontFamily: "Montserrat", marginLeft: 20 }}
                                         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                         addonAfter="VND"
                                     />
                                 </div>
+                                {contribution.contributionArtifacts.length !== 0 && 
+                                    <div className="project-table" style={{margin: "20px 40px 0px 35px"}}>
+                                        <Table pagination={false} className="project-artifact" columns={columns} dataSource={contribution.contributionArtifacts}/>
+                                        <p>*Chú ý: <span>Đối với đơn đóng góp hiện vật vui lòng đợi admin phê duyệt!</span></p>
+                                    </div>
+                                }
                             </Card>
                         ))}
                         </Col>
                         <Col>
                             <Col style={{borderRadius: 15, marginLeft: 20, width: 355}}>
-                                <Card 
-                                    title = "Thông tin người đóng góp">
-                                    <p>Họ và tên: <span>CAO THỊ THÚY HẰNG</span></p>
-                                    <p>Số điện thoại: <span>0987789987</span></p>
-                                    <p>Email: <span>thuyhangfr01@gmail.com</span></p>
-                                </Card>
-                            </Col>
-                            <Col style={{borderRadius: 15, marginLeft: 20, marginTop: 20, width: 355}}>
-                                <Card 
-                                    title = "Chọn phương thức thanh toán">
+                                <Card className="card-info" title = "Chọn phương thức thanh toán" style={{fontFamily: "Montserrat"}}>
                                     <Radio.Group style={{fontFamily: "Montserrat"}}>
                                         <Space direction="vertical">
-                                            <Radio value={1} checked>Thanh toán bằng VNPAY</Radio>
-                                            <Radio value={2}>Thanh toán bằng thẻ quốc tế</Radio>
-                                            <Radio value={3}>Thanh toán bằng Ví MoMo</Radio>
+                                            <Radio checked={true} style={{fontFamily: "Montserrat", fontSize: 15, color: "rgb(78 78 78)", fontWeight: 500, marginBottom: 5}}>Thanh toán bằng VNPAY</Radio>
+                                            <Radio value={2} style={{fontFamily: "Montserrat", fontSize: 15, color: "rgb(78 78 78)", fontWeight: 500, marginBottom: 10}}>Thanh toán bằng thẻ quốc tế</Radio>
+                                            <Radio value={3} style={{fontFamily: "Montserrat", fontSize: 15, color: "rgb(78 78 78)", fontWeight: 500}}>Thanh toán bằng Ví MoMo</Radio>
                                         </Space>
                                     </Radio.Group>
                                 </Card>
                             </Col>
                             <Col style={{borderRadius: 15, marginLeft: 20, marginTop: 20, width: 355}}>
-                                <Card 
-                                    title = "Thông tin đóng góp">
-                                    <p>Tổng tiền đóng góp: <span>{sumMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
-                                    <p>*Chú ý: <span>Vui lòng chờ Admin duyệt đơn đóng góp hiện vật của bạn!</span></p>
+                                <Card className="card-info" title = "Thông tin đóng góp" style={{fontFamily: "Montserrat"}}>
+                                    <p style={{color: "#b35959"}}><FontAwesomeIcon icon={faSackDollar} style={{color: "#b35959", fontSize: 16, marginRight: 10}}></FontAwesomeIcon>
+                                        Tổng tiền: <span style={{fontSize: 16}}>{sumMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
                                     <button className="btn btn-danger" style={{width: "100%"}}
                                         onClick = {() => handlePayment(sumMoney)}
                                         >Thanh toán</button>

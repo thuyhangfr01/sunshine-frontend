@@ -22,6 +22,10 @@ const API_URL = "http://localhost:8080/api/auth/";
     localStorage.removeItem("persist:root");
   }
 
+  const removePersistRoot = () => {
+    localStorage.removeItem("persist:root");
+  }
+
   const register = (uname, uemail, uphone, upassword) => {
     return axios.post(API_URL + "signup", {
       name: uname,
@@ -38,7 +42,8 @@ const API_URL = "http://localhost:8080/api/auth/";
   const authService = {
     register,
     login,
-    logout
+    logout,
+    removePersistRoot
   }
 
 export default authService;

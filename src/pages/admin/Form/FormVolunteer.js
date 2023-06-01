@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 import {Spin, Table, Tag, Button, Row, Col, Select, DatePicker} from "antd";
 import {DeleteFilled} from '@ant-design/icons'
-import "../Payment/ReceiptPayment.scss"; 
+import "../ReceiptPayment/ReceiptPayment.scss"; 
 import moment from "moment";
 import vi from "moment/locale/vi";
 import dayjs from 'dayjs';

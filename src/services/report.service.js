@@ -12,10 +12,20 @@ const addFile = (title, nameImg, urlImg) => {
     return http.post(`/report?nameImg=${nameImg}&title=${title}&urlImg=${urlImg}`);
 }
 
+const getListContributionsReport = (projectId, fromDate, toDate) => {
+    return http.get(`/reports/contributions?projectId=${projectId}&fromDate=${fromDate}&toDate=${toDate}`);
+}
+
+const getListPaymentsReport = (projectId, fromDate, toDate) => {
+    return http.get(`/reports/payments?projectId=${projectId}&fromDate=${fromDate}&toDate=${toDate}`);
+}
+
 const ReportService = {
     getAllFiles,
     getFilesByTitle,
-    addFile
+    addFile,
+    getListContributionsReport,
+    getListPaymentsReport
 }
 
 export default ReportService;

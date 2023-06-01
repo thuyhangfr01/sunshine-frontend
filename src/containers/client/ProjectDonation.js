@@ -13,13 +13,12 @@ import  {createContribution} from "../../slices/contribution";
 const { TextArea } = Input;
 const ProjectDonation = (props) => {
     let navigate = useNavigate();
-    const {openModalProjectDonation, setOpenModalProjectDonation, currentUserId, currentProject, dataSource, totalMoney, money} = props;
+    const {openModalProjectDonation, setOpenModalProjectDonation, currentUserId, currentProject, dataSourceArtifact} = props;
     
     const [form] = Form.useForm();
     const [initForm, setInitForm] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
     const [isNavigate, setIsNavigate] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     //get danh sach ten du an
     const listProjectName = useSelector((state) => state.name);
@@ -31,7 +30,7 @@ const ProjectDonation = (props) => {
     //get gia tri mac dinh cho form
     useEffect(() => {
         if(currentProject){
-            const artifact = dataSource?.map(data => {
+            const artifact = dataSourceArtifact?.map(data => {
                 return {
                     artifactName: data.artifactName,
                     donatedAmount: data.minQuantity,
@@ -57,12 +56,10 @@ const ProjectDonation = (props) => {
         const userId = currentUserId;
         const { nickname, messages, projectId, amountMoney, contributionArtifacts} = values;
         setIsSubmit(true)
-        setLoading(true);
         dispatch(createContribution({ userId, projectId, nickname, messages, amountMoney, contributionArtifacts }))
         .unwrap()
         .then(data => {
             console.log("dataaa: " + JSON.stringify(data));
-            setLoading(false);
             toast.success("Thêm đơn đóng góp thành công!");
             setIsSubmit(false);
             if(isNavigate === true) {
@@ -77,7 +74,6 @@ const ProjectDonation = (props) => {
           toast.error("Thêm đơn đóng góp thất bại!");
           console.log(e);
           setIsSubmit(false);
-          setLoading(false);
           setIsNavigate(false);
         });
       };
@@ -95,20 +91,18 @@ const ProjectDonation = (props) => {
                 form.setFieldsValue(initForm)}}
             footer={[
                 <Button key="1" type="primary" 
-                    loading={isSubmit}
                     onClick={() => { form.submit() }}
                     style={{fontSize: 15, fontFamily: "Montserrat", background: "#d95c5c !important"}}>
                   Thêm vào danh sách chờ
                 </Button>,
                 <Button key="2" type="primary"
                      style={{fontSize: 15, fontFamily: "Montserrat"}}
-                    //  loading2={isSubmit}
                      onClick={() => { form.submit(); setIsNavigate(true)}}>
                   Đóng góp
                 </Button>
               ]}
         >
-            <Spin spinning={loading}>
+            <Spin spinning={isSubmit}>
                 <Form className="donation-form"
                     form={form}
                     autoComplete="off"

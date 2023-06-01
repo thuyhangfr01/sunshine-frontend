@@ -47,6 +47,13 @@ export const logout = createAsyncThunk(
     }
 );
 
+export const removePersistRoot = createAsyncThunk(
+    "removePersistRoot",
+    async () => {
+        await AuthService.removePersistRoot();
+    }
+);
+
 const initialState = user 
     ? { isLoggedIn: true, user, showLoading: false }
     : { isLoggedIn: false, user:null, showLoading: true };
