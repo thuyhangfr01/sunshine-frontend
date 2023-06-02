@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 
-import {Spin, Table, Tag, Popconfirm, Collapse, Tabs} from "antd";
+import {Spin, Table, Tag, Popconfirm, Tabs} from "antd";
 import {DeleteFilled} from '@ant-design/icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpa, faSackDollar, faPhoneAlt } from '@fortawesome/free-solid-svg-icons'
+import { faSpa, faSackDollar, faShoppingBasket, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify';
 import moment from "moment";
 import vi from "moment/locale/vi";
@@ -272,9 +272,9 @@ const HistoryContribution = () => {
             let _artifactsNumberApproved = 0;
             dataSourceArtifacts.forEach((record) =>{
                 if(record.status === "Đã duyệt"){
-                    _artifactsNumberApproved += record.donatedAmount;
+                    _artifactsNumberApproved += 1;
                 }
-                _artifactsNumber += record.donatedAmount;
+                _artifactsNumber += 1;
             });
             setArtifactsNumber(_artifactsNumber);
             setArtifactsNumberApproved(_artifactsNumberApproved);
@@ -323,24 +323,18 @@ const HistoryContribution = () => {
                     <h3><span style={{fontSize: 25, marginTop: "0px !important"}}>{totalMoney.toLocaleString('it-IT')}</span>VNĐ</h3>
                     <div className="card-icon"><FontAwesomeIcon icon={faSackDollar} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
                 </div>
-                <div className="card-item-money" style={{marginLeft: 18}}>
+                <div className="card-item" style={{marginLeft: 18}}>
                     <div className="line"></div>
                     <p>Số hiện vật đã đóng góp</p>
-                    <h3><span>{artifactsNumber}</span>hiện vật</h3>
-                    <div className="card-icon"><FontAwesomeIcon icon={faSackDollar} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
+                    <h3><span>{artifactsNumber}</span> loại hiện vật</h3>
+                    <div className="card-icon"><FontAwesomeIcon icon={faShoppingBasket} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
                 </div>
-                <div className="card-item-money" style={{marginLeft: 18}}>
+                <div className="card-item" style={{marginLeft: 18}}>
                     <div className="line"></div>
                     <p>Số hiện vật được duyệt</p>
-                    <h3><span>{artifactsNumberApproved}</span>hiện vật</h3>
-                    <div className="card-icon"><FontAwesomeIcon icon={faSackDollar} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
+                    <h3><span>{artifactsNumberApproved}</span> loại hiện vật</h3>
+                    <div className="card-icon"><FontAwesomeIcon icon={faCheckCircle} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
                 </div>
-                {/* <div className="card-item-note" style={{marginLeft: 20}}>
-                    <div className="line"></div>
-                    <p>Nếu có bất cứ thắc mắc nào, vui lòng liên hệ:</p>
-                    <h3><span style={{fontSize: 25, marginTop: "0px !important"}}>0765 700 777</span> - Gặp chị Hằng</h3>
-                    <div className="card-icon"><FontAwesomeIcon icon={faPhoneAlt} style={{color: "rgb(133 159 193)", fontSize: 25}}/></div>
-                </div> */}
             </div>
             <Tabs className="project-tab" style={{fontFamily: 'Montserrat', marginTop: 30}}>
                 <Tabs.TabPane tab="Đóng góp tiền" style={{ fontSize: 15}} key="tab1">

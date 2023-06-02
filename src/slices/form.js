@@ -43,6 +43,13 @@ export const getAllFormHelp= createAsyncThunk(
         return res.data;
     }
 )
+export const getAllFormHelpByUser = createAsyncThunk(
+    "form/getAllFormHelpByUser", 
+    async ({fullName}) => {
+        const res = await FormService.getAllFormHelpByUser(fullName);
+        return res.data;
+    }
+)
 export const createFormHelp = createAsyncThunk(
     "form/createFormHelp", 
     async ({fullName, email, phone, title, contents}) => {
@@ -86,6 +93,9 @@ const formSlice = createSlice({
             }
         },
         [getAllFormHelp.fulfilled]: (state, action) => {
+            state.formHelp = [...action.payload];
+        },
+        [getAllFormHelpByUser.fulfilled]: (state, action) => {
             state.formHelp = [...action.payload];
         },
         [createFormHelp.fulfilled]: (state, action) => {

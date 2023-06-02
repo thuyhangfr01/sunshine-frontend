@@ -16,6 +16,9 @@ const updateStatusFormVolunteer = (id, fullName, email, phone, projectId, status
 const getAllFormHelp = () => {
     return http.get("/latestFormHelp")
 }
+const getAllFormHelpByUser = (fullName) => {
+    return http.get(`/formHelp/user?fullName=${fullName}`)
+}
 const createFormHelp = (fullName, email, phone, title, contents) => {
     return http.post("/formHelp", {fullName, email, phone, title, contents});
 }
@@ -32,6 +35,7 @@ const FormService = {
     createFormVolunteer,
     updateStatusFormVolunteer,
     getAllFormHelp,
+    getAllFormHelpByUser,
     createFormHelp,
     createImageByForm,
     updateStatusFormHelp
