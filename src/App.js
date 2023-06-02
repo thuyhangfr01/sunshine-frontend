@@ -31,6 +31,7 @@ import FormHelp from "./containers/client/form/FormHelp";
 import AdminPage from "./pages/admin/AdminPage";
 import UserManagement from "./pages/admin/User/UserManagement";
 import ProjectManagement from "./pages/admin/Project/ProjectManagement";
+import ContributionArtifactManagement from "./pages/admin/Form/ContributionArtifact";
 import ReceiptPayment from "./pages/admin/ReceiptPayment/ReceiptPayment";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
 import FormHelpManagement from './pages/admin/Form/FormHelp';
@@ -133,6 +134,13 @@ export default function App() {
           element: 
           // <ProtectedRoute>
           <ReceiptPayment />
+          // {/* </ProtectedRoute> */}
+        },
+        {
+          path: "contribution",
+          element: 
+          // <ProtectedRoute>
+          <ContributionArtifactManagement />
           // {/* </ProtectedRoute> */}
         },
         {

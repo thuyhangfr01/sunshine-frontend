@@ -57,11 +57,6 @@ const items = [
                 key: 'crud_project',
                 icon: <SaveOutlined />,
             },
-            {
-                label: <Link to='/admin/contribution'>Đơn đóng góp hiện vật</Link>,
-                key: 'contribution',
-                icon: <ReadOutlined />,
-            }
         ]
     },
     {
@@ -81,6 +76,11 @@ const items = [
         key: 'form',
         icon: <DollarCircleOutlined />,
         children: [
+            {
+                label: <Link to='/admin/contribution'>Đơn đóng góp hiện vật</Link>,
+                key: 'contribution',
+                icon: <ReadOutlined />,
+            },
             {
                 label: <Link to='/admin/help'>Đơn yêu cầu hỗ trợ</Link>,
                 key: 'help',
