@@ -36,8 +36,16 @@ const updateStatusMoney = (moneyId, statusId) => {
     return http.put(`/contribution/money/${moneyId}/status`, {statusId});
 }
 
+const getListContributionArtifacts = () => {
+    return http.get("/contribution/artifacts");
+}
+
 const getArtifactsByContributionId = (id) => {
     return http.get(`/contribution/${id}/artifacts`);
+}
+
+const updateArtifactStatus = (artId, artifactId, receivedAmount, statusId) => {
+    return http.put(`contribution/artifact/${artId}`, {artifactId, receivedAmount, statusId});
 }
 
 const removeContribution = (id) => {
@@ -50,7 +58,9 @@ const ContributionService = {
     createArtifactByContribution,
     updateAmountMoneyById,
     updateStatusMoney,
+    updateArtifactStatus,
     removeContribution,
+    getListContributionArtifacts,
     getArtifactsByContributionId,
     getContributionsByProjectId,
     getContributionsByProjectIdByStatus,
