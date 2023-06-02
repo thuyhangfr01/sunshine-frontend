@@ -1,110 +1,110 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from 'react-toastify';
+import React, {useState, useEffect} from "react";
+import {useSelector, useDispatch} from "react-redux";
 
+import {Link} from "react-router-dom";   
+import {Spin, Table, Tag, Row, Col, Divider, Card} from "antd";
+import {DeleteFilled} from '@ant-design/icons'
 import "./FormHelp.scss";
-import {Row, Col, Spin, Form , Button, Divider, Input, Upload, Card, Image, Space} from "antd";
-import {PlusOutlined} from '@ant-design/icons'
+import moment from "moment";
+import vi from "moment/locale/vi";
 
-import {CloudinaryContext } from 'cloudinary-react';
-import {createFormHelp, createImageByForm} from "../../../slices/form";
+import FormHelpDetail from "./FormHelpDetail";
+import FormHelpAdd from "./FormHelpAdd";
+import {getAllFormHelpByUser} from "../../../slices/form";
 
-const { TextArea } = Input;
 const FormHelp = () => {
     const dispatch = useDispatch();
     const {user: currentUser} = useSelector((state) => (state.auth));
-
-    const [form] = Form.useForm();
-    const [initForm, setInitForm] = useState(null);
-    const [isSubmit, setIsSubmit] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [newFomrId, setNewFomrId] = useState(null);
 
-    const [showImage, setShowImage] = useState(false);
-    const [images, setImages] = useState([]);
-    const [loadingImage, setLoadingImage] = useState(false);
+    const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [dataViewDetail, setDataViewDetail] = useState([]);
+    const [openViewAdd, setOpenViewAdd] = useState(false);
 
-    useEffect(() => {
-        if(currentUser){
-            const init = {
-                fullName: currentUser.name,
-                email: currentUser.email,
-                phone: currentUser.phone,
-            }
-            setInitForm(init);
-            form.setFieldsValue(init);
-        }
-        return () => {
-            form.resetFields();
-        }
-    }, [])
-
-    const onFinish = (values) => {
-        const {fullName, email, phone, title, contents} = values;
-        setIsSubmit(true)
-        setLoading(true);
-        console.log("hmm: " + fullName + " - " + email + " - " + phone + " - " + title + " - " + contents)
-        dispatch(createFormHelp({fullName, email, phone, title, contents}))
-          .unwrap()
-          .then(data => {
-            setNewFomrId(data.id);
-            setLoading(false);
-            setIsSubmit(false);
-            toast.success("Gửi đơn yêu cầu thành công!");
-            form.resetFields();
-            return;
-          })
-          .catch(e => {
-            toast.error("Gửi đơn yêu cầu thất bại!");
-            console.log(e);
-            setIsSubmit(false);
-            setLoading(false);
-          });
-      };
-
-    const handleImageUpload = async ({ file }) => {
-    // // const fileImg = e.target.file[0];
-        setLoadingImage(true)
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'sunshine');
-        const response = await fetch("https://api.cloudinary.com/v1_1/dp0hbi49d/image/upload",
+    const columns = [
         {
-            method: 'POST',
-            body: formData
-        })
-        setLoadingImage(false);
-        const data = await response.json();
-        setImages([...images, {url: data.secure_url}])
-        return data.secure_url;
-    }
+            title: "STT",
+            key: "index",
+            render: (text, record, index) => (index + 1),
+        },
+        {
+          title: 'Tiêu đề',
+          dataIndex: 'title',
+          render: (text, record, index) => {
+            return (
+                <Link style={{fontSize: "15px", marginBottom: "0px", fontWeight: 500, color: "#1554ad"}} 
+                    onClick={() => {
+                        setDataViewDetail(record);
+                        setOpenViewDetail(true);}}
+                    >{text}
+                </Link>
+            )
+          },
+        }, 
+        {
+            title: 'Ngày tạo',
+            dataIndex: 'createdAt',
+            render: (text, record, index) => {
+                return {
+                    props: { style: {fontSize: "15px", marginBottom: "0px", fontWeight: 500, color: "#767676"}},
+                    children: moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
+                  };
+            },
+        },
+        {
+            title: 'Trạng thái',
+            dataIndex: 'statusName',
+            render: (text, record) => {
+                let color = "green"
+                if(text === "Đã từ chối"){
+                    color = "red"
+                } else if(text === "Đang chờ duyệt"){
+                    color = "yellow"
+                }
+                return (
+                    <Tag style={{fontSize: 15, fontWeight: 500, fontFamily: "Montserrat"}} color={color} key={text}>
+                        {text}
+                    </Tag>
+                )
+            }, 
+            filters: [
+                {text: "Đang chờ duyệt", value: "Đang chờ duyệt"},
+                {text: "Đã duyệt", value: "Đã duyệt"},
+                {text: "Đã từ chối", value: "Đã từ chối"}
+            ],
+            onFilter: (value, record) => {
+                return record.statusName === value
+            }
+        },
+        {
+            title: 'Thao tác',
+            key: 'action',
+            render: (text, record, index) => {
+              return (
+                <>
+                    <DeleteFilled style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px"}}/>
+                </>
+              )
+            },
+          },
+      ];
+    const [dataSource, setDataSource] = useState([]);
 
-    //them anh
-    const handleAddImage = () => {
-        setShowImage(true);
-        const id = newFomrId;
-        let name = null;
-        console.log("images: " + JSON.stringify(images));
-        if(images.length !== 0) {
-            images.map((image) => {
-                name = image.url;
-                if(id !== null && name !== null){
-                    dispatch(createImageByForm({id, name}))
-                    .then((res) => {
-                        setShowImage(false);
-                        setImages([])
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                        setShowImage(false);
-                        setImages([]);
-                    })
-                } 
+    const getAllFormHelp = () => {
+        setLoading(true);
+        const fullName = currentUser.name;
+        dispatch(getAllFormHelpByUser({fullName}))
+            .then((response) => {
+                setLoading(false);
+                setDataSource(response.payload);
             })
-        }
+            .catch((err) => {
+                setLoading(false);
+                console.log(">>> err: " + err);
+            })
     }
-    useEffect(handleAddImage, [newFomrId, images]);    
-    
+    useEffect(getAllFormHelp, []);
+
     return (
         <div className="container" style={{fontFamily: 'Montserrat, sans-serif', marginTop: "30px", marginBottom: 300}}>
             <div className="container-title">
@@ -112,116 +112,38 @@ const FormHelp = () => {
                     <div className='col-12'>
                         <h2 >ĐƠN YÊU CẦU HỖ TRỢ TỪ <em>SUN</em><span>SHINE</span></h2>
                         <div className="line-dec"></div>
-                        <p style={{paddingLeft: "150px", paddingRight: "150px"}}>Nếu bạn có gặp hoàn cảnh hay tổ chức nào có hoàn cảnh khó khăn cần sự giúp đỡ, hãy gửi đơn cho Sunshine. </p>
+                        <p style={{paddingLeft: "150px", paddingRight: "150px", paddingTop: 5}}>Nếu bạn có gặp hoàn cảnh hay tổ chức nào có hoàn cảnh khó khăn cần sự giúp đỡ, hãy gửi đơn cho Sunshine.</p>
                     </div>
                 </div>
             </div>
-            <Row className="form-help-row" style={{marginTop: 30}}>
-                <Col span={18} style={{paddingRight: 40}}>
-                    <Spin spinning={loading}>
-                        <Form
-                            className="project-form-add"
-                            form={form}
-                            autoComplete="off"
-                            layout="horizontal"
-                            style={{ maxWidth: 1000 }}
-                            initialValues={{ prefix: 'VND' }}
-                            onFinish={onFinish}       
-                            >
-                            <Row>
-                                <Col span={24}>
-                                    <Form.Item name="fullName" labelCol={{ span: 24 }} label="Họ và tên:"
-                                        rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
-                                        <Input></Input>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={24}>
-                                    <Form.Item name="email" labelCol={{ span: 24 }} label="Email:"
-                                        rules={[{ required: true, message: 'Vui lòng nhập email!' }]}>
-                                        <Input></Input>
-                                    </Form.Item>
-                                </Col>
-                                {/* phone */}
-                                <Col span={24}>
-                                    <Form.Item name="phone" labelCol={{ span: 24 }} label="Số điện thoại:"
-                                        rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}>
-                                        <Input></Input>
-                                    </Form.Item>
-                                </Col>
-                                {/* Tiêu đề */}
-                                <Col span={24}>
-                                    <Form.Item 
-                                        labelCol={{ span: 24 }}
-                                        name="title"
-                                        label="Tiêu đề:"
-                                        rules={[{ required: true, message: 'Vui lòng nhập tiêu đề!' }]}>
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                                {/* Nội dung */}
-                                <Col span={24}>
-                                    <Form.Item 
-                                        labelCol={{ span: 24 }}
-                                        name="contents"
-                                        label="Nội dung chi tiết"
-                                        rules={[{ required: true, message: 'Vui lòng nhập nội dung!' }]}>
-                                        <TextArea  rows={15} name="details"></TextArea>
-                                    </Form.Item>
-                                </Col>
-                                {/* Upload hình ảnh */}
-                                <Col span={24}>
-                                    <Form.Item
-                                        label="Hình ảnh minh chứng kèm theo"
-                                        name="file"
-                                    >
-                                        <CloudinaryContext cloudName="dp0hbi49d">
-                                            <Upload
-                                                name="file"
-                                                listType="text"
-                                                className="avatar-uploader"
-                                                multiple={false}
-                                                customRequest={handleImageUpload}
-                                                action=""
-                                            >
-                                                <div>
-                                                    <Button icon={<PlusOutlined />} style={{borderStyle: "dashed",  }}>Upload</Button>
-                                                </div>
-                                            </Upload>
-                                        </CloudinaryContext>
-                                    </Form.Item>
-                                </Col>
-                                {showImage &&
-                                    <Col span={24} style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25}}>
-                                        {loadingImage 
-                                        ? 
-                                            <Space size="large" style={{marginLeft: 50}}>
-                                                <Spin size="middle"/>
-                                            </Space>
-                                        :
-                                            <>
-                                            {images && images.map((image, index) => (
-                                                <Card className="card-form" key={index} style={{height: 160, width: 220,}}>
-                                                    <Image className="img-form" src={image.url} style={{width: 190, height: 130, marginTop: 20, marginLeft: -20}}  />
-                                                </Card>
-                                                ))}
-                                            </>
-                                        }
-                                    </Col>
-                                }
-                                <Button style={{marginTop: 15, color: "#fff !important"}} type="primary" htmlType="submit" loading={isSubmit}>
-                                    Thêm mới
-                                </Button>
-                            </Row>
-                        </Form> 
-                    </Spin>
-                </Col>
-                <Divider type="vertical" style={{height: "500px", marginLeft: "-20px", marginRight: "20px"}}></Divider>
-                <Col span={4}>
-                    <button className="btn btn-primary" style={{marginTop: 15}}>HƯỚNG DẪN GỬI ĐƠN YÊU CẦU</button>
-                    <button className="btn btn-primary" style={{marginTop: 15}}>QUY ĐỊNH GỬI ĐƠN YÊU CẦU</button>
-                </Col>
-            </Row>
-        </div>
+            <div style={{display: "flex", justifyContent: "space-between"}}>
+                <p style={{color: "#d75758", fontStyle: "italic", fontWeight: "500", paddingTop: "30px"}}>*Chú ý: Kết quả phê duyệt đơn yêu cầu sẽ được gửi qua email!</p>
+                <button className="btn btn-primary" style={{height: "45px", marginTop: "20px", background: "#c1605b", border: "none", fontWeight: "500"}}
+                    onClick={() => {setOpenViewAdd(true)}}>
+                    <span style={{fontSize: 20, marginRight: 5, marginLeft: "-10px"}}>&#8250;&#8250;</span>
+                        Gửi đơn yêu cầu
+                    <span style={{fontSize: 20, marginRight: "-12px", marginLeft: "5px"}}>&#8249;&#8249;</span>
+                </button>
+            </div>
+            <Spin spinning={loading}>
+                <Table className="table-contribution" style={{marginTop: 20, fontSize: "15px !important"}}
+                    columns={columns} dataSource={dataSource} pagination={false}>
+                </Table>
+            </Spin>
+
+        <FormHelpDetail
+            openViewDetail = {openViewDetail}
+            setOpenViewDetail = {setOpenViewDetail}
+            dataViewDetail = {dataViewDetail}
+            setDataViewDetail = {setDataViewDetail}
+        />
+
+        <FormHelpAdd
+            openViewAdd = {openViewAdd}
+            setOpenViewAdd = {setOpenViewAdd}
+            getAllFormHelp = {getAllFormHelp}
+        />
+    </div>
     )
 }
 
