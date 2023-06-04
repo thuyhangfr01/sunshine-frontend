@@ -10,8 +10,10 @@ import { toast } from 'react-toastify';
 import moment from "moment";
 import vi from "moment/locale/vi";
 
+import ArtifactDetail from "./ArtifactDetail";
 import {removeContribution} from "../../../slices/contribution"
-import {getListContributionsByUser, getListContributionArtifactsByUser} from "../../../slices/report";
+import {getListContributionsByUser} from "../../../slices/report";
+import {getListContributionArtifactsByUserId} from "../../../slices/artifact";
 
 const HistoryContribution = () => {
     const {user: currentUser} = useSelector((state) => (state.auth));
@@ -20,6 +22,7 @@ const HistoryContribution = () => {
 
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [dataViewDetail, setDataViewDetail] = useState([]);
+    const [contributionId, setContributionId] = useState("");
 
     const currentUserId = currentUser.id;
     const [page, setPage] = React.useState(1);
@@ -41,15 +44,16 @@ const HistoryContribution = () => {
     }
     const columns = [
         {
+            title: "STT",
+            key: "index",
+            render: (text, record, index) => (index + 1),
+        },
+        {
             title: "Mã đơn",
             dataIndex: 'id',
             render: (text, record, index) => {
                 return (
-                    <Link style={{color: "#1554ad", fontWeight: 600}}
-                        onClick={() => {
-                            setDataViewDetail(text);
-                            setOpenViewDetail(true);
-                        }}>{text}
+                    <Link style={{color: "#1554ad", fontWeight: 600}}>{text}
                     </Link>
                 )
             },
@@ -130,13 +134,19 @@ const HistoryContribution = () => {
     const [dataSource, setDataSource] = useState([]);
     const columnsArtifacts = [
         {
+            title: "STT",
+            key: "index",
+            render: (text, record, index) => (index + 1),
+        },
+        {
             title: "Mã đơn",
             dataIndex: 'id',
             render: (text, record, index) => {
                 return (
                     <Link style={{color: "#1554ad", fontWeight: 600}}
                         onClick={() => {
-                            setDataViewDetail(text);
+                            setContributionId(text);
+                            setDataViewDetail(record);
                             setOpenViewDetail(true);
                         }}>{text}
                     </Link>
@@ -151,46 +161,6 @@ const HistoryContribution = () => {
                 (<p style={{fontSize: "15px", marginBottom: "0px", fontWeight: 500, color: "#767676"}}>{text}</p>)
             )
           },
-        },
-        {
-            title: 'Tên hiện vật',
-            dataIndex: 'artifactName',
-            render: (text, record, index) => {
-                return (
-                    (<p style={{fontSize: "15px", marginBottom: "0px", fontWeight: 500, color: "#767676"}}>{text}</p>)
-                )
-            },
-        },
-        {
-            title: 'Số lượng',
-            dataIndex: 'donatedAmount',
-            render: (text, record, index) => {
-                return (
-                    (<p style={{fontSize: "15px", marginBottom: "0px", fontWeight: 500, color: "#767676"}}>{text}</p>)
-                )
-            },
-        },
-        {
-            title: 'Trạng thái đơn',
-            dataIndex: 'status',
-            render: (text, record) => {
-                let color = "green"
-                if(text === "Đang chờ duyệt"){
-                    color = "yellow"
-                }
-                return (
-                    <Tag color={color} key={text} style={{fontSize: 15, fontWeight: 500, fontFamily: "Montserrat"}}>
-                        {text}
-                    </Tag>
-                )
-            }, 
-            filters: [
-                {text: "Đang chờ duyệt", value: "Đang chờ duyệt"},
-                {text: "Đã nhận", value: "Đã nhận"}
-            ],
-            onFilter: (value, record) => {
-                return record.moneyStatus === value
-            }
         },
         {
             title: 'Thời gian',
@@ -209,15 +179,7 @@ const HistoryContribution = () => {
             render: (text, record, index) => {
               return (
                 <>
-                    <Popconfirm
-                        placement="leftTop"
-                        title={"Xác nhận xóa đơn đóng góp"}
-                        description={"Bạn có chắc chắn muốn xóa đơn này không?"}
-                        onConfirm={() => handleDeleteContribution(record)}
-                        onText="Xác nhận"
-                        cancelText="Hủy">
-                            <DeleteFilled style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px",  cursor: "pointer"}}/>
-                    </Popconfirm>
+                    <DeleteFilled style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px"}}/>
                 </>
               )
             },
@@ -241,7 +203,7 @@ const HistoryContribution = () => {
                     setLoading(false);
                     console.log(error);
                 })
-            dispatch(getListContributionArtifactsByUser({userId}))
+            dispatch(getListContributionArtifactsByUserId({userId}))
                 .then((response) => {
                     // setLoading(false);
                     console.log(">>> artifacts: " + JSON.stringify(response.payload))
@@ -351,12 +313,13 @@ const HistoryContribution = () => {
                 </Tabs.TabPane>
             </Tabs>       
 
-            {/* <HistoryContributionDetail
+            <ArtifactDetail
                 openViewDetail = {openViewDetail}
                 setOpenViewDetail = {setOpenViewDetail}
                 dataViewDetail = {dataViewDetail}
                 setDataViewDetail = {setDataViewDetail}
-            /> */}
+                contributionId = {contributionId}
+            />
         </div>
     )
 }

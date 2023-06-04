@@ -9,7 +9,7 @@ import moment from "moment";
 import vi from "moment/locale/vi";
 
 import ContributionArtifactDetail from "./ContributionArtifactDetail";
-import {getListContributionArtifacts} from "../../../slices/contribution";
+import {getListContributionArtifacts} from "../../../slices/artifact";
 
 const ContributionArtifact = () => {
     const dispatch = useDispatch();
@@ -43,14 +43,14 @@ const ContributionArtifact = () => {
           title: 'Người gửi',
           dataIndex: 'userName',
           render: (text, record, index) => {
-            return (<p style={{fontSize: 14}}>{text}</p>)
+            return (<p style={{fontSize: 14, marginBottom: 0}}>{text}</p>)
           }
         },
         {
             title: 'Tên dự án',
             dataIndex: 'projectName',
             render: (text, record, index) => {
-              return (<p style={{fontSize: 14}}>{text}</p>)
+              return (<p style={{fontSize: 14, marginBottom: 0}}>{text}</p>)
             }
           },
         {

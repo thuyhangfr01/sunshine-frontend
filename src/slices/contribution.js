@@ -82,30 +82,6 @@ export const updateStatusMoney = createAsyncThunk(
     }
 )
 
-export const getListContributionArtifacts = createAsyncThunk(
-    "contribution/getListContributionArtifacts",
-    async () => {
-        const res = await ContributionService.getListContributionArtifacts();
-        return res.data;
-    }
-)
-
-export const getArtifactsByContributionId = createAsyncThunk(
-    "contribution/getArtifactsByContributionId",
-    async ({id}) => {
-        const res = await ContributionService.getArtifactsByContributionId(id);
-        return res.data;
-    }
-)
-
-export const updateArtifactStatus = createAsyncThunk(
-    "contribution/updateArtifactStatus",
-    async ({artId, artifactId, receivedAmount, statusId}) => {
-        const res = await ContributionService.updateArtifactStatus(artId, artifactId, receivedAmount, statusId);
-        return res.data;
-    }
-)
-
 export const removeContribution = createAsyncThunk(
     "contribution/remove",
     async ({id}) => {
@@ -154,19 +130,6 @@ const contributionSlice = createSlice({
                 state.contributionDonation[index].contributionMoney.mcontributionStatus.id = action.payload.statusId;
             } 
         }, 
-        [updateArtifactStatus.fulfilled]: (state, action) => {
-            let index = state.findIndex(c => c.id === action.payload.artifactId);
-            state[index] = {
-                ...state[index],
-                ...action.payload
-            }
-        }, 
-        [getListContributionArtifacts.fulfilled]: (state, action) => {
-            state.artifacts = [...action.payload];
-        },
-        [getArtifactsByContributionId.fulfilled]: (state, action) => {
-            return [...action.payload];
-        },
         [removeContribution.fulfilled]: (state, action) => {
             state.contributionDonation = state.contributionDonation.filter(c => c.id !== action.payload.id);
             console.log("idddddddđ: " + action.payload.id)
