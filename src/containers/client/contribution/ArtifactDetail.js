@@ -57,7 +57,7 @@ const ArtifactDetail = (props) => {
 
     const getListArtifacts = () => {
         const id = contributionId;
-        if(id !== null){
+        if(id !== null ){
             dispatch(getArtifactsByContributionId({id}))
             .then((response) => {
                 console.log(">>>>>" + JSON.stringify(response.payload));
