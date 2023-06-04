@@ -8,6 +8,7 @@ import nameReducer from "./slices/name";
 import contributionReducer from "./slices/contribution";
 import formReducer from "./slices/form";
 import reportReducer from "./slices/report";
+import actifactReducer from "./slices/artifact";
 
 import {
     persistStore,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
     status: statusReducer,
     name: nameReducer,
     contributions: contributionReducer,
+    artifacts: actifactReducer,
     form: formReducer,
     report: reportReducer
 })
