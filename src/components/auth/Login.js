@@ -49,7 +49,7 @@ const Login = () => {
       .then(() => {
         toast.success("Đăng nhập thành công!");
         // navigate("/home");
-        window.location.reload();
+        // window.location.reload();
     })
     .catch(() => {
       toast.error("Đăng nhập thất bại!");
@@ -120,7 +120,7 @@ const Login = () => {
                                               type="email"
                                               className="form-control" 
                                               style={{fontSize: '16px', position: "relative"}} 
-                                              placeholder="Nhập email" autofocus 
+                                              placeholder="Nhập email" 
                                               />
                                               <FontAwesomeIcon className="form-icon-left" icon={faEnvelope} />
                                               <ErrorMessage
@@ -152,7 +152,7 @@ const Login = () => {
                                           type="submit"
                                           className="btn btn-primary btn-block mb-4" 
                                           style={{padding: '16px', fontSize: '16px', fontWeight: '600', border: 'none'}}
-                                          onClick={() => {this.handleLogin()}}
+                                          // onClick={() => {this.handleLogin()}}
                                           disabled={loading}>Đăng nhập
                                            {loading && (
                                             <span className="spinner-border spinner-border-sm" style={{marginLeft: "10px"}}></span>

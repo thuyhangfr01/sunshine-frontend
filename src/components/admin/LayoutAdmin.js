@@ -27,27 +27,6 @@ const { Content, Sider } = Layout;
 
 const items = [
     {
-        label: <Link to='/admin'>Dashboard</Link>,
-        key: 'dashboard',
-        icon: <AppstoreOutlined />
-    },
-    {
-        label: <span>Quản lý người dùng</span>,
-        icon: <UserOutlined />,
-        children: [
-            {
-                label: <Link to='/admin/user'>Cập nhật thông tin</Link>,
-                key: 'crud_user',
-                icon: <TeamOutlined />,
-            },
-            {
-                label: <Link to='/admin/authorized'>Phân quyền người dùng</Link>,
-                key: 'authorized',
-                icon: <ContactsOutlined />,
-            }
-        ]
-    },
-    {
         label: <span>Quản lý dự án</span>,
         key: 'project',
         icon: <ExceptionOutlined />,
@@ -92,7 +71,23 @@ const items = [
                 icon: <ReadOutlined />,
             }
         ]
-    }
+    },
+    {
+        label: <span>Quản lý người dùng</span>,
+        icon: <UserOutlined />,
+        children: [
+            {
+                label: <Link to='/admin/user'>Cập nhật thông tin</Link>,
+                key: 'crud_user',
+                icon: <TeamOutlined />,
+            },
+            {
+                label: <Link to='/admin/authorized'>Phân quyền người dùng</Link>,
+                key: 'authorized',
+                icon: <ContactsOutlined />,
+            }
+        ]
+    },
 ];
 
 const LayoutAdmin = () => {

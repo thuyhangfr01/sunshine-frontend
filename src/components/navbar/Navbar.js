@@ -42,11 +42,11 @@ export default function Navbar() {
                 <div className="container-fluid text-white d-none d-lg-flex" style={{background: 'linear-gradient(90deg, #ff4955, #673ab7)', height: '32px'}}>
                     <div className="container">
                         <div className="d-flex align-items-center" style={{marginTop: "5px"}}>
-                                <small style={{fontWeight: "500", marginRight: "40px"}}>
+                                <small style={{fontWeight: "500", marginRight: "40px", fontSize: 14}}>
                                     <i className="me-2"><FontAwesomeIcon className="form-icon-left" icon={faPhone} /></i>
-                                    <span>Liên hệ:</span>
+                                    <span >Liên hệ:</span>
                                     <i className="fa fa-map-marker-alt me-2"></i>(+84) 765 700 007</small>
-                                <small style={{fontWeight: "500"}}>
+                                <small style={{fontWeight: "500", fontSize: 14}}>
                                     <i className="me-2"><FontAwesomeIcon className="form-icon-left" icon={faEnvelope} /></i>
                                     <span>Email:</span>
                                     <i className="fa fa-envelope me-2"></i>yoursunshine@gmail.com</small>
@@ -103,8 +103,8 @@ export default function Navbar() {
                                                     onMouseEnter={() => setDropDownNoti(true)}
                                                     onMouseLeave={() => setDropDownNoti(false)}>
                                                     <FontAwesomeIcon icon={faBell} style={{marginTop: 9, fontSize: 20, color: "#4b78a4", marginLeft: "-25px"}} />
-                                                    <span style={{width: "17px", height: "17px", textAlign: "center", borderRadius: "10px", marginLeft: "-4px", background: "#dc3545"}}>
-                                                        <p style={{color: "#fff", fontWeight: "600", fontSize: "10", marginTop: "-7px", fontSize: "10px"}}>3</p>
+                                                    <span style={{width: "17px", height: "17px", textAlign: "center", borderRadius: "10px", marginLeft: "-7px", background: "#dc3545"}}>
+                                                        <p style={{color: "#fff", fontWeight: "600", fontSize: "10", marginTop: "-7px", fontSize: "10px"}}>0</p>
                                                     </span>
                                                     {dropDownNoti && <DropdownNoti/>}
                                                 </li>
@@ -113,7 +113,7 @@ export default function Navbar() {
                                                     onMouseEnter={() => setDropdown(true)}
                                                     onMouseLeave={() => setDropdown(false)}
                                                     className="scroll-to-section">
-                                                    <NavLink to="/infoUser" className="n-item" activeClassName="active">Chào, <span style={{textTransform: "uppercase"}}>{currentUser.name}</span>
+                                                    <NavLink to="/infoUser" className="n-item" activeclassname="active">Chào, <span style={{textTransform: "uppercase"}}>{currentUser.name}</span>
                                                         <FontAwesomeIcon icon={faAngleDown} style={{marginLeft: "7px"}} />
                                                     </NavLink>
                                                     {dropdown && <Dropdown/>}

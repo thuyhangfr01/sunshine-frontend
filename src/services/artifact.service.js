@@ -16,11 +16,11 @@ const updateArtifactStatus = (artId, artifactId, receivedAmount, statusId) => {
     return http.put(`contribution/artifact/${artId}`, {artifactId, receivedAmount, statusId});
 }
 
-const NameService = {
+const ArtifactService = {
     getListContributionArtifacts,
     getListContributionArtifactsByUserId,
     getArtifactsByContributionId,
     updateArtifactStatus
 }
 
-export default NameService;
+export default ArtifactService;

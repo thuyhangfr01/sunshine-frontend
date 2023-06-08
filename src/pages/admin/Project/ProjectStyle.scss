@@ -19,8 +19,8 @@ div.ant-upload-list.ant-upload-list-text {
 .ant-image-mask {
   width: 190px;
   height: 130px;
-  margin-top: -30px;
-  margin-left: -20px;
+  margin-top: -10px;
+  margin-left: -10px;
 }
 
 .project-drawer-add {
@@ -79,3 +79,20 @@ div.ant-upload-list.ant-upload-list-text {
     font-weight: 500;
   }
 }
+
+.project-detail{
+  th.ant-descriptions-item-label{
+    background-color: #dceaff !important;
+    color: #134488 !important;
+    width: 188px !important;
+    line-height: 30px;
+  }
+  td.ant-descriptions-item-content {
+    color: #003989;
+    line-height: 30px;
+    font-weight: 500;
+    width: 200px !important;
+  }
+  
+}
+

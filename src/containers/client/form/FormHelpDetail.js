@@ -53,7 +53,7 @@ const FormHelpDetail = (props) => {
             <div style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25, marginTop: 20}}>
                 {dataViewDetail?.formImageList && dataViewDetail?.formImageList.map((img, index) => (
                     <Card key={index} style={{height: 160, width: 220,}}>
-                        <Image preview={false} src={img.name} style={{width: 190, height: 130, marginTop: 20, marginLeft: -20}}  />
+                        <Image preview={false} src={img.name} style={{width: 190, height: 130, marginTop: "-8px", marginLeft: "-9px"}}  />
                     </Card>
                 ))}
             </div>

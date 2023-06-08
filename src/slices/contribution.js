@@ -108,7 +108,7 @@ const contributionSlice = createSlice({
             state.contributions = [...action.payload];
         },
         [createContribution.fulfilled]: (state, action) => {
-            state.contributionDonation = [...state.contributions, action.payload];    
+            state.contributionDonation.push(action.payload);    
         },
         [importContribution.fulfilled]: (state, action) => {
             state.contributionImport.push(action.payload);

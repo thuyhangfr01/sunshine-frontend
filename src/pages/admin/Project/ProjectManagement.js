@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {Table, Tag, Button, Spin} from "antd";
-import {DeleteFilled, EditOutlined, ImportOutlined, ExportOutlined, PlusOutlined} from '@ant-design/icons'
+import {Table, Tag, Button, Spin,  Row, Col, Select, DatePicker} from "antd";
+import {DeleteFilled, EditOutlined, PlusOutlined} from '@ant-design/icons'
 import { Link } from 'react-router-dom';
-import ProjectDataService from "../../../services/project.service";
+import {retrieveLatestProjects} from "../../../slices/projects";
 import ProjectDetail from "./ProjectDetail";
 import ProjectAdd from "./ProjectAdd";
 import ProjectUpdate from "./ProjectUpdate";
 import { retrieveTypes } from "../../../slices/types";
 import moment from "moment";
 import vi from "moment/locale/vi";
+import dayjs from 'dayjs';
 
 const ProjectManagement = () => {
     const [openViewDetail, setOpenViewDetail] = useState(false);
-    const [dataViewDetail, setDataViewDetail] = useState([]);
+    const [dataViewDetail, setDataViewDetail] = useState(null);
     const [openViewAddProject, setOpenViewAddProject] = useState(false);
     const [openViewUpdateProject, setOpenViewUpdateProject] = useState(false);
     const [dataUpdate, setDataUpdate] = useState([]);
@@ -40,6 +41,7 @@ const ProjectManagement = () => {
           render: (text, record, index) => {
             return (
                 <Link style={{color: "#1554ad", fontWeight: 600}} onClick={() => {
+                    console.log(">>> record: " + JSON.stringify(record));
                     setDataViewDetail(record);
                     setOpenViewDetail(true);
                 }}>{text}
@@ -52,24 +54,24 @@ const ProjectManagement = () => {
           dataIndex: ['projectType', 'name'],
           render: (text, record, index) => {
             console.log("type: " + text);
-            return (<p style={{fontSize: 14}}>{text}</p>)
+            return (<p style={{fontSize: 14, marginBottom: 0}}>{text}</p>)
           }
         },
         {
             title: 'Trạng thái',
             dataIndex: ['projectStatus','name'],
             render: (text, record) => {
-                let color = "green"
+                let color = "#e0ae4c"
                 if(text === "Đã tạm hoãn"){
-                    color = "volcano"
+                    color = "#d14444"
                 } else if(text === "Đã hoàn thành"){
-                    color = "geekblue"
+                    color = "#20a668"
                 } else if(text === "Đang triển khai"){
-                    color = "yellow"
+                    color = "#6c98d7"
                 }
                 return (
-                    <Tag color={color} key={text}>
-                        {text.toUpperCase()}
+                    <Tag style={{fomtFamily: "Montserrat", fontSize: 15}} color={color} key={text}>
+                        {text}
                       </Tag>
                 )
             }, 
@@ -111,10 +113,11 @@ const ProjectManagement = () => {
 
     const getLatestProject = () => {
         setLoading(true);
-        ProjectDataService.getLatestProject()
+        dispatch(retrieveLatestProjects())
             .then(response => {
+                console.log(">>> daataaaaaa: " + JSON.stringify(response));
                 setLoading(false);
-                setDataSource(response.data);
+                setDataSource(response.payload);
             })
             .catch(e => {
                 setLoading(false);
@@ -129,9 +132,9 @@ const ProjectManagement = () => {
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <span className="title">DANH SÁCH DỰ ÁN</span>
                 <span style={{display: "flex", gap: 10}}>
-                    <Button><ExportOutlined /> Export</Button>
-                    <Button><ImportOutlined /> Import</Button>
-                    <Button
+                    {/* <Button><ExportOutlined /> Export</Button>
+                    <Button><ImportOutlined /> Import</Button> */}
+                    <Button style={{fontFamily: "Montserrat", fontSize: 15, fontWeight: 500}}
                         onClick={() => setOpenViewAddProject(true)}
                     ><PlusOutlined /> Thêm mới</Button>
                 </span>
@@ -140,6 +143,31 @@ const ProjectManagement = () => {
     }
     return (
         <div style={{padding: "55px 30px 30px 30px"}}>
+            <div className="receipt-payment">
+                <Row style={{marginLeft: 10}}>
+                    <Col span={14} style={{display: "flex"}}>
+                        <p className="p-text">Lọc theo dự án: </p>
+                        <Select placeholder="Tất cả..." 
+                            showSearch
+                            allowClear
+                            style={{fontFamily: 'Montserrat',  alignSelf: "center", marginBottom: "10px"}}>
+                        </Select>
+                    </Col>
+                    {/* Thời gian bắt đầu */}
+                    <Col span={5}>
+                        <DatePicker  format="YYYY-MM-DD HH:mm:ss"
+
+                            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }} />
+                    </Col>
+                    {/* Thời gian kết thúc */}
+                    <Col span={5}>
+                        <DatePicker format="YYYY-MM-DD HH:mm:ss"
+                            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+                            style={{ paddingRight: 20  }} />
+                    </Col>   
+                </Row> 
+            </div>
+
             <Spin spinning={loading}>
                 <Table className="project-artifact" columns={columns} dataSource={dataSource}
                     title={renderHeader}
@@ -166,12 +194,14 @@ const ProjectManagement = () => {
                 setDataUpdate={setDataUpdate}
             />
 
-            <ProjectDetail
-                openViewDetail={openViewDetail}
-                setOpenViewDetail={setOpenViewDetail}
-                dataViewDetail={dataViewDetail}
-                setDataViewDetail={setDataViewDetail}
-            />
+            {dataViewDetail !== null &&
+                <ProjectDetail
+                    openViewDetail={openViewDetail}
+                    setOpenViewDetail={setOpenViewDetail}
+                    dataViewDetail={dataViewDetail}
+                    setDataViewDetail={setDataViewDetail}
+                />
+            }
         </div>
     )
 }

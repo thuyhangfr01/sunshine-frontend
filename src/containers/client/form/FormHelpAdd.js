@@ -110,7 +110,7 @@ const FormHelpAdd = (props) => {
     
     return (
         <Modal
-            title="Đơn đóng góp"
+            title="Đơn yêu cầu hỗ trợ"
             centered
             width={800}
             style={{padding: 30}}
@@ -202,7 +202,7 @@ const FormHelpAdd = (props) => {
                                     <>
                                     {images && images.map((image, index) => (
                                         <Card className="card-form" key={index} style={{height: 160, width: 220,}}>
-                                            <Image className="img-form" src={image.url} style={{width: 190, height: 130, marginTop: 20, marginLeft: -20}}  />
+                                            <Image preview={false} className="img-form" src={image.url} style={{width: 190, height: 130, marginTop: "-8px", marginLeft: "-9px"}}  />
                                         </Card>
                                         ))}
                                     </>

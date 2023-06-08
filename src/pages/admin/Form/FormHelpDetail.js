@@ -42,27 +42,27 @@ const FormHelpDetail = (props) => {
     }
 
     return (
-        <Drawer title="Xem thông tin chi tiết của đơn yêu cầu"
+        <Drawer title="Xem thông tin chi tiết của đơn yêu cầu" className="form-detail"
             style={{fontFamily: "Montserrat", fontSize: "15px"}}
             width={"50vw"}
             onClose={() => {setOpenViewDetail(false); setDataViewDetail([])}} open={openViewDetail}>
 
-            <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Thông tin người gửi</Divider>
+            <Divider style={{fontFamily: "Montserrat", fontSize: "15px", color: "#185bbd", fontWeight: 600}}>Thông tin người gửi</Divider>
             <Descriptions bordered column={3}
                 style={{fontFamily: "Montserrat", fontSize: "15px"}}>
                 <Descriptions.Item label="Họ và tên" span={3}>{dataViewDetail?.fullName}</Descriptions.Item>
-                <Descriptions.Item label="Email" span={1.5}>{dataViewDetail?.email}</Descriptions.Item>
-                <Descriptions.Item label="Số điện thoại" span={1.5}>{dataViewDetail?.phone}</Descriptions.Item>
+                <Descriptions.Item label="Email" span={3}>{dataViewDetail?.email}</Descriptions.Item>
+                <Descriptions.Item label="Số điện thoại" span={3}>{dataViewDetail?.phone}</Descriptions.Item>
             </Descriptions>
 
-            <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Nội dung đơn yêu cầu</Divider>
+            <Divider style={{fontFamily: "Montserrat", fontSize: "15px", color: "#185bbd", fontWeight: 600}}>Nội dung đơn yêu cầu</Divider>
             <Descriptions bordered column={3}
                 style={{fontFamily: "Montserrat", fontSize: "15px"}}>
                 <Descriptions.Item label="Tiêu đề" span={3}>{dataViewDetail?.title}</Descriptions.Item>
                 <Descriptions.Item label="Nội dung" span={3}>{dataViewDetail?.contents}</Descriptions.Item>
-                <Descriptions.Item span={1.5} label="Trạng thái đơn">
+                <Descriptions.Item span={3} label="Trạng thái đơn">
                     {dataViewDetail?.statusName === 'Đang chờ duyệt' &&
-                        <Badge style={{fontFamily: "Montserrat", color: '#ffc107', fontWeight: 600, fontStyle: "italic"}} status="warning" text={dataViewDetail?.statusName} />
+                        <Badge style={{fontFamily: "Montserrat", color: '#d7b36b', fontWeight: 600, fontStyle: "italic"}} status="warning" text={dataViewDetail?.statusName} />
                     }
                     {dataViewDetail?.statusName === 'Đã duyệt' &&
                         <Badge style={{fontFamily: "Montserrat", color: 'green', fontWeight: 600, fontStyle: "italic"}} status="success" text={dataViewDetail?.statusName} />
@@ -71,14 +71,14 @@ const FormHelpDetail = (props) => {
                         <Badge style={{fontFamily: "Montserrat", color: 'red', fontWeight: 600, fontStyle: "italic"}} status="error" text={dataViewDetail?.statusName} />
                     }
                 </Descriptions.Item>
-                <Descriptions.Item label="Thời gian gửi" span={1.5}>{moment(dataViewDetail?.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')}</Descriptions.Item>
+                <Descriptions.Item label="Thời gian gửi" span={3}>{moment(dataViewDetail?.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')}</Descriptions.Item>
             </Descriptions>
 
-            <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Hình ảnh đính kèm</Divider>
+            <Divider style={{fontFamily: "Montserrat", fontSize: "15px", color: "#185bbd", fontWeight: 600}}>Hình ảnh đính kèm</Divider>
             <div style={{display: "flex", width: 730, flexWrap: "wrap", gap: 25, marginTop: 20}}>
                 {dataViewDetail?.formImageList && dataViewDetail?.formImageList.map((img, index) => (
                     <Card key={index} style={{height: 160, width: 220,}}>
-                        <Image src={img.name} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                        <Image src={img.name} style={{width: 190, height: 130, marginTop: -10, marginLeft: -10}}  />
                     </Card>
                 ))}
             </div>

@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";   
 
-import {Spin, Table, Tag, Button, Row, Col, Select, DatePicker} from "antd";
-import {DeleteFilled} from '@ant-design/icons'
+import {Spin, Table, Tag, Row, Col, Select, DatePicker} from "antd";
+import {DeleteFilled, EditOutlined} from '@ant-design/icons'
 import "../ReceiptPayment/ReceiptPayment.scss"; 
 import moment from "moment";
 import vi from "moment/locale/vi";
@@ -29,21 +28,21 @@ const FormVolunteerManagement = () => {
             title: 'Họ và tên',
             dataIndex: 'fullName',
             render: (text, record, index) => {
-              return (<p style={{fontSize: 14}}>{text}</p>)
+              return (<p style={{fontSize: 14, marginBottom: 0}}>{text}</p>)
             }
           },
         {
           title: 'Email',
           dataIndex: 'email',
           render: (text, record, index) => {
-            return (<p style={{fontSize: 14}}>{text}</p>)
+            return (<p style={{fontSize: 14, marginBottom: 0}}>{text}</p>)
           }
         },
         {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             render: (text, record, index) => {
-              return (<p style={{fontSize: 14}}>{text}</p>)
+              return (<p style={{fontSize: 14, marginBottom: 0}}>{text}</p>)
             }
         },
         {
@@ -64,8 +63,8 @@ const FormVolunteerManagement = () => {
                     color = "yellow"
                 }
                 return (
-                    <Tag color={color} key={text}>
-                        {text.toUpperCase()}
+                    <Tag style={{fontSize: 14, fontFamily: "Montserrat"}} color={color} key={text}>
+                        {text}
                       </Tag>
                 )
             }, 
@@ -84,13 +83,12 @@ const FormVolunteerManagement = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <DeleteFilled style={{color: "#a50f0f", fontSize: 16, paddingLeft: "15px"}}/>
-                        <DeleteFilled 
-                            onClick={() => {
-                                setDataViewDetail(record);
-                                setOpenViewDetail(true);
-                            }}
-                            style={{color: "yellow", fontSize: 16, paddingLeft: "15px"}}/>
+                        <EditOutlined style={{color: "#dbbb33", fontSize: 16}}
+                         onClick={() => {
+                            setDataViewDetail(record);
+                            setOpenViewDetail(true);
+                        }}/>
+                        <DeleteFilled style={{color: "#a50f0f", fontSize: 16, paddingLeft: 10}}/>
                     </>
                 )
             },
@@ -131,7 +129,7 @@ const FormVolunteerManagement = () => {
 
     return (
         <div className="receipt-payment"  style={{padding: "55px 30px 30px 30px"}}>
-            <Row style={{margin: "35px"}}>
+            <Row style={{marginLeft: "10px"}}>
                 <Col span={14} style={{display: "flex"}}>
                     <p className="p-text">Lọc theo dự án: </p>
                     <Select placeholder="Tất cả..." 

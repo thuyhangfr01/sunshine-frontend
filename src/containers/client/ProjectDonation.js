@@ -90,9 +90,9 @@ const ProjectDonation = (props) => {
                 setOpenModalProjectDonation(false)
                 form.setFieldsValue(initForm)}}
             footer={[
-                <Button key="1" type="primary" 
+                <Button key="1" 
                     onClick={() => { form.submit() }}
-                    style={{fontSize: 15, fontFamily: "Montserrat", background: "#d95c5c !important"}}>
+                    style={{fontSize: 15, fontFamily: "Montserrat", backgroundColor: "#d95c5c", color: "#ffffff", border: "none"}}>
                   Thêm vào danh sách chờ
                 </Button>,
                 <Button key="2" type="primary"
@@ -145,7 +145,8 @@ const ProjectDonation = (props) => {
                             <Form.Item name="amountMoney" labelCol={{ span: 24 }} className="project-label" label="Nhập số tiền"
                                 rules={[{ required: true, message: 'Vui lòng nhập số tiền!' }]}>
                                 <InputNumber
-                                    min={0}
+                                    value={10000}
+                                    min={10000}
                                     style={{ width: '100%', fontFamily: "Montserrat" }}
                                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     addonAfter="VND"
@@ -164,9 +165,8 @@ const ProjectDonation = (props) => {
                                                 rules={[{ required: true, message: "Vui lòng nhập tên hiện vật!" }]}>
                                                 <Input style={{width: 275}} placeholder='Tên hiện vật'/>
                                             </Form.Item>
-                                            <Form.Item style={{fontFamily: "Montserrat"}} name={[field.name, "donatedAmount"]}
-                                                rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}>
-                                                <InputNumber min={1} style={{width: 120, fontFamily: "Montserrat"}} placeholder='Số lượng'/>
+                                            <Form.Item style={{fontFamily: "Montserrat"}} name={[field.name, "donatedAmount"]}>
+                                                <InputNumber min={1} value={1} style={{width: 120, fontFamily: "Montserrat"}} placeholder='Số lượng'/>
                                             </Form.Item>
                                             <Form.Item name={[field.name, "calculationUnit"]}
                                                 rules={[{ required: true, message: "Vui lòng nhập đơn vị!" }]}>

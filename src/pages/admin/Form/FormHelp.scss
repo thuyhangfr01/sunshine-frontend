@@ -2,7 +2,7 @@
   margin-top: 20px;
   Button.btn.btn-success {
     height: 40px;
-    background: #2d9953;
+    background: #47a367;
     border: none;
     font-weight: 500;
     font-size: 15px;
@@ -13,7 +13,7 @@
   }
   Button.btn.btn-danger {
     height: 40px;
-    background: #b13641;
+    background: #ba414c;
     border: none;
     font-weight: 500;
     font-size: 15px;
@@ -27,5 +27,39 @@
   span.ant-select-selection-item {
     font-family: "Montserrat";
     font-weight: 500;
+  }
+}
+
+.form-detail{
+  th.ant-descriptions-item-label{
+    background-color: #dceaff !important;
+    color: #134488 !important;
+    width: 188px !important;
+    line-height: 30px;
+  }
+  td.ant-descriptions-item-content {
+    color: #003989;
+    line-height: 30px;
+    font-weight: 500;
+    width: 200px !important;
+  }
+  
+}
+
+.table-contribution {
+  .ant-table-thead > tr > th {
+    background-color: #dceaff;
+    color: #134488 ;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 0px;
+    font-size: 14px;
+  }
+  .ant-table-tbody > tr > td {
+    font-weight: 500;
+    text-align: center;
+    color: #003989;
+    font-size: 14px;
   }
 }
