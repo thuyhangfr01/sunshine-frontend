@@ -97,7 +97,7 @@ const HistoryContribution = () => {
                 {text: "Đã nhận", value: "Đã nhận"}
             ],
             onFilter: (value, record) => {
-                return record.moneyStatus === value
+                return record.status === value
             }
         },
         {

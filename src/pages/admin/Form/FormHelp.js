@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from "react";
 import {useDispatch } from "react-redux";
 import {Link} from "react-router-dom";   
+import dayjs from 'dayjs';
 
-import {Spin, Table, Tag} from "antd";
+import {Spin, Table, Tag, Row, Col, Select, DatePicker} from "antd";
 import {DeleteFilled} from '@ant-design/icons'
 
 import moment from "moment";
 import vi from "moment/locale/vi";
-
+import "../ReceiptPayment/ReceiptPayment.scss"; 
 import FormHelpDetail from "./FormHelpDetail.js";
 import {getAllFormHelp} from "../../../slices/form";
 
@@ -42,7 +43,7 @@ const FormHelpManagement = () => {
           title: 'Người gửi',
           dataIndex: 'fullName',
           render: (text, record, index) => {
-            return (<p style={{fontSize: 14}}>{text}</p>)
+            return (<p style={{fontSize: 14, marginBottom: 0}}>{text}</p>)
           }
         },
         {
@@ -63,8 +64,8 @@ const FormHelpManagement = () => {
                     color = "yellow"
                 }
                 return (
-                    <Tag color={color} key={text}>
-                        {text.toUpperCase()}
+                    <Tag style={{fontSize: 14, fontFamily: "Montserrat"}} color={color} key={text}>
+                        {text}
                       </Tag>
                 )
             }, 

@@ -58,7 +58,7 @@ const ProjectVolunteer = (props) => {
         const { fullName, email, phone, projectId, projectName } = values;
         setIsSubmit(true)
         setLoading(true);
-        //check xem da ton tai don dang ky chua
+        // check xem da ton tai don dang ky chua
         if(!checkValidate(fullName, email, phone, projectName)){
             dispatch(createFormVolunteer({ fullName, email, phone, projectId }))
                 .unwrap()

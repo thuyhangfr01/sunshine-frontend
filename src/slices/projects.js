@@ -204,46 +204,51 @@ const projectSlice = createSlice({
     initialState,
     extraReducers: {
         [createProject.fulfilled]: (state, action) => {
-            state.projects = action.payload;
+            state.push(action.payload);
         },
         [createMoneyByProject.fulfilled]: (state, action) => {
-            state.money = action.payload;
+            state.push(action.payload);
         },
         [createArtifactByProject.fulfilled]: (state, action) => {
-            state.artifacts.push(action.payload);
+            state.push(action.payload);
         },
         [createImageByProject.fulfilled]: (state, action) => {
-            state.images.push(action.payload);
+            state.push(action.payload);
         },
         [createProofByProject.fulfilled]: (state, action) => {
-            state.proofs.push(action.payload);
+            state.push(action.payload);
         },
         [createProjectPayment.fulfilled]: (state, action) => {
-            state.projectPayment = action.payload;
+            state.push(action.payload);
         },
         [updateProject.fulfilled]: (state, action) =>{
-            const index = state.projects.findIndex(project => project.id === action.payload.id);
-            state.projects[index] = {
-                ...state.projects[index],
+            // const index = state.projects.findIndex(project => project.id === action.payload.id);
+            // state.projects[index] = {
+            //     ...state.projects[index],
+            //     ...action.payload
+            // }
+            state = {
+                ...state,
                 ...action.payload
             }
         },
         [updateMoneyById.fulfilled]: (state, action) =>{
-            const index = state.money.findIndex(m => m.id === action.payload.moneyId);
-            state.money[index] = {
-                ...state.money[index],
+            const index = state.projectMonies.findIndex(m => m.id === action.payload.moneyId);
+            state.projectMonies[index] = {
+                ...state.projectMonies[index],
                 ...action.payload
             }
         },
         [updateArtifactById.fulfilled]: (state, action) =>{
-            const index = state.artifacts.findIndex(a => a.id === action.payload.artifactId);
-            state.artifacts[index] = {
-                ...state.artifacts[index],
+            const index = state.projectArtifacts.findIndex(a => a.id === action.payload.artifactId);
+            state.projectArtifacts[index] = {
+                ...state.projectArtifacts[index],
                 ...action.payload
             }
         },
         [retrieveProjs.fulfilled]: (state, action) => {
-            state.listProjects = [...action.payload];
+            // state.listProjects.push(action.payload;
+            return [...action.payload];
         },
         [retrieveProjects.fulfilled]: (state, action) => {
             return [...action.payload];
@@ -267,7 +272,7 @@ const projectSlice = createSlice({
             return [...action.payload];
         },
         [getTotalMoneyByProjectId.fulfilled]: (state, action) => {
-            state.totalMoney = action.payload.totalMoney;
+            state = {...state, totalMoney: action.payload.totalMoney};
         },
         [getPaymentsByProjectId.fulfilled]: (state, action) => {
             return [...action.payload];

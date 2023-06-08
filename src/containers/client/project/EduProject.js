@@ -3,8 +3,26 @@ import 'react-multi-carousel/lib/styles.css';
 
 import "./ProjectStyle.scss";
 import { responsive, EduProjectItems } from './EduProjectItems';
+import {findProjectByType} from "../../../slices/projects";
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 function EduProject(){
+    const dispatch = useDispatch();
+    // const getListProjects = () => {
+    //     const id = 1;
+    //     const page = 0; 
+    //     const size = 12
+    //     dispatch(findProjectByType({id, page, size}))
+    //     .then((res) => {
+    //         console.log(">>> res: " + JSON.stringify(res));
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     })
+    // }
+    // useEffect(getListProjects, []);
+
     return (
         <div style={{fontFamily: 'Montserrat, sans-serif'}}>
             <div className="projects-section" id="projects">
@@ -31,6 +49,7 @@ function EduProject(){
                 <Carousel responsive={responsive} 
                     additionalTransfrom={0}
                     arrows
+                    autoPlay={true}
                     autoPlaySpeed={3000}
                     centerMode={false}
                     className=""

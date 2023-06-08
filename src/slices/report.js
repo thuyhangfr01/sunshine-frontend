@@ -54,7 +54,7 @@ const reportSlice = createSlice({
         },
         [getListPaymentsReport.fulfilled]: (state, action) => {
             return [...action.payload];
-        }
+        },
     }
 })
 

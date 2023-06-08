@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import moment from "moment";
 import vi from "moment/locale/vi";
 import "./Project.scss";
+import "../../containers/client/contribution/HistoryContribution.scss";
 
 import {retrieveProject, getTotalMoneyByProjectId, retrieveProjs, getPaymentsByProjectId} from "../../slices/projects";
 import {getContributionsByProjectIdByStatus} from "../../slices/contribution";
@@ -29,7 +30,9 @@ const ProjectDetail = () => {
     const [currentMinMoney, setCurrentMinMoney] = useState(0);
     const [currentReceiptMoney, setCurrentReceiptMoney] = useState(0);
     const [currentPer, setCurrentPer] = useState(0);
-    const totalProject = useSelector((state) => state.projects.listProjects);
+    const [totalProject, setTotalProject] = useState([]);
+    const [showPrevButton, setShowPrevButton] = useState(false);
+    const [showNextButton, setShowNextButton] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [openModalProjectDonation, setOpenModalProjectDonation] = useState(false);
@@ -72,21 +75,21 @@ const ProjectDetail = () => {
         title: 'Mã đóng góp',
         dataIndex: 'id',
         render: (text, record, index) => {
-            return (<p>{text}</p>)
+            return (<p style={{marginBottom: 0, fontSize: 15, fontWeight: 600, color: "#5477b1"}}>{text}</p>)
         },
         },
         {
         title: 'Người gửi',
         dataIndex: 'nickname',
         render: (text, record, index) => {
-            return (<p style={{fontSize: 14}}>{text}</p>)
+            return (<p style={{fontSize: "15px", marginBottom: "0px", fontWeight: 500, color: "#767676"}}>{text}</p>)
         }
         },
         {
         title: 'Lời nhắn',
         dataIndex: 'messages',
         render: (text, record, index) => {
-            return (<p style={{fontSize: 15, fontWeight: 500}}>{text}</p>)
+            return (<p style={{fontSize: "15px", marginBottom: "0px", fontWeight: 500, color: "#767676"}}>{text}</p>)
         }
         },
         {
@@ -94,7 +97,7 @@ const ProjectDetail = () => {
         dataIndex: 'contributionMoney',
         render: (text, record, index) => {
             return {
-            props: { style: { fontSize: 15, fontWeight: 500 }},
+            props: { style: { fontSize: 15, fontWeight: 500,  color: "#767676" }},
             children: text.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})
             }
         }
@@ -104,7 +107,7 @@ const ProjectDetail = () => {
             dataIndex: 'createdAt',
             render: (text, record, index) => {
             return {
-                props: { style: { fontSize: 15, fontWeight: 500 }},
+                props: { style: { fontSize: 15, fontWeight: 500,  color: "#767676" }},
                 children: moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
             };
             },
@@ -123,28 +126,28 @@ const ProjectDetail = () => {
         title: 'Mã phiếu chi',
         dataIndex: 'id',
         render: (text, record, index) => {
-        return (<p>{text}</p>)
+        return (<p style={{marginBottom: 0, fontSize: 15, fontWeight: 600, color: "#5477b1"}}>{text}</p>)
         },
     },
     {
         title: 'Người chi',
         dataIndex: 'userName',
         render: (text, record, index) => {
-        return (<p style={{fontSize: 15}}>{text}</p>)
+        return (<p style={{marginBottom: 0, fontSize: 15, fontWeight: 500, color: "#767676"}}>{text}</p>)
         }
     },
     {
         title: 'Người nhận',
         dataIndex: 'receiver',
         render: (text, record, index) => {
-        return (<p style={{fontSize: 15}}>{text}</p>)
+        return (<p style={{marginBottom: 0, fontSize: 15, fontWeight: 500, color: "#767676"}}>{text}</p>)
         }
     },
     {
         title: 'Ghi chú',
         dataIndex: 'reason',
         render: (text, record, index) => {
-        return (<p style={{fontSize: 15, fontWeight: 500}}>{text}</p>)
+        return (<p style={{marginBottom: 0, fontSize: 15, fontWeight: 500, color: "#767676"}}>{text}</p>)
         }
     },
     {
@@ -152,7 +155,7 @@ const ProjectDetail = () => {
         dataIndex: 'amountMoney',
         render: (text, record, index) => {
         return {
-            props: { style: { fontSize: 15, fontWeight: 500 }},
+            props: { style: {marginBottom: 0, fontSize: 15, fontWeight: 500, color: "#767676"}},
             children: text.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})
         }
         }
@@ -162,7 +165,7 @@ const ProjectDetail = () => {
         dataIndex: 'createdAt',
         render: (text, record, index) => {
             return {
-            props: { style: { fontSize: 15, fontWeight: 500 }},
+            props: { style: { fontSize: 15, fontWeight: 500, color: "#767676" }},
             children: moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
             };
         },
@@ -218,7 +221,13 @@ const ProjectDetail = () => {
     };
     useEffect(() => {
         getCurrentProject();
-        dispatch(retrieveProjs());
+        dispatch(retrieveProjs())
+            .then((res) => {
+                setTotalProject(res.payload);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, [currentProjectId]);
 
     useEffect(() => {
@@ -251,22 +260,34 @@ const ProjectDetail = () => {
     }
     //bat su kien xem project phia truoc
     const handlePrevProject = () => {
-        console.log(">>> currentProjectId: " + currentProject.id);
-        console.log(">>> totalProject: " + JSON.stringify(totalProject));
-        const prevIndex = (totalProject.findIndex(proj => proj.id === currentProject.id)) - 1;
+        const prevIndex = (totalProject.findIndex(proj => proj.projectId === currentProject.id)) - 1;
         console.log(">>> prevIndex: " + prevIndex);
-        const prevProject = totalProject[prevIndex];
-        setCurrentProject(prevProject);
-        setCurrentProjectId(prevProject.id);
-        navigate("/project/" + prevProject.id);
+        if(prevIndex !== totalProject.length - 1){
+            const prevProject = totalProject[prevIndex];
+            setCurrentProject(prevProject);
+            setCurrentProjectId(prevProject.projectId);
+            navigate("/project/" + prevProject.projectId);
+        } else{
+            const prevProject = totalProject[prevIndex -1];
+            setCurrentProject(prevProject);
+            setCurrentProjectId(prevProject.projectId);
+            navigate("/project/" + prevProject.projectId);
+        }
     }
     //bat su kien xem project phia sau
     const handleNextProject = () => {
-        const nextIndex = (totalProject.findIndex(proj => proj.id === currentProject.id)) + 1;
-        const nextProject = totalProject[nextIndex];
-        setCurrentProject(nextProject);
-        setCurrentProjectId(nextProject.id);
-        navigate("/project/" + nextProject.id);
+        const nextIndex = (totalProject.findIndex(proj => proj.projectId === currentProject.id)) + 1;
+        if(nextIndex !== totalProject.length + 1){
+            const nextProject = totalProject[nextIndex];
+            setCurrentProject(nextProject);
+            setCurrentProjectId(nextProject.projectId);
+            navigate("/project/" + nextProject.projectId);
+        } else{
+            const nextProject = totalProject[nextIndex + 1];
+            setCurrentProject(nextProject);
+            setCurrentProjectId(nextProject.projectId);
+            navigate("/project/" + nextProject.projectId);
+        }
     }
     //them don dong gop
     const handleShowModal = () => {
@@ -452,33 +473,37 @@ const ProjectDetail = () => {
 
           <Tabs.TabPane tab="Tiến độ ủng hộ" key="tab2">
             <Spin spinning={loading}>
-              <Table columns={columnsContributions} dataSource={dataSourceContribution}
+              <Table className="table-contribution" columns={columnsContributions} dataSource={dataSourceContribution}
                   style={{marginTop: 20, marginBottom: 100}}
                   pagination={false}/>
             </Spin>
           </Tabs.TabPane>
 
           <Tabs.TabPane tab="Tiến độ triển khai" key="tab3">
-            <Table columns={columnsPayment} dataSource={dataSourcePayment}
+            <Table className="table-contribution" columns={columnsPayment} dataSource={dataSourcePayment}
                 style={{marginTop: 20, marginBottom: 100}}
                 pagination={false}/>
           </Tabs.TabPane>
         </Tabs>
 
-        <ProjectDonation
-              openModalProjectDonation = {openModalProjectDonation}
-              setOpenModalProjectDonation = {setOpenModalProjectDonation}
-              currentUserId = {currentUser.id}
-              currentProjectId = {currentProjectId}
-              currentProject = {currentProject}
-              dataSourceArtifact = {dataSourceArtifact}
-          />
-
-        <ProjectVolunteer
-            openModalProjectVolunteer = {openModalProjectVolunteer}
-            setOpenModalProjectVolunteer = {setOpenModalProjectVolunteer}
-            currentProject = {currentProject}
-        />
+        {currentUser && 
+            <ProjectDonation
+                openModalProjectDonation = {openModalProjectDonation}
+                setOpenModalProjectDonation = {setOpenModalProjectDonation}
+                currentUserId = {currentUser.id}
+                currentProjectId = {currentProjectId}
+                currentProject = {currentProject}
+                dataSourceArtifact = {dataSourceArtifact}
+            />
+        }
+        
+        {currentProject && 
+            <ProjectVolunteer
+                openModalProjectVolunteer = {openModalProjectVolunteer}
+                setOpenModalProjectVolunteer = {setOpenModalProjectVolunteer}
+                currentProject = {currentProject}
+            />
+        }
       </div>
     )
 }

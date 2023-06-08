@@ -42,24 +42,24 @@ const FormHelpDetail = (props) => {
     }
 
     return (
-        <Drawer title="Xem thông tin chi tiết của đơn yêu cầu"
+        <Drawer title="Xem thông tin chi tiết của đơn yêu cầu" className="form-detail"
             style={{fontFamily: "Montserrat", fontSize: "15px"}}
             width={"50vw"}
             onClose={() => {setOpenViewDetail(false); setDataViewDetail([])}} open={openViewDetail}>
 
-            <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Thông tin người gửi</Divider>
+            <Divider style={{fontFamily: "Montserrat", fontSize: "15px", color: "#185bbd", fontWeight: 600}}>Thông tin người gửi</Divider>
             <Descriptions bordered column={3}
                 style={{fontFamily: "Montserrat", fontSize: "15px"}}>
                 <Descriptions.Item label="Họ và tên" span={3}>{dataViewDetail?.fullName}</Descriptions.Item>
-                <Descriptions.Item label="Email" span={1.5}>{dataViewDetail?.email}</Descriptions.Item>
-                <Descriptions.Item label="Số điện thoại" span={1.5}>{dataViewDetail?.phone}</Descriptions.Item>
+                <Descriptions.Item label="Email" span={3}>{dataViewDetail?.email}</Descriptions.Item>
+                <Descriptions.Item label="Số điện thoại" span={3}>{dataViewDetail?.phone}</Descriptions.Item>
             </Descriptions>
 
-            <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Nội dung đơn yêu cầu</Divider>
+            <Divider style={{fontFamily: "Montserrat", fontSize: "15px", color: "#185bbd", fontWeight: 600}}>Nội dung đơn yêu cầu</Divider>
             <Descriptions bordered column={3}
                 style={{fontFamily: "Montserrat", fontSize: "15px"}}>
                 <Descriptions.Item label="Dự án tham gia" span={3}>{dataViewDetail?.projectName}</Descriptions.Item>
-                <Descriptions.Item span={1.5} label="Trạng thái đơn">
+                <Descriptions.Item span={3} label="Trạng thái đơn">
                     {dataViewDetail?.statusName === 'Đang chờ duyệt' &&
                         <Badge style={{fontFamily: "Montserrat", color: '#ffc107', fontWeight: 600, fontStyle: "italic"}} status="warning" text={dataViewDetail?.statusName} />
                     }

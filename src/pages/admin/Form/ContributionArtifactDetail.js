@@ -14,6 +14,7 @@ const ContributionArtifactDetail = (props) => {
     const [isSubmit, setIsSubmit] = useState(false);
 
     const options = [
+        {value: "Đang chờ duyệt", label: "Đang chờ duyệt", color: "#f08725"},
         {value: "Đã duyệt", label: "Đồng ý duyệt", color: "#37ad76"},
         {value: "Đã nhận", label: "Đã nhận", color: "#6c98d7"},
         {value: "Đã từ chối", label: "Từ chối duyệt", color: "#d14444"},
@@ -51,9 +52,9 @@ const ContributionArtifactDetail = (props) => {
                 return (
                   <div style={{display: "flex", fontFamily: "Montserrat", width: 100}}>
                         {record.artifactStatus === "Đã nhận" ?
-                            <InputNumber min={1} max={record.donatedAmount} onChange={(value) => handleChangeInput(value, record.artifactId)} value={text}></InputNumber>   
+                            <InputNumber style={{fontWeight: 500}} min={1} onChange={(value) => handleChangeInput(value, record.artifactId)} value={text}></InputNumber>   
                         :
-                            <InputNumber value={0} disabled></InputNumber>   
+                            <InputNumber  style={{fontWeight: 500}} value={0} disabled></InputNumber>   
                         }
                   </div>
                 )
@@ -153,34 +154,34 @@ const ContributionArtifactDetail = (props) => {
     }
 
     return (
-        <Drawer title="Xem thông tin chi tiết của đơn đón góp"
-        style={{fontFamily: "Montserrat", fontSize: "15px"}}
+        <Drawer title="Xem thông tin chi tiết của đơn đón góp" className="form-detail"
+        style={{fontFamily: "Montserrat", fontSize: "15px", color: "#b92735"}}
         width={"50vw"}
         onClose={() => {setOpenViewDetail(false);  setDataSourceArtifact([]);}} open={openViewDetail}
         >
 
-        <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Thông tin người gửi</Divider>
-        <Descriptions bordered column={3}
+        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#b92735"}}>Thông tin người gửi</Divider>
+        <Descriptions  bordered column={3}
             style={{fontFamily: "Montserrat", fontSize: "15px"}}>
             <Descriptions.Item label="Họ và tên" span={3}>{dataViewDetail?.userName}</Descriptions.Item>
         </Descriptions>
 
-        <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Nội dung đơn yêu cầu</Divider>
+        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#b92735", marginTop: 20}}>Nội dung đơn yêu cầu</Divider>
         <Descriptions bordered column={3}
             style={{fontFamily: "Montserrat", fontSize: "15px"}}>
             <Descriptions.Item label="Tên dự án" span={3}>{dataViewDetail?.projectName}</Descriptions.Item>
             <Descriptions.Item label="Thời gian gửi" span={3}>{moment(dataViewDetail?.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')}</Descriptions.Item>
         </Descriptions>
 
-        <Divider style={{fontFamily: "Montserrat", fontSize: "15px"}}>Chi tiết hiện vật đóng góp</Divider>
+        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#b92735", marginTop: 20}}>Chi tiết hiện vật đóng góp</Divider>
         <div style={{marginTop: 20}}>
-                <Table columns={columnsArtifact} dataSource={dataSourceArtifact} pagination={false}/>
+                <Table className="table-contribution" columns={columnsArtifact} dataSource={dataSourceArtifact} pagination={false}/>
         </div>
 
-        <Button key="1" type="primary" 
+        <Button key="1" 
                 loading={isSubmit}
                 onClick={handleUpdate}
-                style={{fontSize: 15, fontFamily: "Montserrat", backgroundColor: "#d95c5c !important", float: "right", marginTop: 15, fontWeight: 500}}>
+                style={{fontSize: 15, fontFamily: "Montserrat", backgroundColor: "#d95c5c", float: "right", marginTop: 20, fontWeight: 500, color: "#ffffff", width: 110, height: 37}}>
                     Cập nhật
         </Button>      
     </Drawer>

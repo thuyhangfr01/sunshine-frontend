@@ -16,9 +16,10 @@ dayjs.extend(customParseFormat);
 const { TextArea } = Input;
 
 const ProjectAdd = (props) => {
+    const {openViewAddProject, setOpenViewAddProject, getLatestProject} = props;
     const [form] = Form.useForm();
 
-    const open = props.openViewAddProject;
+    const open = openViewAddProject;
 
     const [newProjectId, setNewProjectId] = useState(null);
     const [money, setMoney] = useState(0);
@@ -42,7 +43,7 @@ const ProjectAdd = (props) => {
     }, [])
 
     const onFinish = (values) => {
-        console.log("values: " + values);
+        console.log("values: " + JSON.stringify(values));
         const { name, details, typeId, numVolunteers, startTime, endTime, holdTime, position, minMoney, artifacts} = values;
         setIsSubmit(true)
         setLoading(true);
@@ -56,8 +57,8 @@ const ProjectAdd = (props) => {
             toast.success("Thêm dự án thành công!");
             setIsSubmit(false);
             form.resetFields();
-            props.getLatestProject();
-            props.setOpenViewAddProject(false);
+            getLatestProject();
+            setOpenViewAddProject(false);
             return;
           })
           .catch(e => {
@@ -111,6 +112,7 @@ const ProjectAdd = (props) => {
 
     //them anh
     const handleAddImage = () => {
+        console.log(">>> images: " + JSON.stringify(images) + " - projectId: " + newProjectId);
         setShowImage(true);
         const id = newProjectId;
         let name = null;
@@ -321,7 +323,7 @@ const ProjectAdd = (props) => {
                                     name="details"
                                     label="Mô tả dự án"
                                     rules={[{ required: true, message: 'Vui lòng nhập mô tả dự án!' }]}>
-                                    <TextArea  rows={5} name="details"></TextArea>
+                                    <TextArea  rows={8} name="details"></TextArea>
                                 </Form.Item>
                             </Col>
                             {/* Upload hình ảnh */}
@@ -357,7 +359,7 @@ const ProjectAdd = (props) => {
                                         <>
                                         {images && images.map((image, index) => (
                                             <Card key={index} style={{height: 160, width: 220,}}>
-                                                <Image src={image.url} style={{width: 190, height: 130, marginTop: -30, marginLeft: -20}}  />
+                                                <Image src={image.url} style={{width: 190, height: 130, marginTop: -10, marginLeft: -10}}  />
                                             </Card>
                                             ))}
                                         </>

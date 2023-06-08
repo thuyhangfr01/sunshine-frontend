@@ -6,12 +6,13 @@ const NotPermitted = () => {
     const navigate = useNavigate();
     return (
         <Result
+            style={{fontFamily: "Montserrat", fontWeight: 500}}
             status="403"
             title="403"
-            subTitle="Sorry, you are not authorized to access this page."
-            extra={<Button type="primary"
+            subTitle="Xin lỗi, bạn không có quyền truy cập vào trang này!"
+            extra={<Button type="primary" style={{fontFamily: "Montserrat", fontWeight: 500, fontSize: 15}}
                 onClick={() => navigate('/home')}
-            >Back Home</Button>}
+            >Trở lại</Button>}
         />
     )
 };

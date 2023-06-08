@@ -2,12 +2,12 @@ import React, {useState, useEffect} from "react";
 import {useDispatch } from "react-redux";
 import {Link} from "react-router-dom"; 
 
-import {Spin, Table, Tag} from "antd";
+import {Spin, Table, Row, Col, Select, DatePicker} from "antd";
 import {DeleteFilled} from '@ant-design/icons'
 
 import moment from "moment";
 import vi from "moment/locale/vi";
-
+import dayjs from 'dayjs';
 import ContributionArtifactDetail from "./ContributionArtifactDetail";
 import {getListContributionArtifacts} from "../../../slices/artifact";
 
@@ -78,6 +78,7 @@ const ContributionArtifact = () => {
         setLoading(true);
         dispatch(getListContributionArtifacts())
             .then((response) => {
+                console.log(">>>> artifact: " + JSON.stringify(response.payload));
                 setLoading(false);
                 setDataSource(response.payload);
             })
@@ -89,6 +90,27 @@ const ContributionArtifact = () => {
     useEffect(getAllListContributionArtifacts, []);
     return (
         <div style={{padding: "55px 30px 30px 30px"}}>
+        <Row className="receipt-payment" style={{marginLeft: "10px"}}>
+            <Col span={14} style={{display: "flex"}}>
+                <p className="p-text">Lọc theo dự án: </p>
+                <Select placeholder="Tất cả..." 
+                    showSearch
+                    allowClear
+                    style={{fontFamily: 'Montserrat'}}>
+                </Select>
+          </Col>
+          {/* Thời gian bắt đầu */}
+          <Col span={5}>
+              <DatePicker  format="YYYY-MM-DD HH:mm:ss"
+                  showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }} />
+          </Col>
+          {/* Thời gian kết thúc */}
+          <Col span={5}>
+              <DatePicker format="YYYY-MM-DD HH:mm:ss"
+                  showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+                  style={{ paddingRight: 20  }} />
+          </Col>   
+      </Row> 
         <Spin spinning={loading}>
             <Table className="project-artifact" columns={columns} dataSource={dataSource}
                 // title={"DANH SÁCH ĐƠN YÊU CẦU"}

@@ -21,7 +21,7 @@ export const responsive = {
 export const MedicalProjectItems = [
     {
       id: 1,
-      imageurl: "https://thanhnien.mediacdn.vn/zoom/736_460/Uploaded/lethanh/2019_06_29/65238276_2454030674924600_473167360065273856_o_URQF.jpg",
+      imageurl: "https://res.cloudinary.com/dp0hbi49d/image/upload/v1682429457/sunshine/tn_ye9_fchaxe.jpg",
       status: "Đang vận động",
       title: "Trụ cột bất ngờ gặp nạn, gia đình khó khăn chồng chất",
       description: "Đã 2 năm từ ngày vợ bất ngờ phát bệnh tim phải phẫu thuật, anh T gánh trên vai khoảng nợ 100 triệu vay mượn từ bên ngoài để lo cho vợ và 50 triệu từ khoản vay...",
@@ -31,7 +31,7 @@ export const MedicalProjectItems = [
     },
     {
         id: 2,
-        imageurl: "https://thanhnien.mediacdn.vn/zoom/736_460/Uploaded/lethanh/2019_06_29/65238276_2454030674924600_473167360065273856_o_URQF.jpg",
+        imageurl: "https://res.cloudinary.com/dp0hbi49d/image/upload/v1682429457/sunshine/tn_yte7_kpb5c6.jpg",
         status: "Đang vận động",
         title: "Trụ cột bất ngờ gặp nạn, gia đình khó khăn chồng chất",
         description: "Đã 2 năm từ ngày vợ bất ngờ phát bệnh tim phải phẫu thuật, anh T gánh trên vai khoảng nợ 100 triệu vay mượn từ bên ngoài để lo cho vợ và 50 triệu từ khoản vay...",
@@ -51,7 +51,7 @@ export const MedicalProjectItems = [
     },
     {
         id: 4,
-        imageurl: "https://thanhnien.mediacdn.vn/zoom/736_460/Uploaded/lethanh/2019_06_29/65238276_2454030674924600_473167360065273856_o_URQF.jpg",
+        imageurl: "https://res.cloudinary.com/dp0hbi49d/image/upload/v1682429457/sunshine/tn_yte9_lzxb4i.jpg",
         status: "Đã hoàn thành",
         title: "Trụ cột bất ngờ gặp nạn, gia đình khó khăn chồng chất",
         description: "Đã 2 năm từ ngày vợ bất ngờ phát bệnh tim phải phẫu thuật, anh T gánh trên vai khoảng nợ 100 triệu vay mượn từ bên ngoài để lo cho vợ và 50 triệu từ khoản vay...",
@@ -61,7 +61,7 @@ export const MedicalProjectItems = [
     },
     {
         id: 5,
-        imageurl: "https://thanhnien.mediacdn.vn/zoom/736_460/Uploaded/lethanh/2019_06_29/65238276_2454030674924600_473167360065273856_o_URQF.jpg",
+        imageurl: "https://res.cloudinary.com/dp0hbi49d/image/upload/v1682429457/sunshine/tn_yte9_lzxb4i.jpg",
         status: "Đang vận động",
         title: "Trụ cột bất ngờ gặp nạn, gia đình khó khăn chồng chất",
         description: "Đã 2 năm từ ngày vợ bất ngờ phát bệnh tim phải phẫu thuật, anh T gánh trên vai khoảng nợ 100 triệu vay mượn từ bên ngoài để lo cho vợ và 50 triệu từ khoản vay...",

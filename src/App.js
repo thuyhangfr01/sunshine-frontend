@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import { Outlet } from "react-router-dom";
@@ -27,8 +27,7 @@ import HistoryContribution from "./containers/client/contribution/HistoryContrib
 import Payment from "./containers/client/Payment";
 import FormHelp from "./containers/client/form/FormHelp";
 
-// import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
-import AdminPage from "./pages/admin/AdminPage";
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import UserManagement from "./pages/admin/User/UserManagement";
 import ProjectManagement from "./pages/admin/Project/ProjectManagement";
 import ContributionArtifactManagement from "./pages/admin/Form/ContributionArtifact";
@@ -109,53 +108,52 @@ export default function App() {
       element: <LayoutAdmin/>,
       errorElement: <NotFound/>,
       children: [
-        {
-          index: true, element:
-            // <ProtectedRoute>
-                 <AdminPage />
-            // {/* </ProtectedRoute>  */}
+        { index: true, element: 
+          <ProtectedRoute>
+          <ProjectManagement />
+          </ProtectedRoute>
         },
         {
           path: "user",
           element: 
-          // <ProtectedRoute>
+          <ProtectedRoute>
             <UserManagement />
-          // </ProtectedRoute>
+          </ProtectedRoute>
         },
         {
           path: "project",
           element: 
-          // <ProtectedRoute>
+          <ProtectedRoute>
             <ProjectManagement />
-          // {/* </ProtectedRoute> */}
+          </ProtectedRoute> 
         },
         {
           path: "receiptPayment",
           element: 
-          // <ProtectedRoute>
-          <ReceiptPayment />
-          // {/* </ProtectedRoute> */}
+          <ProtectedRoute>
+            <ReceiptPayment />
+          </ProtectedRoute>
         },
         {
           path: "contribution",
           element: 
-          // <ProtectedRoute>
-          <ContributionArtifactManagement />
-          // {/* </ProtectedRoute> */}
+          <ProtectedRoute>
+            <ContributionArtifactManagement />
+          </ProtectedRoute> 
         },
         {
           path: "help",
           element: 
-          // <ProtectedRoute>
-          <FormHelpManagement />
-          // {/* </ProtectedRoute> */}
+          <ProtectedRoute>
+            <FormHelpManagement />
+          </ProtectedRoute>
         },
         {
           path: "volunteer",
           element: 
-          // <ProtectedRoute>
-          <FormVolunteerManagement />
-          // {/* </ProtectedRoute> */}
+          <ProtectedRoute>
+            <FormVolunteerManagement />
+          </ProtectedRoute>
         },
       ],
     },

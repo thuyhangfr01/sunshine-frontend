@@ -7,11 +7,13 @@ import { Link } from 'react-router-dom';
 import moment from "moment";
 import vi from "moment/locale/vi";
 import dayjs from 'dayjs';
+import * as XLSX from 'xlsx';
 
 import { getListContributionsReport, getListPaymentsReport } from "../../../slices/report";
 import  {retrieveListProjectName} from "../../../slices/name";
 import ImportFileReceipt from "./ImportFileReceipt";
 import ImportFilePayment from "./ImportFilePayment";
+import AddPayment from "./AddPayment";
 
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -20,6 +22,7 @@ const ReceiptPayment = () => {
     const dispatch = useDispatch();
     const [showModalReceiptImport, setShowModalReceiptImport] = useState(false);
     const [showModalPaymentImport, setShowModalPaymentImport] = useState(false);
+    const [showModalPaymentAdd, setShowModalPaymentAdd] = useState(false);
 
     const [budget, setBudget] = useState(500000000)
     const [receiptMoney, setReceiptMoney] = useState(0)
@@ -90,7 +93,7 @@ const ReceiptPayment = () => {
             key: 'createdAt',
             render: (text, record, index) => {
                 return {
-                    props: { style: { fontSize: 15, fontWeight: 500 }},
+                    props: { style: { fontSize: 15, fontWeight: 500, padding: "0px !important"  }},
                     children: moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
                   };
             },
@@ -177,7 +180,7 @@ const ReceiptPayment = () => {
             key: 'createdAt',
             render: (text, record, index) => {
                 return {
-                    props: { style: { fontSize: 15, fontWeight: 500 }},
+                    props: { style: { fontSize: 15, fontWeight: 500, padding: 10 }},
                     children: moment(record.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')
                   };
             },
@@ -263,52 +266,23 @@ const ReceiptPayment = () => {
         }
     }
 
-    //bat su kien export pdf
-    // const handleExportPdf = (dataPdf) => {
-    //     let table = [];
-    //     dataPdf.forEach((item) => {
-    //         let row = [];
-    //         row.push(item.id);
-    //         row.push(moment(item.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss'));
-    //         row.push(item.userName);
-    //         row.push(item.receiver);
-    //         row.push(item.type);
-    //         row.push(item.amountMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+    const handleExportReceipt = () => {
+        if(dataSourceReceipt.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(dataSourceReceipt);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportReceipt.csv");
+        }
+    }
 
-    //         table.push(row);
-    //     })
-
-    //     const doc = new jsPDF('l', 'pt', 'a4');
-    //     const pageWidth = doc.internal.pageSize.width;
-    //     var fontPath = "../../../assets/fonts/Montserrat-Medium.otf";
-    //     var fontFile = new File([fontPath], "Montserrat.otf", {type: "application/octet-stream"});
-    //     var fontUrl = URL.createObjectURL(fontFile);
-
-    //     // Add font to JSPDF
-    //     doc.addFileToVFS(fontPath, fontUrl);
-    //     doc.addFont(fontPath, "Montserrat", "normal");
-    //     doc.setFont("Montserrat");
-
-    //     doc.setFontSize(12);
-    //     doc.text(`Tổng thu: ${receiptMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})} - Tổng chi: ${paymentMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})} - Tồn quỹ: ${remainingMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}`, pageWidth - 700, 30);
-
-    //     const options = {
-    //         headStyles: {fillColor: [155, 155, 155]},
-    //         startY: 50,
-    //     }
-
-    //     const columnWidth = [40, 50, 50, 50, 40];
-    //     const headers = [['Mã phiếu thu/chi', 'Thời gian', 'Người chuyển',  'Người nhận', 'Loại', 'Số tiền']];
-    
-    //     doc.autoTable({
-    //         options,
-    //         head: headers,
-    //         body: table,
-    //         columnWidth,
-    //     });
-
-    //     doc.save('bao-cao-thu-chi.pdf')
-    // }
+    const handleExportPayment = () => {
+        if(dataSourcePayment.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(dataSourcePayment);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            XLSX.writeFile(workbook, "ExportPayment.csv");
+        }
+    }
 
     const renderHeaderTab1= () => {
         return (
@@ -320,7 +294,7 @@ const ReceiptPayment = () => {
                     style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
                     <ImportOutlined/> Import</Button>
                 <Button
-                    // onClick={() => handleExportPdf(dataPdf)}
+                    onClick={() => handleExportReceipt()}
                      style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
                     <ExportOutlined /> Export</Button>
             </span>
@@ -337,16 +311,18 @@ const ReceiptPayment = () => {
                     style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
                     <ImportOutlined/> Import</Button>
                 <Button
-                    // onClick={() => handleExportPdf(dataPdf)}
+                    onClick={() => handleExportPayment()}
                      style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
                     <ExportOutlined /> Export</Button>
                 <Button
-                     style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#0d6efd", border: "1px solid #0d6efd", height: "38px"}}>
+                    onClick={() => setShowModalPaymentAdd(true)}
+                    style={{fontFamily: 'Montserrat', fontSize: "15px", fontWeight: "500", color: "#358e65", border: "1px solid #358e65", height: "38px"}}>
                     <PlusOutlined /> Thêm phiếu chi</Button>
             </span>
         </div>
         )
     }
+
     return (
         <div className="receipt-payment" style={{marginTop: 50}}>
             <Row style={{margin: "35px"}}>
@@ -426,7 +402,7 @@ const ReceiptPayment = () => {
                     </Card>
                 </Col>
             </Row>
-            <Tabs className="project-tab" style={{fontFamily: 'Montserrat', margin: 35}}>
+            <Tabs style={{fontFamily: 'Montserrat', margin: 35}}>
                 <Tabs.TabPane tab="Phiếu thu" key="tab1">        
                     <Spin spinning={loading}>
                         <Table className="report-payment" columns={columnsReceipt} dataSource={dataSourceReceipt}
@@ -439,9 +415,9 @@ const ReceiptPayment = () => {
                         }}/>
                     </Spin>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Phiếu chi" key="tab2">       
+                <Tabs.TabPane  tab="Phiếu chi" key="tab2">       
                     <Spin spinning={loading}>
-                        <Table className="report-payment" columns={columnsPayment} dataSource={dataSourcePayment}
+                        <Table className="project-payment-data" columns={columnsPayment} dataSource={dataSourcePayment}
                             title={renderHeaderTab2}
                             pagination={{
                                 pageSize: 8,
@@ -462,6 +438,12 @@ const ReceiptPayment = () => {
             <ImportFilePayment
                 showModalPaymentImport = {showModalPaymentImport}
                 setShowModalPaymentImport = {setShowModalPaymentImport}
+                getListPayments = {getListPayments}
+            />
+
+            <AddPayment
+                showModalPaymentAdd = {showModalPaymentAdd}
+                setShowModalPaymentAdd = {setShowModalPaymentAdd}
                 getListPayments = {getListPayments}
             />
         </div>

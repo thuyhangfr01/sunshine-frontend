@@ -76,6 +76,7 @@ const ProjectDonationCarts = () => {
         dispatch(createPayment({amount}))
         .then((response) => {
             window.open(response.payload.url, "_self");
+            // console.log(">> handle payment: " + response.payload.url)
         })
         .catch((e) => {
             console.log(e);

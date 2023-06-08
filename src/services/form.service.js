@@ -6,8 +6,8 @@ const getAllFormVolunteer = () => {
 const getAllFormVolunteerByProjectId = (id) => {
     return http.get(`/latestFormVolunteer/project/${id}`)
 }
-const createFormVolunteer = (email, phone, projectId) => {
-    return http.post("/formVolunteer", {email, phone, projectId});
+const createFormVolunteer = (fullName, email, phone, projectId) => {
+    return http.post("/formVolunteer", {fullName, email, phone, projectId});
 }
 const updateStatusFormVolunteer = (id, fullName, email, phone, projectId, statusId) => {
     return http.put(`/formVolunteer/${id}/status`, {id, fullName, email, phone, projectId, statusId});

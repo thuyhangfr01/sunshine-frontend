@@ -20,7 +20,7 @@ const ReportService = {
     getListContributionsByUser,
     getListContributionArtifactsByUser,
     getListContributionsReport,
-    getListPaymentsReport
+    getListPaymentsReport,
 }
 
 export default ReportService;

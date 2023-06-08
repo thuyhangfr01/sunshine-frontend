@@ -1,4 +1,3 @@
-import Pagination from "@material-ui/lab/Pagination";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { retrieveStatus } from "../../slices/status";
 import { retrieveTypes } from "../../slices/types";
 
 import "./Project.scss";
-import {Row, Col, Divider} from "antd";
+import {Row, Col, Divider, Pagination} from "antd";
 import moment from "moment";
 import vi from "moment/locale/vi";
 
@@ -20,6 +19,7 @@ const ProjectList = () => {
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(6);
+    const [totalItems, setTotalItems] = useState(6);
 
     const typesList = useSelector((state) => state.types);
     const [typeId, setTypeId] = useState(-1);
@@ -55,10 +55,11 @@ const ProjectList = () => {
         const params = getRequestParamsType(typeId, page, pageSize);
         ProjectDataService.findByType(params)
             .then((response) => {
-                const {projects, totalPages} = response.data;
+                const {projects, totalPages, totalItems} = response.data;
                 // setLoadingProject(false);
                 setProjects(projects);
                 setCount(totalPages);
+                setTotalItems(totalItems);
                 console.log(response.data);
             })
             .catch((e) => {
@@ -91,9 +92,10 @@ const ProjectList = () => {
         const params = getRequestParamsStatus(statusId, page, pageSize);
         ProjectDataService.findByStatus(params)
             .then((response) => {
-                const {projects, totalPages} = response.data;
+                const {projects, totalPages, totalItems} = response.data;
                 setProjects(projects);
                 setCount(totalPages);
+                setTotalItems(totalItems);
                 console.log(response.data);
             })
             .catch((e) => {
@@ -129,9 +131,10 @@ const ProjectList = () => {
         const params = getRequestParams(searchName, page, pageSize);
         ProjectDataService.getAll(params)
             .then((response) => {
-                const {projects, totalPages} = response.data;
+                const {projects, totalPages, totalItems} = response.data;
                 setProjects(projects);
                 setCount(totalPages);
+                setTotalItems(totalItems);
                 console.log(response.data);
             })
             .catch((e) => {
@@ -141,8 +144,10 @@ const ProjectList = () => {
 
     useEffect(retrieveProjects, [searchName, page, pageSize]);
 
-    const handlePageChange = (event, value) => {
-        setPage(value);
+    const handlePageChange = (pageNumber, pageSize) => {
+        console.log('Page number:', pageNumber);
+        console.log('Page size:', pageSize);
+        setPage(pageNumber);
     }
 
     // const handlePageSizeChange = (event) => {
@@ -155,6 +160,7 @@ const ProjectList = () => {
         navigate("/project/" + id);
     }
 
+    console.log(">>> count: " + count);
     return (
         <div style={{fontFamily: 'Montserrat, sans-serif'}}>
                 <div className="projects section" id="projects">
@@ -208,7 +214,7 @@ const ProjectList = () => {
                                             ))}
                                         </select>
                                     </div> */}
-                                    <Pagination
+                                    {/* <Pagination
                                     style={{fontFamily: "Montserrat"}}
                                     count={count}
                                     page={page}
@@ -217,7 +223,8 @@ const ProjectList = () => {
                                     variant="outlined"
                                     shape="rounded"
                                     onChange={handlePageChange}
-                                    />
+                                    /> */}
+                                    <Pagination defaultCurrent={page} pageSize={6} total={totalItems} onChange={handlePageChange}  />
                                 </div>
                             </Col>
                         </Row>
