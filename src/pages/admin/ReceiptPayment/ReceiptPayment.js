@@ -15,9 +15,6 @@ import ImportFileReceipt from "./ImportFileReceipt";
 import ImportFilePayment from "./ImportFilePayment";
 import AddPayment from "./AddPayment";
 
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-
 const ReceiptPayment = () => {    
     const dispatch = useDispatch();
     const [showModalReceiptImport, setShowModalReceiptImport] = useState(false);
@@ -150,7 +147,6 @@ const ReceiptPayment = () => {
         .then((data) => {
             setLoading(false);
             setDataSourceReceipt(data.payload);
-            // setDataPdf(data.payload);
         })
         .catch((err) => {
             console.log(err);
@@ -230,7 +226,6 @@ const ReceiptPayment = () => {
         .then((data) => {
             setLoading(false);
             setDataSourcePayment(data.payload);
-            // setDataPdf(data.payload);
         })
         .catch((err) => {
             console.log(err);
