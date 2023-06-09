@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/auth/";
-
+// const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = "https://sunshine-backend.azurewebsites.net/api/auth/";
   const login = (userEmail,  userPassword) => {
     return axios
       .post(API_URL + "signin", {
