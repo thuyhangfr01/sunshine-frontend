@@ -20,11 +20,17 @@ const ProjectDonation = (props) => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [isNavigate, setIsNavigate] = useState(false);
 
+    const [listName, setListName] = useState([]);
     //get danh sach ten du an
-    const listProjectName = useSelector((state) => state.name);
+    // const listProjectName = useSelector((state) => state.name);
+    // console.log(">>>>: " + JSON.stringify(listProjectName));
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(retrieveListProjectName());
+        dispatch(retrieveListProjectName())
+            .then((res) => {
+                console.log(">>> name: " + JSON.stringify(res));
+                setListName(res.payload);
+            })
     }, [])
 
     //get gia tri mac dinh cho form
@@ -133,7 +139,7 @@ const ProjectDonation = (props) => {
                                     showSearch
                                     allowClear
                                     style={{fontFamily: 'Montserrat'}}>
-                                    {listProjectName && listProjectName.map((name, index) => (
+                                    {listName && listName.map((name, index) => (
                                         <Select.Option style={{fontFamily: 'Montserrat'}} key={index} value={name.projectId}>{name.projectName}</Select.Option>
                                     ))}
                                 </Select>

@@ -155,25 +155,25 @@ const ContributionArtifactDetail = (props) => {
 
     return (
         <Drawer title="Xem thông tin chi tiết của đơn đón góp" className="form-detail"
-        style={{fontFamily: "Montserrat", fontSize: "15px", color: "#b92735"}}
+        style={{fontFamily: "Montserrat", fontSize: "15px", color: "#185bbd"}}
         width={"50vw"}
         onClose={() => {setOpenViewDetail(false);  setDataSourceArtifact([]);}} open={openViewDetail}
         >
 
-        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#b92735"}}>Thông tin người gửi</Divider>
+        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#185bbd"}}>Thông tin người gửi</Divider>
         <Descriptions  bordered column={3}
             style={{fontFamily: "Montserrat", fontSize: "15px"}}>
             <Descriptions.Item label="Họ và tên" span={3}>{dataViewDetail?.userName}</Descriptions.Item>
         </Descriptions>
 
-        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#b92735", marginTop: 20}}>Nội dung đơn yêu cầu</Divider>
+        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#185bbd", marginTop: 20}}>Nội dung đơn yêu cầu</Divider>
         <Descriptions bordered column={3}
             style={{fontFamily: "Montserrat", fontSize: "15px"}}>
             <Descriptions.Item label="Tên dự án" span={3}>{dataViewDetail?.projectName}</Descriptions.Item>
             <Descriptions.Item label="Thời gian gửi" span={3}>{moment(dataViewDetail?.createdAt).locale("vi", vi).format('DD-MM-YYYY HH:mm:ss')}</Descriptions.Item>
         </Descriptions>
 
-        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#b92735", marginTop: 20}}>Chi tiết hiện vật đóng góp</Divider>
+        <Divider style={{fontFamily: "Montserrat", fontSize: "15px",  color: "#185bbd", marginTop: 20}}>Chi tiết hiện vật đóng góp</Divider>
         <div style={{marginTop: 20}}>
                 <Table className="table-contribution" columns={columnsArtifact} dataSource={dataSourceArtifact} pagination={false}/>
         </div>
@@ -181,7 +181,7 @@ const ContributionArtifactDetail = (props) => {
         <Button key="1" 
                 loading={isSubmit}
                 onClick={handleUpdate}
-                style={{fontSize: 15, fontFamily: "Montserrat", backgroundColor: "#d95c5c", float: "right", marginTop: 20, fontWeight: 500, color: "#ffffff", width: 110, height: 37}}>
+                style={{fontSize: 15, fontFamily: "Montserrat", backgroundColor: "#185bbd", float: "right", marginTop: 20, fontWeight: 500, color: "#ffffff", width: 110, height: 37}}>
                     Cập nhật
         </Button>      
     </Drawer>

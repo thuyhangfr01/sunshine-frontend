@@ -14,7 +14,7 @@ import vi from "moment/locale/vi";
 import "./Project.scss";
 import "../../containers/client/contribution/HistoryContribution.scss";
 
-import {retrieveProject, getTotalMoneyByProjectId, retrieveProjs, getPaymentsByProjectId} from "../../slices/projects";
+import {retrieveProject, getTotalMoneyByProjectId, retrieveLatestProjects, getPaymentsByProjectId} from "../../slices/projects";
 import {getContributionsByProjectIdByStatus} from "../../slices/contribution";
 import ProjectDonation from "./ProjectDonation";
 import ProjectVolunteer from "./ProjectVolunteer";
@@ -31,8 +31,6 @@ const ProjectDetail = () => {
     const [currentReceiptMoney, setCurrentReceiptMoney] = useState(0);
     const [currentPer, setCurrentPer] = useState(0);
     const [totalProject, setTotalProject] = useState([]);
-    const [showPrevButton, setShowPrevButton] = useState(false);
-    const [showNextButton, setShowNextButton] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [openModalProjectDonation, setOpenModalProjectDonation] = useState(false);
@@ -221,14 +219,18 @@ const ProjectDetail = () => {
     };
     useEffect(() => {
         getCurrentProject();
-        dispatch(retrieveProjs())
-            .then((res) => {
-                setTotalProject(res.payload);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
     }, [currentProjectId]);
+
+    useEffect(() => {
+        dispatch(retrieveLatestProjects())
+        .then((res) => {
+            console.log(">> tt: " + JSON.stringify(res.payload));
+            setTotalProject(res.payload);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     useEffect(() => {
         if(currentMinMoney && currentReceiptMoney){
@@ -260,34 +262,20 @@ const ProjectDetail = () => {
     }
     //bat su kien xem project phia truoc
     const handlePrevProject = () => {
-        const prevIndex = (totalProject.findIndex(proj => proj.projectId === currentProject.id)) - 1;
-        console.log(">>> prevIndex: " + prevIndex);
-        if(prevIndex !== totalProject.length - 1){
-            const prevProject = totalProject[prevIndex];
-            setCurrentProject(prevProject);
-            setCurrentProjectId(prevProject.projectId);
-            navigate("/project/" + prevProject.projectId);
-        } else{
-            const prevProject = totalProject[prevIndex -1];
-            setCurrentProject(prevProject);
-            setCurrentProjectId(prevProject.projectId);
-            navigate("/project/" + prevProject.projectId);
-        }
+        console.log(">>> totalProject: " + JSON.stringify(totalProject));
+        const prevIndex = (totalProject.findIndex(proj => proj.id === currentProject.id)) + 1;
+        const prevProject = totalProject[prevIndex];
+        setCurrentProject(prevProject);
+        setCurrentProjectId(prevProject.id);
+        navigate("/project/" + prevProject.id);
     }
     //bat su kien xem project phia sau
     const handleNextProject = () => {
-        const nextIndex = (totalProject.findIndex(proj => proj.projectId === currentProject.id)) + 1;
-        if(nextIndex !== totalProject.length + 1){
-            const nextProject = totalProject[nextIndex];
-            setCurrentProject(nextProject);
-            setCurrentProjectId(nextProject.projectId);
-            navigate("/project/" + nextProject.projectId);
-        } else{
-            const nextProject = totalProject[nextIndex + 1];
-            setCurrentProject(nextProject);
-            setCurrentProjectId(nextProject.projectId);
-            navigate("/project/" + nextProject.projectId);
-        }
+        const nextIndex = (totalProject.findIndex(proj => proj.id === currentProject.id)) - 1;
+        const nextProject = totalProject[nextIndex];
+        setCurrentProject(nextProject);
+        setCurrentProjectId(nextProject.id);
+        navigate("/project/" + nextProject.id);
     }
     //them don dong gop
     const handleShowModal = () => {

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ProjectDataService from "../../services/project.service";
 import { retrieveStatus } from "../../slices/status";
 import { retrieveTypes } from "../../slices/types";
-
+import {retrieveProjects} from "../../slices/projects";
 import "./Project.scss";
 import {Row, Col, Divider, Pagination} from "antd";
 import moment from "moment";
@@ -33,77 +33,75 @@ const ProjectList = () => {
     }, [])
 
     //lay tham so loc theo type
-    const getRequestParamsType = (id, page, pageSize) => {
-        let params = {};
-        if(id){
-            params["id"] = id;
-        }
-        if(page){
-            params["page"] = page - 1;
-        }
-        if(pageSize){
-            params["size"] = pageSize;
-        }
-        return params;
-    }
+    // const getRequestParamsType = (id, page, pageSize) => {
+    //     let params = {};
+    //     if(id){
+    //         params["id"] = id;
+    //     }
+    //     if(page){
+    //         params["page"] = page - 1;
+    //     }
+    //     if(pageSize){
+    //         params["size"] = pageSize;
+    //     }
+    //     return params;
+    // }
     
-    const handleFilterByType = (id) => {
-        setTypeId(id);
-    }
+    // const handleFilterByType = (id) => {
+    //     setTypeId(id);
+    // }
 
-    const findByTypeId = () => {
-        const params = getRequestParamsType(typeId, page, pageSize);
-        ProjectDataService.findByType(params)
-            .then((response) => {
-                const {projects, totalPages, totalItems} = response.data;
-                // setLoadingProject(false);
-                setProjects(projects);
-                setCount(totalPages);
-                setTotalItems(totalItems);
-                console.log(response.data);
-            })
-            .catch((e) => {
-                console.log(e);
-            })
-    }
+    // const findByTypeId = () => {
+    //     const params = getRequestParamsType(typeId, page, pageSize);
+    //     ProjectDataService.findByType(params)
+    //         .then((response) => {
+    //             const {projects, totalPages, totalItems} = response.data;
+    //             // setLoadingProject(false);
+    //             setProjects(projects);
+    //             setCount(totalPages);
+    //             setTotalItems(totalItems);
+    //         })
+    //         .catch((e) => {
+    //             console.log(e);
+    //         })
+    // }
 
-    useEffect(findByTypeId, [typeId, page, pageSize]);
+    // useEffect(findByTypeId, [typeId, page, pageSize]);
 
     //lay tham so loc theo status
-    const getRequestParamsStatus = (id, page, pageSize) => {
-        let params = {};
-        if(id){
-            params["id"] = id;
-        }
-        if(page){
-            params["page"] = page - 1;
-        }
-        if(pageSize){
-            params["size"] = pageSize;
-        }
-        return params;
-    }
+    // const getRequestParamsStatus = (id, page, pageSize) => {
+    //     let params = {};
+    //     if(id){
+    //         params["id"] = id;
+    //     }
+    //     if(page){
+    //         params["page"] = page - 1;
+    //     }
+    //     if(pageSize){
+    //         params["size"] = pageSize;
+    //     }
+    //     return params;
+    // }
     
-    const handleFilterByStatus = (id) => {
-        setStatusId(id);
-    }
+    // const handleFilterByStatus = (id) => {
+    //     setStatusId(id);
+    // }
 
-    const findByStatusId = () => {
-        const params = getRequestParamsStatus(statusId, page, pageSize);
-        ProjectDataService.findByStatus(params)
-            .then((response) => {
-                const {projects, totalPages, totalItems} = response.data;
-                setProjects(projects);
-                setCount(totalPages);
-                setTotalItems(totalItems);
-                console.log(response.data);
-            })
-            .catch((e) => {
-                console.log(e);
-            })
-    }
+    // const findByStatusId = () => {
+    //     const params = getRequestParamsStatus(statusId, page, pageSize);
+    //     ProjectDataService.findByStatus(params)
+    //         .then((response) => {
+    //             const {projects, totalPages, totalItems} = response.data;
+    //             setProjects(projects);
+    //             setCount(totalPages);
+    //             setTotalItems(totalItems);
+    //         })
+    //         .catch((e) => {
+    //             console.log(e);
+    //         })
+    // }
 
-    useEffect(findByStatusId, [statusId, page, pageSize]);
+    // useEffect(findByStatusId, [statusId, page, pageSize]);
 
     //lay gia tri trong o tim kiem
     const onChangeSearchName = (e) => {
@@ -131,11 +129,11 @@ const ProjectList = () => {
         const params = getRequestParams(searchName, page, pageSize);
         ProjectDataService.getAll(params)
             .then((response) => {
-                const {projects, totalPages, totalItems} = response.data;
-                setProjects(projects);
+                console.log(">>>> haiza: " + JSON.stringify(response.data.projects))
+                const {totalPages, totalItems} = response.data;
+                setProjects(response.data.projects);
                 setCount(totalPages);
                 setTotalItems(totalItems);
-                console.log(response.data);
             })
             .catch((e) => {
                 console.log(e);
@@ -150,17 +148,10 @@ const ProjectList = () => {
         setPage(pageNumber);
     }
 
-    // const handlePageSizeChange = (event) => {
-    //     setLoading(true);
-    //     setPageSize(event.target.value);
-    //     setPage(1);
-    // }
-
     const handleSubmit = (id) => {
         navigate("/project/" + id);
     }
 
-    console.log(">>> count: " + count);
     return (
         <div style={{fontFamily: 'Montserrat, sans-serif'}}>
                 <div className="projects section" id="projects">
@@ -201,29 +192,6 @@ const ProjectList = () => {
                             </Col>
                             <Col span={6} style={{fontFamily: "Montserrat", marginTop: 8}}>
                                 <div style={{ display: "flex", float: "right", marginLeft: 20}}>
-                                    {/* <div style={{display: "flex"}}>
-                                        <p style={{fontSize: 15, fontWeight: 500, color: "#4773b5"}}>Số dự án:</p>
-                                        <select onChange={handlePageSizeChange} value={pageSize}
-                                            style={{
-                                                height: 30, width: 50, textAlignLast: "center", color: "#084298", fontWeight: "600", border: "1px solid #2f74b5", borderRadius: 5, marginLeft: 10
-                                            }}>
-                                            {pageSizes.map((size) => (
-                                                <option key={size} value={size}>
-                                                {size}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div> */}
-                                    {/* <Pagination
-                                    style={{fontFamily: "Montserrat"}}
-                                    count={count}
-                                    page={page}
-                                    siblingCount={1}
-                                    boundaryCount={1}
-                                    variant="outlined"
-                                    shape="rounded"
-                                    onChange={handlePageChange}
-                                    /> */}
                                     <Pagination defaultCurrent={page} pageSize={6} total={totalItems} onChange={handlePageChange}  />
                                 </div>
                             </Col>
@@ -303,21 +271,21 @@ const ProjectList = () => {
                                     <div className="types-container">
                                         <h6 className="types-text">Loại dự án</h6> 
                                         <ul className="list-group" style={{marginTop: 15}}>
-                                            {typesList.map((type) => (
-                                                <li key={type.id} className="list-group-item"
-                                                    onClick={() => handleFilterByType(type.id)}
-                                                ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> {type.name}</li>
-                                            ))}
+                                            {/* {typesList.map((type) => ( */}
+                                                <li className="list-group-item"><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Hỗ trợ giáo dục</li>
+                                                <li className="list-group-item"><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Hỗ trợ y tế</li>
+                                                <li className="list-group-item"><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Suất ăn giá rẻ</li>
+                                                <li className="list-group-item"><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Cứu trợ khẩn cấp</li>
+                                                <li className="list-group-item"><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Hỗ trợ người nghèo</li>
                                         </ul>
                                     </div>
                                     <div className="types-container" style={{marginTop: 30}}>
                                         <h6 className="types-text">Trạng thái dự án</h6> 
                                         <ul className="list-group" style={{marginTop: 15}}>
-                                            {statusList.map((status) => (
-                                                <li key={status.id} className="list-group-item"
-                                                    onClick={() => handleFilterByStatus(status.id)}
-                                                ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> {status.name}</li>
-                                            ))}
+                                                <li className="list-group-item" ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Đang vận động</li>
+                                                <li className="list-group-item" ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Đang triển khai</li>
+                                                <li  className="list-group-item" ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Đã hoàn thành</li>
+                                                <li  className="list-group-item" ><i className="fas fa-male text-info mx-2"></i><span>&rsaquo;</span> Đã tạm hoãn</li>
                                         </ul>
                                     </div>
                                 </div>

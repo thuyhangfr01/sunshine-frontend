@@ -57,7 +57,6 @@ const ProjectAdd = (props) => {
             toast.success("Thêm dự án thành công!");
             setIsSubmit(false);
             form.resetFields();
-            getLatestProject();
             setOpenViewAddProject(false);
             return;
           })
@@ -69,6 +68,8 @@ const ProjectAdd = (props) => {
           });
       };
     
+    console.log(">>new project id: " + newProjectId);
+
     const handleImageUpload = async ({ file }) => {
     // const fileImg = e.target.file[0];
         setLoadingImage(true)
@@ -85,6 +86,7 @@ const ProjectAdd = (props) => {
         setImages([...images, {url: data.secure_url}])
         return data.secure_url;
     }
+
 
     //them tien
     const handleAddMinMoney = () => {
@@ -124,6 +126,7 @@ const ProjectAdd = (props) => {
                 } 
             })
         }
+        getLatestProject();
     }
 
     useEffect(handleAddMinMoney, [newProjectId, money]);

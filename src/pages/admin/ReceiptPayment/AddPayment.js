@@ -14,11 +14,14 @@ const AddPayment = (props) => {
     const dispatch = useDispatch();
     const [isSubmit, setIsSubmit] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [listName, setListName] = useState([]);
 
     //get danh sach ten du an
-    const listProjectName = useSelector((state) => state.name);
     useEffect(() => {
-        dispatch(retrieveListProjectName());
+        dispatch(retrieveListProjectName())
+            .then((res) => {
+                setListName(res.payload);
+            })
     }, [])
 
     const onFinish = async (values) => {
@@ -79,7 +82,7 @@ const AddPayment = (props) => {
                                     showSearch
                                     allowClear
                                     style={{fontFamily: 'Montserrat'}}>
-                                    {listProjectName && listProjectName.map((name, index) => (
+                                    {listName && listName.map((name, index) => (
                                         <Select.Option style={{fontFamily: 'Montserrat'}} key={index} value={name.projectId}>{name.projectName}</Select.Option>
                                     ))}
                                 </Select>

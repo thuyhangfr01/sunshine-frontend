@@ -20,7 +20,8 @@ const Report = () => {
     const [_fromDate, setFromDate] = useState(" ");
     const [_toDate, setToDate] = useState(" ");
 
-    const listProjectName = useSelector((state) => state.name);
+    // const listProjectName = useSelector((state) => state.name);
+    const [listName, setListName] = useState([]);
     const [projectId, setProjectId] = useState(0);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = React.useState(1);
@@ -215,7 +216,11 @@ const Report = () => {
 
     //lay danh sach ten du an
     useEffect(() => {
-        dispatch(retrieveListProjectName());
+        dispatch(retrieveListProjectName())
+            .then((res) => {
+                console.log(">> name report: " + JSON.stringify(res.payload));
+                setListName(res.payload);
+            })
     }, [])
 
     //bat su kien chon du an
@@ -247,7 +252,7 @@ const Report = () => {
                             allowClear
                             style={{fontFamily: 'Montserrat',  alignSelf: "center", marginBottom: "10px"}}
                             onChange={handleSelect}>
-                            {listProjectName && listProjectName.map((name, index) => (
+                            {listName && listName.map((name, index) => (
                                 <Select.Option style={{fontFamily: 'Montserrat'}} key={index} value={name.projectId}>{name.projectName}
                                 </Select.Option>
                             ))}

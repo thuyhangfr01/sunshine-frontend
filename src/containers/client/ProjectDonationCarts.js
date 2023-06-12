@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {Row, Col, Card, InputNumber, Table, Radio, Space, Button, Result, Popconfirm } from "antd";
 import {DeleteFilled} from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {updateAmountMoneyById, removeContribution } from "../../slices/contribution";
-import {createPayment} from "../../slices/payment";
 import icSunBlue from "../../assets//images/ic_sunBlue.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons'
 import "./Project.scss";
+import {updateStatusMoney } from "../../slices/contribution";
 
 const ProjectDonationCarts = () => {
     let navigate = useNavigate();
-    
+    const [successful, setSuccessful] = useState(false);
+    const [loading, setLoading] = useState(false);
     const contributions = useSelector((state) => state.contributions.contributionDonation);
     const dispatch = useDispatch();
     const [sumMoney, setSumMoney] = useState(0);
@@ -71,16 +72,35 @@ const ProjectDonationCarts = () => {
         });
     }
 
-    const handlePayment = (sumMoney) => {
-        const amount = sumMoney*100;
-        dispatch(createPayment({amount}))
-        .then((response) => {
-            window.open(response.payload.url, "_self");
-            // console.log(">> handle payment: " + response.payload.url)
-        })
-        .catch((e) => {
-            console.log(e);
-        })
+    const handlePayment = () => {
+        updateStatusByMoneyId();
+        // navigate("/payment");
+    }
+
+    const updateStatusByMoneyId = async () => {
+        setLoading(false);
+        if(contributions){
+            console.log(">>> contributions: " + JSON.stringify(contributions));
+            for(let i = 0; i < contributions.length; i++){
+                const moneyId = contributions[i].contributionMoney.id;
+                const statusId = 3;
+                await dispatch(updateStatusMoney({moneyId, statusId}))
+                .then((res) => {
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    toast.error("Thanh toán thất bại)");
+                })
+                // console.log("aloooooooooo")
+            }
+            navigate("/payment");
+            // contributions.map((contribution) => {  
+            //     const moneyId = contribution.contributionMoney.id;
+            //     const statusId = 3;
+                
+            // })
+             
+        }
     }
 
     return (
@@ -150,9 +170,9 @@ const ProjectDonationCarts = () => {
                                 <Card className="card-info" title = "Thông tin đóng góp" style={{fontFamily: "Montserrat"}}>
                                     <p style={{color: "#b35959"}}><FontAwesomeIcon icon={faSackDollar} style={{color: "#b35959", fontSize: 16, marginRight: 10}}></FontAwesomeIcon>
                                         Tổng tiền: <span style={{fontSize: 16}}>{sumMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
-                                    <button className="btn btn-danger" style={{width: "100%"}}
-                                        onClick = {() => handlePayment(sumMoney)}
-                                        >Thanh toán</button>
+                                    <Button loading={loading} className="btn btn-danger" style={{width: "100%", height: 45}}
+                                        onClick = {() => {handlePayment()}}
+                                        >Thanh toán</Button>
                                 </Card>
                             </Col>
                         </Col>
