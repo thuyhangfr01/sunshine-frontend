@@ -96,10 +96,14 @@ const FormVolunteerManagement = () => {
       ];
     const [dataSource, setDataSource] = useState([]);
     const [projectId, setProjectId] = useState(0);
-    const listProjectName = useSelector((state) => state.name);
+    // const listProjectName = useSelector((state) => state.name);
+    const [listName, setListName] = useState([]);
     // get danh sach ten du an
     useEffect(() => {
-        dispatch(retrieveListProjectName());
+        dispatch(retrieveListProjectName())
+            .then((res) => {
+                setListName(res.payload);
+            })
     }, [])
 
     //bat su kien chon du an
@@ -137,7 +141,7 @@ const FormVolunteerManagement = () => {
                         allowClear
                         style={{fontFamily: 'Montserrat'}}
                         onChange={handleSelect}>
-                        {listProjectName && listProjectName.map((name, index) => (
+                        {listName && listName.map((name, index) => (
                             <Select.Option style={{fontFamily: 'Montserrat'}} key={index} value={name.projectId}>{name.projectName}
                             </Select.Option>
                         ))}

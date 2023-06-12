@@ -26,7 +26,7 @@ const ReceiptPayment = () => {
     const [paymentMoney, setPaymentMoney] = useState(0)
     const [remainingMoney, setRemainingMoney] = useState(0)
 
-    const listProjectName = useSelector((state) => state.name);
+    const [listName, setListName] = useState([]);
     const [projectId, setProjectId] = useState(0);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = React.useState(1);
@@ -249,7 +249,11 @@ const ReceiptPayment = () => {
 
     // get danh sach ten du an
     useEffect(() => {
-        dispatch(retrieveListProjectName());
+        dispatch(retrieveListProjectName())
+        .then((res) => {
+            console.log(">> name admin: " + JSON.stringify(res));
+            setListName(res.payload);
+        })
     }, [])
 
     //bat su kien chon du an
@@ -328,7 +332,7 @@ const ReceiptPayment = () => {
                         allowClear
                         style={{fontFamily: 'Montserrat',  alignSelf: "center", marginBottom: "10px"}}
                         onChange={handleSelect}>
-                        {listProjectName && listProjectName.map((name, index) => (
+                        {listName && listName.map((name, index) => (
                             <Select.Option style={{fontFamily: 'Montserrat'}} key={index} value={name.projectId}>{name.projectName}
                             </Select.Option>
                         ))}

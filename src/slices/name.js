@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import NameService from '../services/name.service'
 
-const initialState = [];
+const initialState = {
+    name: []
+};
 
 export const retrieveListProjectName = createAsyncThunk(
     "projects/retrieveListProjectName", 

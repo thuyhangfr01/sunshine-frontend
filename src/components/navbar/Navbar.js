@@ -6,7 +6,6 @@ import { faEnvelope, faPhone, faAngleDown, faCartPlus, faBell} from '@fortawesom
 // import AuthService from "../services/auth.service";
 import "./NavbarStyle.scss"
 import Dropdown from './Dropdown';
-import DropdownNoti from './DropdownNoti';
 import LogoCut from "./../../assets/images/logo_cut3.png"
 import { useNavigate } from 'react-router-dom';
 
@@ -55,8 +54,8 @@ export default function Navbar() {
                                     <span style={{fontStyle: "italic"}}>"Cảm ơn bạn đã đồng hành cùng Sunshine!"</span>
                                 ) : (
                                     <>
-                                        <a className="btnAuth" href="/login" style={{marginRight: "7px"}}>Đăng nhập </a> / 
-                                        <a className="btnAuth" href="/register" style={{marginLeft: "7px"}}> Đăng ký</a>
+                                        <a className="btnAuth" onClick={() => {navigate("/login");}}style={{marginRight: "7px"}}>Đăng nhập </a> / 
+                                        <a className="btnAuth" onClick={() => {navigate("/register");}} style={{marginLeft: "7px"}}> Đăng ký</a>
                                     </>
                                 )}
                             </div>
@@ -106,7 +105,6 @@ export default function Navbar() {
                                                     <span style={{width: "17px", height: "17px", textAlign: "center", borderRadius: "10px", marginLeft: "-7px", background: "#dc3545"}}>
                                                         <p style={{color: "#fff", fontWeight: "600", fontSize: "10", marginTop: "-7px", fontSize: "10px"}}>0</p>
                                                     </span>
-                                                    {dropDownNoti && <DropdownNoti/>}
                                                 </li>
                                                 <li
                                                     style={{marginLeft: "-20px"}}

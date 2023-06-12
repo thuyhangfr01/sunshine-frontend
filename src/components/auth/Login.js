@@ -85,7 +85,7 @@ const Login = () => {
                           <div>
                               <h3 style={{marginBottom: '-30px', fontSize: '18px', fontWeight: '600'}}>Chào bạn,</h3>
                               <p className="lead my-5" style={{fontWeight: '400'}}>tạo tài khoản mới để đồng hành cùng Sunshine nào!</p>
-                              <Link to={"/register"} className="btn btn-outline-primary 2btn-lg" 
+                              <Link to="/register" className="btn btn-outline-primary 2btn-lg" 
                                 style={{fontSize: '16px', fontWeight: '600', border: '1px solid', padding: '15px 20px 15px 20px', marginBottom: '-15px'}}>Đăng ký</Link>
                           </div>
                           <ul className="list-inline">
