@@ -16,7 +16,6 @@ Website dành cho Qũy từ thiện Sunshine với mục đích xây dựng các
   - Java Mail API
 ## Chức năng
 - Mạnh thường quân
-  - Java
   - Xem tất cả dự án từ thiện 
   - Xem chi tiết dự án từ thiện
   - Xem tiến độ thu, chi của từng dự án
